@@ -55,7 +55,7 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
 
     # return the index corresponding to the pick
     # take the min between the index and  len(D)-1 to prevent returning index out of bound
-    return domain[min(np.searchsorted(domain_cdf, pick) + 1, len(domain)-1)]
+    return domain[min(np.searchsorted(domain_cdf, pick), len(domain)-1)]
 
 
 def a_dist(data, domain, quality_function, eps, delta, bulk=False):
