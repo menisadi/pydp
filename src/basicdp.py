@@ -1,24 +1,26 @@
 import numpy as np
 import math
 
-# Noisy-Max Mechanism
-# 
-def noisyMax(X,q,eps) :
+def noisy_max(X,q,eps) :
+	"""Noisy-Max Mechanism 
+	noisyMax ( data , quality function , privacy parameter )
+	"""
 	# adds Laplasian noise in scale - 1/eps to all the elemnts in X
 	noisy = [q(i)+np.random.laplace(0, 1/eps, 1) for i in X]
 	# returns the index of the maximal element from the noisy elemntss
 	return 	noisy.index(max(noisy))
 
-# Exponential Mechanism
-# 
-def expo(X,q,eps) :
+def expo(X,R,q,eps) :
+	"""Exponential Mechanism 
+	expo ( data , range , quality function , privacy parameter )
+	"""
 	# calculate a list of probabilities for eash elemnt in X (the)
-	X_chances = [math.exp(eps*q(X,r)) for r in X] 
-	normalizator = sum(X_chances) 
-	X_chances = [i/normalizator for i in X_chances]
+	R_chances = [math.exp(eps*q(X,r)) for r in R] 
+	normalizator = sum(R_chances) 
+	R_chances = [r/normalizator for r in R_chances]
 	# accumulates elements to get the CDF of the exponential ditribuition
-	X_CDF = np.cumsum(X_chances).tolist()
+	R_CDF = np.cumsum(R_chances).tolist()
 	# use theunform distribuition (from 0 to 1) to pick an elemnts by the CDF
 	pick = np.random.rand()
-	return np.searchsorted(X_CDF,pick) + 1
+	return np.searchsorted(R_CDF,pick) + 1
 
