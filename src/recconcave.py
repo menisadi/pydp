@@ -8,5 +8,6 @@ def evaluate(T,q,r,alpha,eps,delta,S,N) :
 	else :
 		N = N - 1
 
-	logT = math.ceil(math.log(T,2))
+	Tup = 2**math.ceil(math.log(T,2))
+	min(0,q(S,T))
 
