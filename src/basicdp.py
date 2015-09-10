@@ -16,11 +16,11 @@ def exponential_mechanism(X,D,q,eps) :
 	"""
 	# calculate a list of probabilities for each element in the domain D
 	# probability of element d in D proportional to exp(eps*q(X,d)/2)
-	D_probability = [math.exp(eps*q(X,d)/2) for d in D] 
-	normalizer = sum(D_probability) 
-	D_probabiliry = [d/normalizer for d in D_chances]
+	D_PDF = [math.exp(eps*q(X,d)/2) for d in D] 
+	normalizer = sum(D_PDF) 
+	D_PDF = [d/normalizer for d in D_PDF]
 	# accumulate elements to get the CDF of the exponential distribution
-	D_CDF = np.cumsum(D_chances).tolist()
+	D_CDF = np.cumsum(D_PDF).tolist()
 	# use the uniform distribution (from 0 to 1) to pick an elements by the CDF
 	pick = np.random.rand()
 	return np.searchsorted(D_CDF,pick) + 1
