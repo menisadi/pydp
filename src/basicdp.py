@@ -1,16 +1,16 @@
 import numpy as np
 import math
 
-def noisy_max(X,q,eps) :
+def noisy_max(X,R,q,eps) :
 	"""Noisy-Max Mechanism 
 	noisyMax ( data , quality function , privacy parameter )
 	"""
 	# adds Laplace noise in scale - 1/eps to all the elements in X
-	noisy = [q(i)+np.random.laplace(0, 1/eps, 1) for i in X]
+	noisy = [q(X,i)+np.random.laplace(0, 1/eps, 1) for i in R]
 	# returns the index of the maximal element from the noisy elements
 	return 	noisy.index(max(noisy))
 
-def expo(X,R,q,eps) :
+def exponential_mechanism(X,R,q,eps) :
 	"""Exponential Mechanism 
 	expo ( data , range , quality function , privacy parameter )
 	"""

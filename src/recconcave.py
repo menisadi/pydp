@@ -11,9 +11,8 @@ def evaluate(T,q,r,alpha,eps,delta,S,N) :
 	logT = math.ceil(math.log(T,2))
 	Tup = 2**logT
 	def q2(X,r) : 
-		if r <= T : return q(X,r)
-		elif T < r <= Tup : min(0,q(X,T))
-		else : return 0
+		if T < r <= Tup : min(0,q(X,T))
+		else : return r <= T : return q(X,r)
 
 
 	
