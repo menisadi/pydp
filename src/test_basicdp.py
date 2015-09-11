@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import BasicDP
+import basicdp
 
 class TestBasicDP(unittest.TestCase) :
 
