@@ -12,8 +12,7 @@ def evaluate(T,q,r,alpha,eps,delta,S,N) :
 	Tup = 2**logT
 	def q2(X,r) : 
 		if T < r <= Tup : min(0,q(X,T))
-		else : return r <= T : return q(X,r)
-
+		else : return q(X,r)
 
 	
 
