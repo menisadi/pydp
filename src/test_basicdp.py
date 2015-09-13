@@ -19,7 +19,9 @@ class TestBasicDP(unittest.TestCase) :
 		A = sorted(map(half,D))
 		self.assertGreaterEqual(i,np.searchsorted(A,D[i]))
 
+# q=lambda a,b:-abs(np.mean(a)-b)
 # q = (lambda a,b:abs(max(a)-b))
+# X=np.random.normal(100,10,50)
 # exponential_mechanism(range(100),range(100),q,0.1)
 # noisy_max(range(100),range(100),q,0.1)
 

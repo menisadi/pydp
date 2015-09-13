@@ -27,7 +27,8 @@ def exponential_mechanism(X, D, q, eps):
     D_CDF = np.cumsum(D_PDF).tolist()
     # for debugging and other reasons: check that D_CDF indeed defines a distribution
     normalizer = sum(D_PDF)
-    if (abs(normalizer - 1) > 0.001) print "ERR: exponential_mechanism, sum(D_PDF) != 1."
+    if (abs(normalizer - 1) > 0.001) : 
+        raise ValueError('ERR: exponential_mechanism, sum(D_PDF) != 1.')
     # use the uniform distribution (from 0 to 1) to pick an elements by the CDF
     pick = np.random.rand()
     return np.searchsorted(D_CDF, pick) + 1
