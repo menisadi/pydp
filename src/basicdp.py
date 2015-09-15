@@ -1,7 +1,6 @@
 import numpy as np
 import math
 
-
 def noisy_max(X, D, q, eps):
     """Noisy-Max Mechanism
     noisy_max ( data , domain, quality function , privacy parameter )
@@ -11,7 +10,6 @@ def noisy_max(X, D, q, eps):
     noisy = [q(X, i) + np.random.laplace(0, 1 / eps, 1) for i in D]
     # return element with maximum noisy q(X,i)
     return noisy.index(max(noisy))
-
 
 def exponential_mechanism(X, D, q, eps):
     """Exponential Mechanism

@@ -2,9 +2,12 @@ import basicdp
 import numpy as np
 import math
 
+def RecBasis(T,q,r,alpha,eps,delta,S,N)
+	return basicdp.expo(S, range(T+1), q, eps)
+
 def evaluate(T,q,r,alpha,eps,delta,S,N) :
 	if N == 1 or T <= 32 : 
-		return basicdp.expo(S, range(T+1), q, eps)
+		return RecBasis(T,q,r,alpha,eps,delta,S,1)
 	else :
 		N = N - 1
 
