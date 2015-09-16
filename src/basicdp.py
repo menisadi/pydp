@@ -21,12 +21,14 @@ def exponential_mechanism(X, D, q, eps):
     D_PDF = [math.exp(eps * q(X, d) / 2) for d in D]
     normalizer = sum(D_PDF)
     D_PDF = [d / normalizer for d in D_PDF]
+    normalizer = sum(D_PDF)
+    # for debugging and other reasons: check that D_CDF indeed defines a distribution
+    # use the uniform distribution (from 0 to 1) to pick an elements by the CDF
+    if (abs(normalizer - 1) > 0.001) :
+        raise ValueError('ERR: exponential_mechanism, sum(D_PDF) != 1.')
+
     # accumulate elements to get the CDF of the exponential distribution
     D_CDF = np.cumsum(D_PDF).tolist()
-    # for debugging and other reasons: check that D_CDF indeed defines a distribution
-    normalizer = sum(D_PDF)
-    if (abs(normalizer - 1) > 0.001) : 
-        raise ValueError('ERR: exponential_mechanism, sum(D_PDF) != 1.')
-    # use the uniform distribution (from 0 to 1) to pick an elements by the CDF
+
     pick = np.random.rand()
     return np.searchsorted(D_CDF, pick) + 1
