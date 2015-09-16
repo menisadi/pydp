@@ -8,17 +8,18 @@ class TestBasicDP(unittest.TestCase):
         randD = np.random.randint(1, 1000, 50)
         eps = 0.100
 
-    def half(x):
-        return x / 2
-
     def teardown(self):
         randD = None
 
     def test_noisy_max(self):
-        i = noisy_max(D, half, eps)
-        A = sorted(map(half, D))
+        # compare noisy_max mechanism for finding the minimum to the direct approach
+        i = noisy_max(D, lambda a,b:abs(min(a)-b), eps)
+        A = sorted(map(lambda a,b:abs(min(a)-b), D))
         self.assertGreaterEqual(i, np.searchsorted(A, D[i]))
 
+
+#    def half(x):
+#        return x / 2
 
 # q=lambda a,b:-abs(np.mean(a)-b)
 # q = (lambda a,b:abs(max(a)-b))
