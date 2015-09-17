@@ -11,7 +11,7 @@ def noisy_max(X, D, q, eps):
     # return element with maximum noisy q(X,i)
     return noisy.index(max(noisy))
 
-def exponential_mechanism(X, D, q, eps):
+def exponential_mechanism(X, D, q, eps) :
     """Exponential Mechanism
     exponential_mechanism ( data , domain , quality function , privacy parameter )
     """
