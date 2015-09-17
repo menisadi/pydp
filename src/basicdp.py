@@ -1,6 +1,6 @@
 import numpy as np
 import math
-
+# time stamp: 17.9.15 15:17 Boston-Time
 
 def noisy_max(X, D, q, eps):
     """Noisy-Max Mechanism
