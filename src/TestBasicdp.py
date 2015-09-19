@@ -21,6 +21,7 @@ class TestBasicdp(unittest.TestCase):
             less_than = sum(e < range_element for e in data)
             # return the "distance" of range_element from the middle of the data
             return -max(0, len(data)/2 - min(greater_than, less_than))
+
             # -abs(greater_than - less_than)
 
         rand_data = np.random.normal(0, 100, data_size)
