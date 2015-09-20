@@ -8,10 +8,13 @@ import matplotlib.pyplot as plt
 class TestBasicdp(unittest.TestCase):
 
     def quality_median(self, data, range_element):
-            greater_than = sum(e > range_element for e in data)
-            less_than = sum(e < range_element for e in data)
-            # return the "distance" of range_element from the middle of the data
-            return -max(0, len(data)/2 - min(greater_than, less_than))
+        """
+        quality_median( data , range_element )
+        :return: the "distance" of range_element from the median of the data
+        """
+        greater_than = sum(e > range_element for e in data)
+        less_than = sum(e < range_element for e in data)
+        return -max(0, len(data)/2 - min(greater_than, less_than))
 
     def setUp(self):
         # TODO maybe move the details into different 'example' class
@@ -30,6 +33,12 @@ class TestBasicdp(unittest.TestCase):
               'mechanism result and the true median is: %.2f' % self.difference
 
     def __plot_test_results(self, result):
+        """
+        helper function to visualize the data and the quality of the tested mechanism result
+        :param result: the index in the domain outputted by the mechanism
+        :return: plot the data as a histogram annotate on it
+        the median in green and the mechanism result in red
+        """
         print "The true median is: %.2f" % np.median(self.rand_data)
         plt.hist(self.rand_data, bins=20, normed=True)
         plt.axvspan(self.domain[result]-1, self.domain[result]+1, color='red', alpha=0.5)
@@ -37,6 +46,13 @@ class TestBasicdp(unittest.TestCase):
         plt.show()
 
     def __test_mechanism(self, mechanism):
+        """
+        helper function for testing the basicdp mechanisms
+        over a normally distributed data and mean quality function
+        :param mechanism: a mechanism to be tested
+        :return: an index of an element in the domain outputted by the mechanism.
+        Taking the worst case from NUMBER_OF_ITERATIONS tries
+        """
         worst_result = mechanism(self.rand_data, self.domain, self.quality_median, self.eps)
         # evaluate self.number_of_iterations times and save the worst case
         for k in range(self.NUMBER_OF_ITERATIONS):
@@ -48,16 +64,16 @@ class TestBasicdp(unittest.TestCase):
         return worst_result
 
     def test_noisy_max(self):
-        """tests the exponential_mechanism method
+        """tests the noisy_max method
         over a normally distributed data and mean quality function
-        :return: Pass if the exponential_mechanism returns a relatively high value result
+        :return: Pass if the noisy_max returns a relatively high value result
         """
 
         result = self.__test_mechanism(basicdp.noisy_max)
         print "The Noisy-Max Mechanism returned: %.2f" % self.domain[result]
         print "Result quality: %d" % self.quality_median(self.rand_data, self.domain[result])
 
-        # for later deletion (print and plot the results)
+        # print and plot the results
         self.__plot_test_results(result)
 
         # pass if both mechanism returns a relatively high value result
@@ -74,7 +90,7 @@ class TestBasicdp(unittest.TestCase):
         print "The Exponential Mechanism returned: %.2f" % self.domain[result]
         print "Result quality: %d" % self.quality_median(self.rand_data, self.domain[result])
 
-        # for later deletion (print and plot the results)
+        # print and plot the results
         self.__plot_test_results(result)
 
         # pass if both mechanism returns a relatively high value result
