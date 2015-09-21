@@ -4,8 +4,9 @@ import math
 
 def reconcave_basis(T, q, eps, S):
     """recursion basis for the reconcave procedure - execute the exponential mechanism
-	reconcave_basis(solution set size, quality function of sensitivity 1, eps privacy parameter, solution set)
-	"""
+    note that the parameters r,alpha,delta and N are not being used
+    reconcave_basis(solution set size, quality function of sensitivity 1, eps privacy parameter, solution set)
+    """
     return basicdp.exponential_mechanism(S, range(T + 1), q, eps)
 
 
