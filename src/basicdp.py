@@ -31,6 +31,9 @@ def exponential_mechanism(X, D, q, eps):
 
     # accumulate elements to get the CDF of the exponential distribution
     D_CDF = np.cumsum(D_PDF).tolist()
-
+    # pick a uniformly random value on the CDF
     pick = np.random.rand()
-    return np.searchsorted(D_CDF, pick) + 1
+
+    # return the index corresponding to the pick
+    # take the min between the index and  len(D)-1 to prevent returning index out of bound
+    return min(np.searchsorted(D_CDF, pick) + 1, len(D)-1)

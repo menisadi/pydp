@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 
 
 class TestBasicdp(unittest.TestCase):
-
     def quality_median(self, data, range_element):
         """
         quality_median( data , range_element )
@@ -14,7 +13,7 @@ class TestBasicdp(unittest.TestCase):
         """
         greater_than = sum(e > range_element for e in data)
         less_than = sum(e < range_element for e in data)
-        return -max(0, len(data)/2 - min(greater_than, less_than))
+        return -max(0, len(data) / 2 - min(greater_than, less_than))
 
     def setUp(self):
         # TODO maybe move the details into different 'example' class
@@ -23,11 +22,13 @@ class TestBasicdp(unittest.TestCase):
         self.DATA_SIZE = 1000
         self.NUMBER_OF_ITERATIONS = 30
         self.rand_data = np.random.normal(0, 100, self.DATA_SIZE)
+        # self.rand_data = np.concatenate(
+        #    [np.random.exponential(70, self.DATA_SIZE / 2), np.random.normal(500, 100, self.DATA_SIZE / 2)])
         self.eps = 0.500
         self.domain = range(-self.DOMAIN_SIZE, self.DOMAIN_SIZE)
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
         self.ERROR_PARAMETER = 10
-        self.difference = (2/self.eps*(math.log(self.DOMAIN_SIZE)+self.ERROR_PARAMETER))
+        self.difference = (2 / self.eps * (math.log(self.DOMAIN_SIZE) + self.ERROR_PARAMETER))
         # TODO change the print to something more accurate
         print 'The maximum likely difference between the ' \
               'mechanism result and the true median is: %.2f' % self.difference
@@ -41,8 +42,9 @@ class TestBasicdp(unittest.TestCase):
         """
         print "The true median is: %.2f" % np.median(self.rand_data)
         plt.hist(self.rand_data, bins=20, normed=True)
-        plt.axvspan(self.domain[result]-1, self.domain[result]+1, color='red', alpha=0.5)
-        plt.axvspan(np.median(self.rand_data)-1, np.median(self.rand_data)+1, color='green', alpha=0.5)
+        plt.axvspan(self.domain[result] - 1, self.domain[result] + 1, color='red', alpha=0.5)
+        plt.axvspan(np.median(self.rand_data) - 1, np.median(self.rand_data) + 1, color='green',
+                    alpha=0.5)
         plt.show()
 
     def __test_mechanism(self, mechanism):
@@ -78,7 +80,8 @@ class TestBasicdp(unittest.TestCase):
 
         # pass if both mechanism returns a relatively high value result
         self.assertGreaterEqual(self.quality_median(self.rand_data, self.domain[result]),
-                                self.quality_median(self.rand_data, np.median(self.rand_data)) - self.difference)
+                                self.quality_median(self.rand_data,
+                                                    np.median(self.rand_data)) - self.difference)
 
     def test_exponential_mechanism(self):
         """tests the exponential_mechanism method
@@ -95,7 +98,9 @@ class TestBasicdp(unittest.TestCase):
 
         # pass if both mechanism returns a relatively high value result
         self.assertGreaterEqual(self.quality_median(self.rand_data, self.domain[result]),
-                                self.quality_median(self.rand_data, np.median(self.rand_data)) - self.difference)
+                                self.quality_median(self.rand_data,
+                                                    np.median(self.rand_data)) - self.difference)
+
 
 if __name__ == '__main__':
     unittest.main()
