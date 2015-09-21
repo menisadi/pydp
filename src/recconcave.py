@@ -19,10 +19,15 @@ def evaluate(T, q, r, alpha, eps, delta, S, N):
     logT = math.ceil(math.log(T, 2))
     Tup = 2 ** logT
 
-    def q2(X, r):
-        if T < r <= Tup:
-            min(0, q(X, T))
+    # TODO change the variables names to something more readable
+    def q_new(s, i):
+        if T < i <= Tup:
+            min(0, q(s, T))
         else:
-            return q(X, r)
+            return q(s, i)
+
+    # def L(s, j):
+    #     if 0 <= j <= logT:
+    #         return max(min(q_new(s,i)))
 
     return
