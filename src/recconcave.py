@@ -2,12 +2,12 @@ import basicdp
 import math
 
 
-def reconcave_basis(T, q, eps, S):
+def reconcave_basis(range_max_value, quality_function, eps, data):
     """recursion basis for the reconcave procedure - execute the exponential mechanism
     note that the parameters r,alpha,delta and N are not being used
     reconcave_basis(solution set size, quality function of sensitivity 1, eps privacy parameter, solution set)
     """
-    return basicdp.exponential_mechanism(S, range(T + 1), q, eps)
+    return basicdp.exponential_mechanism(data, range(range_max_value + 1), quality_function, eps)
 
 
 def evaluate(range_max_value, quality_function, quality_promise, approximation, eps, delta, data, recursion_bound):
@@ -30,6 +30,7 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
 
     # step 3
     def intervals_bounding(data_base, j):
+        # TODO why the +1?
         if j == log_of_range + 1:
             return min(0, intervals_bounding(data_base, j-1))
         # TODO should we add 1 to range input? (here and in step 7)
@@ -62,9 +63,9 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
     def interval_quality(data_base, interval):
         return max([extended_quality_function(data_base, j) for j in interval])
 
-    # TODO step 9 ('dist' algorithm needed)
-    first_chosen_interval = []
-    second_chosen_interval = []
+    # step 9 ( using 'dist' algorithm)
+    first_chosen_interval = basicdp.a_dist(eps, delta, first_intervals, interval_quality)
+    second_chosen_interval = basicdp.a_dist(eps, delta, second_intervals, interval_quality)
 
     # step 10
     return basicdp.exponential_mechanism(data, first_chosen_interval.append(second_chosen_interval),
