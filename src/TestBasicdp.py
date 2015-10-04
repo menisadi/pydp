@@ -3,7 +3,7 @@ import basicdp
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-
+import random
 
 class TestBasicdp(unittest.TestCase):
     def quality_median(self, data, range_element):
@@ -49,7 +49,7 @@ class TestBasicdp(unittest.TestCase):
 
     def __test_mechanism(self, mechanism):
         """
-        helper function for testing the basicdp mechanisms
+        helper function for testing the utility of the basicdp mechanisms
         over a normally distributed data and mean quality function
         :param mechanism: a mechanism to be tested
         :return: an index of an element in the domain outputted by the mechanism.
@@ -65,6 +65,26 @@ class TestBasicdp(unittest.TestCase):
 
         return worst_result
 
+    # TODO created neighbor data set still not used
+    '''
+    def __test_mechanism_privacy(self, mechanism):
+        """
+        helper function for testing the privacy of the basicdp mechanisms
+        over two neighbors data and mean quality function
+        :param mechanism:  a mechanism to be tested
+        :return:
+        """
+        neighbor_data = np.copy(self.rand_data)
+        random.shuffle(neighbor_data)[:-1]
+        np.append(neighbor_data, random.uniform(min(self.rand_data), max(self.rand_data)))
+        # check that they are indeed neighbors
+        if (neighbor_data == self.rand_data).all():
+            raise ValueError('Data sets are identical')
+        if not (neighbor_data == self.rand_data)[:-1].all():
+            raise ValueError('Data sets differ in more than one elemnt')
+        first_result = mechanism(self.rand_data, self.domain, self.quality_median, self.eps)
+        second_result = mechanism(neighbor_data, self.domain, self.quality_median, self.eps)
+    '''
     def test_noisy_max(self):
         """tests the noisy_max method
         over a normally distributed data and mean quality function
