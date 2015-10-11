@@ -7,7 +7,7 @@ def rec_concave_basis(range_max_value, quality_function, eps, data):
     note that the parameters r,alpha,delta and N are not being used
     reconcave_basis(solution set size, quality function of sensitivity 1, eps privacy parameter, solution set)
     """
-    return basicdp.exponential_mechanism(data, range(range_max_value + 1), quality_function, eps)
+    return basicdp.exponential_mechanism(data, range(int(math.ceil(range_max_value + 1))), quality_function, eps)
 
 
 def evaluate(range_max_value, quality_function, quality_promise, approximation, eps, delta, data, recursion_bound):

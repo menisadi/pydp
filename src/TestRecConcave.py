@@ -21,6 +21,9 @@ class TestRecConcave(unittest.TestCase):
         self.DATA = [1]*(self.THRESHOLD - 1) + [0]*(self.DATA_RANGE - self.THRESHOLD + 1)
         self.SAMPLE_XS = sorted(random.sample(xrange(self.DATA_RANGE), self.LOG_DATA_SIZE))
         self.SAMPLE_YS = [self.DATA[self.SAMPLE_XS[i]] for i in xrange(len(self.SAMPLE_XS))]
+        # TODO should we test on a 'true' fixed threshold or a sampled one like this?
+        self.SAMPLE_THRESHOLD_MAX = self.SAMPLE_XS[self.SAMPLE_YS(0)] - 1
+        self.SAMPLE_THRESHOLD_MIN = self.SAMPLE_XS[self.SAMPLE_YS(0)-1]+1
         self.SAMPLE = [self.SAMPLE_XS, self.SAMPLE_YS]
 
     def test_rec_concave_basis(self):
