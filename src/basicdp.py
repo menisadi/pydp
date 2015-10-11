@@ -54,6 +54,6 @@ def a_dist(eps, delta, data, quality_function):
     # TODO should it be an error or just return?
     # TODO change the error message
     if noisy_gap < math.log(1/delta)/eps:
-        raise ValueError('ERR: _|_')
+        raise ValueError('ERR: The gap between the two highest scores is two small')
     return h1
 

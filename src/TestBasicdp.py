@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
+
 class TestBasicdp(unittest.TestCase):
     def quality_median(self, data, range_element):
         """
@@ -65,8 +66,6 @@ class TestBasicdp(unittest.TestCase):
 
         return worst_result
 
-    # TODO created neighbor data set still not used
-    '''
     def __test_mechanism_privacy(self, mechanism):
         """
         helper function for testing the privacy of the basicdp mechanisms
@@ -75,16 +74,21 @@ class TestBasicdp(unittest.TestCase):
         :return:
         """
         neighbor_data = np.copy(self.rand_data)
+        # remove random elemnt
         random.shuffle(neighbor_data)[:-1]
+        # add random elemnt
         np.append(neighbor_data, random.uniform(min(self.rand_data), max(self.rand_data)))
         # check that they are indeed neighbors
         if (neighbor_data == self.rand_data).all():
             raise ValueError('Data sets are identical')
-        if not (neighbor_data == self.rand_data)[:-1].all():
-            raise ValueError('Data sets differ in more than one elemnt')
+        elif not (neighbor_data == self.rand_data)[:-1].all():
+            raise ValueError('Data sets differ in more than one element')
+
+        # TODO how to use the results to check?
         first_result = mechanism(self.rand_data, self.domain, self.quality_median, self.eps)
         second_result = mechanism(neighbor_data, self.domain, self.quality_median, self.eps)
-    '''
+        return
+
     def test_noisy_max(self):
         """tests the noisy_max method
         over a normally distributed data and mean quality function
@@ -120,6 +124,9 @@ class TestBasicdp(unittest.TestCase):
         self.assertGreaterEqual(self.quality_median(self.rand_data, self.domain[result]),
                                 self.quality_median(self.rand_data,
                                                     np.median(self.rand_data)) - self.difference)
+
+        def test_dist(self):
+            self.assertEqual(True, False)
 
 
 if __name__ == '__main__':

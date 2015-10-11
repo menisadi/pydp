@@ -2,7 +2,7 @@ import basicdp
 import math
 
 
-def reconcave_basis(range_max_value, quality_function, eps, data):
+def rec_concave_basis(range_max_value, quality_function, eps, data):
     """recursion basis for the reconcave procedure - execute the exponential mechanism
     note that the parameters r,alpha,delta and N are not being used
     reconcave_basis(solution set size, quality function of sensitivity 1, eps privacy parameter, solution set)
@@ -14,7 +14,7 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
     # TODO go through variables names and see if they are more or less accurate
     # TODO and maybe change some of the 'k' 'j' 'i'
     if recursion_bound == 1 or range_max_value <= 32:
-        return reconcave_basis(range_max_value, quality_function, eps, data)
+        return rec_concave_basis(range_max_value, quality_function, eps, data)
     else:
         recursion_bound -= 1
 
