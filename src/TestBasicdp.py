@@ -125,8 +125,8 @@ class TestBasicdp(unittest.TestCase):
                                 self.quality_median(self.rand_data,
                                                     np.median(self.rand_data)) - self.difference)
 
-        def test_dist(self):
-            self.assertEqual(True, False)
+    def test_dist(self):
+        self.assertEqual(True, False)
 
 
 if __name__ == '__main__':
