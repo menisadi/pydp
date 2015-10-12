@@ -64,8 +64,8 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
         return max([extended_quality_function(data_base, j) for j in interval])
 
     # step 9 ( using 'dist' algorithm)
-    first_chosen_interval = basicdp.a_dist(eps, delta, first_intervals, interval_quality)
-    second_chosen_interval = basicdp.a_dist(eps, delta, second_intervals, interval_quality)
+    first_chosen_interval = basicdp.a_dist(eps, delta, first_intervals, data, interval_quality)
+    second_chosen_interval = basicdp.a_dist(eps, delta, second_intervals, data, interval_quality)
 
     # step 10
     return basicdp.exponential_mechanism(data, first_chosen_interval.append(second_chosen_interval),

@@ -39,21 +39,25 @@ def exponential_mechanism(X, D, q, eps):
     return min(np.searchsorted(D_CDF, pick) + 1, len(D)-1)
 
 
-def a_dist(eps, delta, data, quality_function):
+def a_dist(eps, delta, domain, data, quality_function):
     """A_dist algorithm
-    :param eps, delta: privacy parameters
+    :param eps: privacy parameter
+    :param delta: privacy parameter
+    :param domain:
     :param data: database
     :param quality_function: sensitivity-1 quality function
     :return:
     """
-    qualified_data = [quality_function(x) for x in data]
-    two_highest_scores_indexes = np.argpartition(np.array(qualified_data), -2)[-2:]
-    h1 = max(qualified_data[two_highest_scores_indexes])
-    h2 = min(qualified_data[two_highest_scores_indexes])
+    qualified_data = [quality_function(data, x) for x in domain]
+    qualified_data_array = np.asarray(qualified_data)
+    two_highest_scores_indexes = np.argpartition(np.array(qualified_data_array), -2)[-2:]
+    highest = qualified_data_array[two_highest_scores_indexes]
+    h1 = np.amax(highest)
+    h2 = np.amin(highest)
     noisy_gap = h1 - h2 + np.random.laplace(0, 1 / eps, 1)
-    # TODO should it be an error or just return?
-    # TODO change the error message
+    # TODO should it be an error or random return?
     if noisy_gap < math.log(1/delta)/eps:
-        raise ValueError('ERR: The gap between the two highest scores is two small')
+        return np.random.randint(len(domain), size=1)[0]
+        # raise ValueError('ERR: The gap between the two highest scores is two small')
     return h1
 

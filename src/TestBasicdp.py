@@ -124,10 +124,20 @@ class TestBasicdp(unittest.TestCase):
         self.assertGreaterEqual(self.quality_median(self.rand_data, self.domain[result]),
                                 self.quality_median(self.rand_data,
                                                     np.median(self.rand_data)) - self.difference)
-
+'''
     def test_dist(self):
-        self.assertEqual(True, False)
+        threshold = np.random.randint(self.DATA_SIZE)
+        point_data = [0]*self.DATA_SIZE
+        point_data[np.random.randint(10, size=1)] = 1
+        alpha = 0.2
+        beta = 0.1
+        delta = 0.01
+        sampled_data_x = sorted(random.sample(xrange(self.DATA_SIZE), self.DATA_SIZE/10))
+        sampled_data_y = [point_data[sampled_data_x[i]] for i in xrange(len(sampled_data_x))]
+        def point_quality(data, point):
 
+        self.assertEqual(True, False)
+'''
 
 if __name__ == '__main__':
     unittest.main()
