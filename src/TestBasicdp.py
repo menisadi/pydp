@@ -124,20 +124,36 @@ class TestBasicdp(unittest.TestCase):
         self.assertGreaterEqual(self.quality_median(self.rand_data, self.domain[result]),
                                 self.quality_median(self.rand_data,
                                                     np.median(self.rand_data)) - self.difference)
-'''
+
     def test_dist(self):
-        threshold = np.random.randint(self.DATA_SIZE)
+        spike = np.random.randint(self.DATA_SIZE, size=1)
         point_data = [0]*self.DATA_SIZE
-        point_data[np.random.randint(10, size=1)] = 1
+        point_data[spike] = 1
         alpha = 0.2
         beta = 0.1
         delta = 0.01
-        sampled_data_x = sorted(random.sample(xrange(self.DATA_SIZE), self.DATA_SIZE/10))
-        sampled_data_y = [point_data[sampled_data_x[i]] for i in xrange(len(sampled_data_x))]
-        def point_quality(data, point):
 
+        def sample_wr(population, k):
+            # Chooses k random elements (with replacement) from a population
+            n = len(population)
+            _random, _int = random.random, int  # speed hack
+            result = [None] * k
+            for i in xrange(k):
+                j = _int(_random() * n)
+            result[i] = population[j]
+            return result
+
+        sampled_data_x = sorted(sample_wr(xrange(self.DATA_SIZE), self.DATA_SIZE*10))
+        sampled_data_y = [point_data[sampled_data_x[i]] for i in xrange(len(sampled_data_x))]
+        sampled_data = [sampled_data_x, sampled_data_y]
+
+        def point_quality(data, point):
+            indexes = [i for i, e in enumerate(data[0]) if e == point]
+            return sum([data[1][i] for i in indexes])
+
+        dist_result = basicdp.a_dist(self.eps, delta, range(self.DATA_SIZE), sampled_data, point_quality)
         self.assertEqual(True, False)
-'''
+
 
 if __name__ == '__main__':
     unittest.main()

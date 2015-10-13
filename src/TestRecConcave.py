@@ -20,7 +20,7 @@ class TestRecConcave(unittest.TestCase):
         self.DATA_RANGE = 2**self.LOG_DATA_SIZE
         self.THRESHOLD = np.random.randint(self.DATA_RANGE)
         self.DATA = [1]*(self.THRESHOLD - 1) + [0]*(self.DATA_RANGE - self.THRESHOLD + 1)
-        self.SAMPLE_XS = sorted(random.sample(xrange(self.DATA_RANGE), self.LOG_DATA_SIZE*30))
+        self.SAMPLE_XS = sorted(random.sample(xrange(self.DATA_RANGE), self.LOG_DATA_SIZE))
         self.SAMPLE_YS = [self.DATA[self.SAMPLE_XS[i]] for i in xrange(len(self.SAMPLE_XS))]
         # TODO should we test on a 'true' fixed threshold or a sampled one like this?
         self.SAMPLE_THRESHOLD_MAX = self.SAMPLE_XS[self.SAMPLE_YS[0]] - 1
@@ -38,7 +38,7 @@ class TestRecConcave(unittest.TestCase):
 
     def test_rec_concave_utility(self):
         print rec_concave.evaluate(self.DATA_RANGE, self.interval_threshold_quality,
-                                    self.LOG_DATA_SIZE ,
+                                    self.LOG_DATA_SIZE,
                                     self.alpha, self.EPS, self.delta,
                                     self.SAMPLE, self.RECURSION_BOUND)
         self.assertEqual(True, True)

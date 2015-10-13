@@ -56,8 +56,9 @@ def a_dist(eps, delta, domain, data, quality_function):
     h2 = np.amin(highest)
     noisy_gap = h1 - h2 + np.random.laplace(0, 1 / eps, 1)
     # TODO should it be an error or random return?
+    # check if the sensitivity is too high
     if noisy_gap < math.log(1/delta)/eps:
-        return np.random.randint(len(domain), size=1)[0]
-        # raise ValueError('ERR: The gap between the two highest scores is two small')
+        raise ValueError('ERR: The quality function is too sensitive')
+        # return np.random.randint(len(domain), size=1)[0]
     return h1
 
