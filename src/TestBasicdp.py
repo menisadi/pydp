@@ -127,10 +127,11 @@ class TestBasicdp(unittest.TestCase):
 
     def test_dist(self):
         spike = np.random.randint(self.DATA_SIZE, size=1)
+        print 'true concept index = %i' % spike
         point_data = [0]*self.DATA_SIZE
         point_data[spike] = 1
-        alpha = 0.2
-        beta = 0.1
+        # alpha = 0.2
+        # beta = 0.1
         delta = 0.01
 
         def sample_wr(population, k):
@@ -140,7 +141,7 @@ class TestBasicdp(unittest.TestCase):
             result = [None] * k
             for i in xrange(k):
                 j = _int(_random() * n)
-            result[i] = population[j]
+                result[i] = population[j]
             return result
 
         sampled_data_x = sorted(sample_wr(xrange(self.DATA_SIZE), self.DATA_SIZE*10))
@@ -152,7 +153,8 @@ class TestBasicdp(unittest.TestCase):
             return sum([data[1][i] for i in indexes])
 
         dist_result = basicdp.a_dist(self.eps, delta, range(self.DATA_SIZE), sampled_data, point_quality)
-        self.assertEqual(True, False)
+        print 'A_dist result is: %i' % dist_result
+        self.assertEqual(dist_result, spike)
 
 
 if __name__ == '__main__':

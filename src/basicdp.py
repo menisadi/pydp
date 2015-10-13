@@ -60,5 +60,5 @@ def a_dist(eps, delta, domain, data, quality_function):
     if noisy_gap < math.log(1/delta)/eps:
         raise ValueError('ERR: The quality function is too sensitive')
         # return np.random.randint(len(domain), size=1)[0]
-    return h1
+    return qualified_data.index(h1)
 
