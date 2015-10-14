@@ -30,9 +30,6 @@ class TestBasicdp(unittest.TestCase):
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
         self.ERROR_PARAMETER = 10
         self.difference = (2 / self.eps * (math.log(self.DOMAIN_SIZE) + self.ERROR_PARAMETER))
-        # TODO change the print to something more accurate
-        print 'The maximum likely difference between the ' \
-              'mechanism result and the true median is: %.2f' % self.difference
 
     def __plot_test_results(self, result):
         """
@@ -96,6 +93,9 @@ class TestBasicdp(unittest.TestCase):
         """
 
         result = self.__test_mechanism(basicdp.noisy_max)
+        # TODO change the print to something more accurate
+        print 'The maximum likely difference between the ' \
+              'mechanism result and the true median is: %.2f' % self.difference
         print "The Noisy-Max Mechanism returned: %.2f" % self.domain[result]
         print "Result quality: %d" % self.quality_median(self.rand_data, self.domain[result])
 
@@ -114,6 +114,8 @@ class TestBasicdp(unittest.TestCase):
         """
 
         result = self.__test_mechanism(basicdp.exponential_mechanism)
+        print 'The maximum likely difference between the ' \
+              'mechanism result and the true median is: %.2f' % self.difference
         print "The Exponential Mechanism returned: %.2f" % self.domain[result]
         print "Result quality: %d" % self.quality_median(self.rand_data, self.domain[result])
 
@@ -134,17 +136,7 @@ class TestBasicdp(unittest.TestCase):
         # beta = 0.1
         delta = 0.01
 
-        def sample_wr(population, k):
-            # Chooses k random elements (with replacement) from a population
-            n = len(population)
-            _random, _int = random.random, int  # speed hack
-            result = [None] * k
-            for i in xrange(k):
-                j = _int(_random() * n)
-                result[i] = population[j]
-            return result
-
-        sampled_data_x = sorted(sample_wr(xrange(self.DATA_SIZE), self.DATA_SIZE*10))
+        sampled_data_x = sorted(np.random.choice(self.DATA_SIZE, self.DATA_SIZE*10))
         sampled_data_y = [point_data[sampled_data_x[i]] for i in xrange(len(sampled_data_x))]
         sampled_data = [sampled_data_x, sampled_data_y]
 
