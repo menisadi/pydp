@@ -117,3 +117,7 @@ def make_neighbour_set(data, label_type='float'):
     neighbor_data = np.insert(neighbor_data, target_index, random_element.get(label_type))
     return neighbor_data
 
+
+# TODO needed?
+def databases_distance(data_1, data_2):
+    return sum(data_1 != data_2)
