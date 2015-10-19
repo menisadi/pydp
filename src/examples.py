@@ -33,8 +33,12 @@ def point_concept_quality(data, point):
 
 
 def __make_point_data(data_size, specify_spike):
-    if specify_spike == -1: spike = np.random.randint(data_size, size=1)
-    else: spike = specify_spike
+    if specify_spike == -1:
+        spike = np.random.randint(data_size, size=1)
+    else:
+        spike = specify_spike
+    if spike > data_size:
+        raise ValueError('ERR: spike index is bigger than the data length')
     point_data = [0]*data_size
     point_data[spike] = 1
 
@@ -42,7 +46,10 @@ def __make_point_data(data_size, specify_spike):
 def __make_threshold_data(data_size, specify_threshold):
     if specify_threshold == -1:
         threshold = np.random.randint(data_size, size=1)[0]
-    else: threshold = specify_threshold
+    else:
+        threshold = specify_threshold
+    if threshold > data_size:
+        raise ValueError('ERR: threshold index is bigger than the data length')
     threshold_data = [1]*threshold+[0]*(data_size-threshold)
     return threshold_data
 
@@ -56,12 +63,12 @@ def get_random_data(data_size, distribution_type='normal', specify_parameter=-1)
     """
 
     data_switch = {
-        'normal': np.random.normal(0, data_size / 10, data_size),
-        'laplace': np.random.laplace(0, data_size / 100, data_size),
+        'normal': np.random.normal(0, data_size / 10.0, data_size),
+        'laplace': np.random.laplace(0, data_size / 100.0, data_size),
         'bimodal': np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
-                                   np.random.normal(data_size / 2, data_size / 10, data_size / 2)]),
+                                   np.random.normal(data_size / 2, data_size / 10.0, data_size / 2)]),
         'uniform': np.random.uniform(0, data_size, data_size),
-        'point': __make_point_data(data_size, specify_parameter), # POINT_d
+        'point': __make_point_data(data_size, specify_parameter),  # POINT_d
         'threshold': __make_threshold_data(data_size, specify_parameter),  # THRESH_d
     }
     # TODO should we return this or an empty one?
