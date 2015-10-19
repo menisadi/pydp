@@ -23,8 +23,6 @@ class TestBasicdp(unittest.TestCase):
         self.DATA_SIZE = 1000
         self.NUMBER_OF_ITERATIONS = 30
         self.rand_data = np.random.normal(0, 100, self.DATA_SIZE)
-        # self.rand_data = np.concatenate(
-        #    [np.random.exponential(70, self.DATA_SIZE / 2), np.random.normal(500, 100, self.DATA_SIZE / 2)])
         self.eps = 0.500
         self.domain = range(-self.DOMAIN_SIZE, self.DOMAIN_SIZE)
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
@@ -75,7 +73,7 @@ class TestBasicdp(unittest.TestCase):
         random.shuffle(neighbor_data)[:-1]
         # add random elemnt
         np.append(neighbor_data, random.uniform(min(self.rand_data), max(self.rand_data)))
-        # check that they are indeed neighbors
+        # check that the given data sets are indeed neighbors
         if (neighbor_data == self.rand_data).all():
             raise ValueError('Data sets are identical')
         elif not (neighbor_data == self.rand_data)[:-1].all():
