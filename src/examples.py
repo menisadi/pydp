@@ -41,6 +41,7 @@ def __make_point_data(data_size, specify_spike):
         raise ValueError('ERR: spike index is bigger than the data length')
     point_data = [0]*data_size
     point_data[spike] = 1
+    return point_data
 
 
 def __make_threshold_data(data_size, specify_threshold):
@@ -62,18 +63,20 @@ def get_random_data(data_size, distribution_type='normal', specify_parameter=-1)
     :return: random data set from a specific tpe
     """
 
+    # TODO is this a good design??
+    # lazy switch to get the desirable distribution
     data_switch = {
-        'normal': np.random.normal(0, data_size / 10.0, data_size),
-        'laplace': np.random.laplace(0, data_size / 100.0, data_size),
-        'bimodal': np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
+        'normal': lambda: np.random.normal(0, data_size / 10.0, data_size),
+        'laplace': lambda: np.random.laplace(0, data_size / 100.0, data_size),
+        'bimodal': lambda: np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
                                    np.random.normal(data_size / 2, data_size / 10.0, data_size / 2)]),
-        'uniform': np.random.uniform(0, data_size, data_size),
-        'point': __make_point_data(data_size, specify_parameter),  # POINT_d
-        'threshold': __make_threshold_data(data_size, specify_parameter),  # THRESH_d
+        'uniform': lambda: np.random.uniform(0, data_size, data_size),
+        'point': lambda: __make_point_data(data_size, specify_parameter),  # POINT_d
+        'threshold': lambda: __make_threshold_data(data_size, specify_parameter),  # THRESH_d
     }
     # TODO should we return this or an empty one?
     # if user call for unknown data-type return a normal distributed one
-    return data_switch.get(distribution_type, data_switch['normal'])
+    return data_switch.get(distribution_type, data_switch['normal'])()
 
 
 def get_labeled_sample(data, sample_size):
@@ -92,17 +95,25 @@ def get_labeled_sample(data, sample_size):
     return sampled_data
 
 
-def make_neighbour_set(data):
+def make_neighbour_set(data, label_type='float'):
     """
     create new data set that differ from the data exactly in one element
     used to check privacy under the classic differential privacy definition
     :param data: the original data set
     :return: data set that differ from the data exactly in one element
     """
-    neighbor_data = np.copy(data)
+    target_index = np.random.randint(len(data))
+
     # remove random element
-    np.random.shuffle(neighbor_data)
-    neighbor_data=neighbor_data[:-1]
+    neighbor_data = np.delete(data, target_index)
+
     # TODO adding necessary?
     # add random element
-    np.append(neighbor_data, np.random.uniform(min(data), max(data)))
+    random_element = {
+        'float': np.random.uniform(min(data), max(data)),
+        'int': np.random.randint(min(data), max(data)),
+        'binary': np.random.randint(2),
+    }
+    neighbor_data = np.insert(neighbor_data, target_index, random_element.get(label_type))
+    return neighbor_data
+
