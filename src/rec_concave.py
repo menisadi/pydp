@@ -52,14 +52,13 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
     recursion_returned = evaluate(log_of_range, recursive_quality_function, recursive_quality_promise, 1/4,
                                   eps, delta, data, recursion_bound)
     good_interval = 8 * (2 ** recursion_returned)
-    print good_interval
+
     # step 7
     first_intervals = [range(range_max_value_tag)[i:i + good_interval]
                        for i in range(0, range_max_value_tag, good_interval)]
     second_intervals = [range(good_interval/2, range_max_value_tag)[i:i + good_interval]
                         for i in range(0, range_max_value_tag-good_interval/2, good_interval)]
-    print first_intervals
-    print second_intervals
+
     # step 8
     def interval_quality(data_base, interval):
         return max([extended_quality_function(data_base, j) for j in interval])
