@@ -85,18 +85,17 @@ class TestBasicdp(unittest.TestCase):
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
         error_parameter = 10
         difference = (2 / self.eps * (math.log(self.DOMAIN_SIZE) + error_parameter))
-
-        print 'The maximum likely difference between the ' \
-            'mechanism result and the true median is: %.2f' % difference
+        print "The maximum 'allowed' difference between the " \
+            "mechanism result and the true median is: %.2f" % difference
 
         result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set)
         # TODO change the print to something more accurate
 
         print "The Noisy-Max Mechanism returned: %.2f" % range_set[result]
-        print "Result quality: %d" % self.quality_median(rand_data, range_set[result])
+        print "Result quality: %d\n" % self.quality_median(rand_data, range_set[result])
 
         # print and plot the results
-        self.__plot_test_results(result, rand_data, range_set)
+        # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
         self.assertGreaterEqual(self.quality_median(rand_data, range_set[result]),
@@ -114,14 +113,16 @@ class TestBasicdp(unittest.TestCase):
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
         error_parameter = 10
         difference = (2 / self.eps * (math.log(self.DOMAIN_SIZE) + error_parameter))
+        print "The maximum 'allowed' difference between the " \
+            "mechanism result and the true median is: %.2f" % difference
 
         result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set)
 
         print "The Exponential Mechanism returned: %.2f" % range_set[result]
-        print "Result quality: %d" % self.quality_median(rand_data, range_set[result])
+        print "Result quality: %d\n" % self.quality_median(rand_data, range_set[result])
 
         # print and plot the results
-        self.__plot_test_results(result, rand_data, range_set)
+        # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
         self.assertGreaterEqual(self.quality_median(rand_data, range_set[result]),
@@ -134,16 +135,17 @@ class TestBasicdp(unittest.TestCase):
         over a laplace-distributed data and median quality function
         :return: Pass if the A_dist returns a value
         """
-        data = examples.get_random_data('laplace')
+        data = examples.get_random_data(self.DATA_SIZE, 'laplace')
         delta = 0.01
         answers_set = range(-50, 50)
         result = basicdp.a_dist(self.eps, delta, answers_set, data, self.quality_median)
         print "A_dist returned the index - %.2f - and value - %.2f" % (result, answers_set[result])
-        print "the true median is: %.2f" % np.median(data)
-        plt.hist(data, bins=30, normed=True)
-        plt.axvspan(answers_set[result] - 1, answers_set[result] + 1, color='red', alpha=0.5)
-        plt.axvspan(np.median(data) - 1, np.median(data) + 1, color='green', alpha=0.5)
-        plt.show()
+        print "the true median is: %.2f\n" % np.median(data)
+
+        # plt.hist(data, bins=30, normed=True)
+        # plt.axvspan(answers_set[result] - 1, answers_set[result] + 1, color='red', alpha=0.5)
+        # plt.axvspan(np.median(data) - 1, np.median(data) + 1, color='green', alpha=0.5)
+        # plt.show()
 
 
 if __name__ == '__main__':
