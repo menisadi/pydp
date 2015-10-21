@@ -130,32 +130,15 @@ def databases_distance(data_1, data_2):
     return sum(data_1 != data_2)
 
 
-d = get_random_data(10, 'threshold', 6)
-s = get_labeled_sample(d, 20)
-print d
-print s
-t = 3
+d = get_random_data(10, 'threshold',5)
+s = get_labeled_sample(d,20)
 
 
-def c(x):
-    if x < t:
+def threshold_function(index, threshold):
+    if index < threshold:
         return 1
     else:
         return 0
 
-
-def interval_threshold_quality(sampled_data, threshold_index):
-    # assuming that sampled_data is two list of the same length - one of x's and one of y's
-    xs = sampled_data[0]
-    ys = sampled_data[1]
-    # sum the number of indexes which 'agree' to the give threshold
-    return sum([(ys[i] == 0 and xs[i] >= threshold_index) or
-                (ys[i] == 1 and xs[i] < threshold_index) for i in xrange(len(xs))])
-
-
+c = lambda x: threshold_function(x, 5)
 print concept_quality(s, c)
-print interval_threshold_quality(s, t)
-
-
-# print [point_concept_quality(d, i) for i in xrange(20)]
-# print [point_concept_quality(s, i) for i in xrange(10)]
