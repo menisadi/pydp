@@ -128,17 +128,3 @@ def make_neighbour_set(data, label_type='float'):
 # TODO needed?
 def databases_distance(data_1, data_2):
     return sum(data_1 != data_2)
-
-
-d = get_random_data(10, 'threshold',5)
-s = get_labeled_sample(d,20)
-
-
-def threshold_function(index, threshold):
-    if index < threshold:
-        return 1
-    else:
-        return 0
-
-c = lambda x: threshold_function(x, 5)
-print concept_quality(s, c)
