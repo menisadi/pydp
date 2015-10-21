@@ -20,16 +20,23 @@ def quality_median(data, range_element):
     return -max(0, len(data) / 2 - min(greater_than, less_than))
 
 
+# page 9 -  used for a proper private learner for POINT_d
 def point_concept_quality(data, point):
     """
     sensitivity-1 quality function
     used to find a point concept labeling the data
-    :param data: POINT_d data set
+    :param data: labeled sample from a POINT_d data set.
+                represented as list of indexes and list of their values in the original data set
     :param point: point concept index
     :return: the number of times (point, 1) appears in the data
     """
     indexes = [i for i, e in enumerate(data[0]) if e == point]
     return sum([data[1][i] for i in indexes])
+
+
+# TODO maybe think about this direction of generalization
+def concept_quality(sampled_data, concept):
+    return sum([sampled_data[1][i] == concept(sampled_data[0][i]) for i in xrange(len(sampled_data[0]))])
 
 
 def __make_point_data(data_size, specify_spike):
@@ -121,3 +128,34 @@ def make_neighbour_set(data, label_type='float'):
 # TODO needed?
 def databases_distance(data_1, data_2):
     return sum(data_1 != data_2)
+
+
+d = get_random_data(10, 'threshold', 6)
+s = get_labeled_sample(d, 20)
+print d
+print s
+t = 3
+
+
+def c(x):
+    if x < t:
+        return 1
+    else:
+        return 0
+
+
+def interval_threshold_quality(sampled_data, threshold_index):
+    # assuming that sampled_data is two list of the same length - one of x's and one of y's
+    xs = sampled_data[0]
+    ys = sampled_data[1]
+    # sum the number of indexes which 'agree' to the give threshold
+    return sum([(ys[i] == 0 and xs[i] >= threshold_index) or
+                (ys[i] == 1 and xs[i] < threshold_index) for i in xrange(len(xs))])
+
+
+print concept_quality(s, c)
+print interval_threshold_quality(s, t)
+
+
+# print [point_concept_quality(d, i) for i in xrange(20)]
+# print [point_concept_quality(s, i) for i in xrange(10)]
