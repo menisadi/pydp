@@ -50,8 +50,8 @@ class TestBasicdp(unittest.TestCase):
         # evaluate self.number_of_iterations times and save the worst case
         for k in range(self.NUMBER_OF_ITERATIONS):
             current_result = mechanism(rand_data, range_set, examples.quality_median, self.eps)
-            if self.quality_median(rand_data, range_set[current_result]) < \
-                    self.quality_median(rand_data, range_set[worst_result]):
+            if self.quality_median(rand_data, current_result) < \
+                    self.quality_median(rand_data, worst_result):
                 worst_result = current_result
 
         return worst_result
@@ -91,14 +91,14 @@ class TestBasicdp(unittest.TestCase):
         result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set)
         # TODO change the print to something more accurate
 
-        print "The Noisy-Max Mechanism returned: %.2f" % range_set[result]
-        print "Result quality: %d\n" % self.quality_median(rand_data, range_set[result])
+        print "The Noisy-Max Mechanism returned: %.2f" % result
+        print "Result quality: %d\n" % self.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(self.quality_median(rand_data, range_set[result]),
+        self.assertGreaterEqual(self.quality_median(rand_data, result),
                                 self.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
@@ -118,14 +118,14 @@ class TestBasicdp(unittest.TestCase):
 
         result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set)
 
-        print "The Exponential Mechanism returned: %.2f" % range_set[result]
-        print "Result quality: %d\n" % self.quality_median(rand_data, range_set[result])
+        print "The Exponential Mechanism returned: %.2f" % result
+        print "Result quality: %d\n" % self.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(self.quality_median(rand_data, range_set[result]),
+        self.assertGreaterEqual(self.quality_median(rand_data, result),
                                 self.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
@@ -138,8 +138,11 @@ class TestBasicdp(unittest.TestCase):
         data = examples.get_random_data(self.DATA_SIZE, 'laplace')
         delta = 0.01
         answers_set = range(-50, 50)
-        result = basicdp.a_dist(self.eps, delta, answers_set, data, self.quality_median)
-        print "A_dist returned the index - %.2f - and value - %.2f" % (result, answers_set[result])
+        result = basicdp.a_dist(data, answers_set, self.quality_median, self.eps, delta)
+        if type(result) == str:
+            print "A_dist returned - %s" % result
+        else:
+            print "A_dist returned - %.2f" % result
         print "the true median is: %.2f\n" % np.median(data)
 
         # plt.hist(data, bins=30, normed=True)
