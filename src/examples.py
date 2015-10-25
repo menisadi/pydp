@@ -20,6 +20,20 @@ def quality_median(data, range_element):
     return -max(0, len(data) / 2 - min(greater_than, less_than))
 
 
+# for rec_concave testing
+# TODO can we use quality_median instead?
+def quality_minmax(data, range_element):
+    """
+    sensitivity-1 quality function
+    used to find the minmax fo the data
+    quality_minmax( data , range_element )
+    :return: the minimum between the amount of data above the element and the data below
+    """
+    greater_than = sum(e > range_element for e in data)
+    less_than = sum(e < range_element for e in data)
+    return min(greater_than, less_than)
+
+
 # page 9 -  used for a proper private learner for POINT_d
 def point_concept_quality(data, point):
     """
