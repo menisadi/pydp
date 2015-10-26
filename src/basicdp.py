@@ -61,3 +61,23 @@ def a_dist(data, domain, quality_function, eps, delta):
         return h1
 
 
+def above_threshold_on_queries(data, queries, threshold, eps):
+    initialized_threshold = above_threshold(data, threshold, eps)
+    answers = []
+    for q in queries:
+        answers.append(initialized_threshold(q))
+        if q == 'up':
+            break
+    return answers
+
+
+def above_threshold(data, threshold, eps):
+    noisy_threshold = threshold + np.random.laplace(0, 2 / eps, 1)
+
+    def threshold_instance(query):
+        noise = np.random.laplace(0, 4 / eps, 1)
+        if query(data) + noise >= noisy_threshold:
+            return 'up'
+        else:
+            return 'bottom'
+    return threshold_instance
