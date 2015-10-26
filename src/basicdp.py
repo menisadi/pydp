@@ -1,4 +1,6 @@
 import numpy as np
+import basicdp
+import examples
 
 
 def noisy_max(data, domain, quality_function, eps):
@@ -72,6 +74,16 @@ def above_threshold_on_queries(data, queries, threshold, eps):
 
 
 def above_threshold(data, threshold, eps):
+    """
+    above_threshold algorithm - privacy preserving algorithm that given a stream of sensitivity-1 queries
+    tests if their evaluation over the given data exceeds the threshold
+    :param data: database
+    :param threshold: fixed threshold
+    :param eps: privacy parameter
+    :return: threshold_instance that get queries as input
+    and for every given query evaluate the private above-threshold test
+    """
+
     noisy_threshold = threshold + np.random.laplace(0, 2 / eps, 1)
 
     def threshold_instance(query):
@@ -81,3 +93,21 @@ def above_threshold(data, threshold, eps):
         else:
             return 'bottom'
     return threshold_instance
+
+
+def johnson_lindenstrauss(points, original_dimension, target_dimension):
+    """
+    Johnson Lindenstrauss transform
+    low-distortion embeddings of points from high-dimensional into low-dimensional Euclidean space
+    :param points: set of point in R^d space when d = original_dimension - numpy array
+    :param original_dimension: the dimension from which the points where taken
+    :param target_dimension: the target dimension
+    :return: set of points in R^k space when k = target_dimension - numpy array
+    """
+
+    normal_matrix = np.random.normal(0, 1, original_dimension*target_dimension)
+    normal_matrix.reshape(target_dimension, original_dimension)
+    return np.array([np.dot(normal_matrix, p)/np.sqrt(target_dimension) for p in points])
+
+
+
