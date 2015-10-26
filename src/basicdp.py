@@ -1,6 +1,4 @@
 import numpy as np
-import basicdp
-import examples
 
 
 def noisy_max(data, domain, quality_function, eps):
@@ -108,6 +106,3 @@ def johnson_lindenstrauss(points, original_dimension, target_dimension):
     normal_matrix = np.random.normal(0, 1, original_dimension*target_dimension)
     normal_matrix.reshape(target_dimension, original_dimension)
     return np.array([np.dot(normal_matrix, p)/np.sqrt(target_dimension) for p in points])
-
-
-
