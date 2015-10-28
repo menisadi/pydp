@@ -4,6 +4,11 @@ import numpy as np
 def noisy_max(data, domain, quality_function, eps):
     """Noisy-Max Mechanism
     noisy_max ( data , domain, quality function , privacy parameter )
+    :param data:
+    :param domain:
+    :param quality_function:
+    :param eps: privacy parameter
+    :return: an element of domain with approximately maximum value of quality function
     """
 
     # compute q(X,i) + Lap(1/eps) for all the elements in D
@@ -15,6 +20,11 @@ def noisy_max(data, domain, quality_function, eps):
 def exponential_mechanism(data, domain, quality_function, eps):
     """Exponential Mechanism
     exponential_mechanism ( data , domain , quality function , privacy parameter )
+    :param data:
+    :param domain:
+    :param quality_function:
+    :param eps: privacy parameter
+    :return: an element of domain with approximately maximum value of quality function
     """
 
     # calculate a list of probabilities for each element in the domain D
@@ -45,7 +55,7 @@ def a_dist(data, domain, quality_function, eps, delta):
     :param quality_function: sensitivity-1 quality function
     :param eps: privacy parameter
     :param delta: privacy parameter
-    :return:
+    :return: an element of domain with maximum value of quality function or 'bottom'
     """
     qualified_data = [quality_function(data, x) for x in domain]
     h1_score = max(qualified_data)
@@ -55,7 +65,7 @@ def a_dist(data, domain, quality_function, eps, delta):
     h2 = domain[qualified_data.index(h2_score)]  # h2 is domain element with second-highest quality
     noisy_gap = quality_function(data, h1) - quality_function(data, h2) + np.random.laplace(0, 1 / eps, 1)
     if noisy_gap < np.log(1/delta)/eps:
-        return '_|_'
+        return 'bottom'
         # raise ValueError('ERR: The quality function is too sensitive')
     else:
         return h1
@@ -92,17 +102,3 @@ def above_threshold(data, threshold, eps):
             return 'bottom'
     return threshold_instance
 
-
-def johnson_lindenstrauss(points, original_dimension, target_dimension):
-    """
-    Johnson Lindenstrauss transform
-    low-distortion embeddings of points from high-dimensional into low-dimensional Euclidean space
-    :param points: set of point in R^d space when d = original_dimension - numpy array
-    :param original_dimension: the dimension from which the points where taken
-    :param target_dimension: the target dimension
-    :return: set of points in R^k space when k = target_dimension - numpy array
-    """
-
-    normal_matrix = np.random.normal(0, 1, original_dimension*target_dimension)
-    normal_matrix.reshape(target_dimension, original_dimension)
-    return np.array([np.dot(normal_matrix, p)/np.sqrt(target_dimension) for p in points])

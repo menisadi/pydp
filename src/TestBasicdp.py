@@ -56,24 +56,6 @@ class TestBasicdp(unittest.TestCase):
 
         return worst_result
 
-    def __test_mechanism_privacy(self, mechanism, rand_data, range_set):
-        """
-        helper function for testing the privacy of the basicdp mechanisms
-        over two neighbors data and mean quality function
-        :param mechanism:  a mechanism to be tested
-        :return:
-        """
-        neighbor_data = examples.make_neighbour_set(rand_data)
-
-        # check that the given data sets are indeed neighbors
-        if examples.databases_distance(neighbor_data, rand_data) > 1:
-            raise ValueError('Data sets differ in more than one element')
-
-        # TODO how to use the results to check?
-        first_result = mechanism(rand_data, range_set, examples.quality_median, self.eps)
-        second_result = mechanism(neighbor_data, range_set, examples.quality_median, self.eps)
-        return
-
     def test_noisy_max(self):
         """tests the noisy_max method
         over a normally distributed data and mean quality function
