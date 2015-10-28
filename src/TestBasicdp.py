@@ -4,6 +4,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import examples
+from scipy import stats
 
 
 class TestBasicdp(unittest.TestCase):
@@ -112,10 +113,32 @@ class TestBasicdp(unittest.TestCase):
                                                     np.median(rand_data)) - difference)
 
     # TODO looks awful, fix!
+    # TODO not working!!!!!!!!
     def test_dist(self):
         """tests the A_dist method
-        over a laplace-distributed data and median quality function
+
         :return: Pass if the A_dist returns a value
+        """
+        data = examples.get_random_data(10, 'point')
+        print "the spike is at index: %d" % data.index(1)
+        rounded_data = examples.get_labeled_sample(data, 10*5)
+        print examples.quality_point_mode(rounded_data, data.index(1))
+        # rounded_data = [int(d) for d in data]
+        delta = 0.001
+        answers_set = range(10)
+        # print "the mode of the rounded data is: %d " % stats.mode(rounded_data)[0][0]
+        result = basicdp.a_dist(rounded_data, answers_set, examples.quality_point_mode, self.eps, delta)
+        if type(result) == str:
+            print "A_dist returned - %s" % result
+        else:
+            print "A_dist returned - %.2f" % result
+            # plt.hist(rounded_data, bins=30, normed=True)
+            # plt.axvspan(result - 1, result + 1, color='green', alpha=0.5)
+            # plt.show()
+
+        self.assertNotEqual(type(result), str)
+
+
         """
         data = examples.get_random_data(self.DATA_SIZE, 'laplace')
         delta = 0.01
@@ -126,11 +149,8 @@ class TestBasicdp(unittest.TestCase):
         else:
             print "A_dist returned - %.2f" % result
         print "the true median is: %.2f\n" % np.median(data)
+        """
 
-        # plt.hist(data, bins=30, normed=True)
-        # plt.axvspan(answers_set[result] - 1, answers_set[result] + 1, color='red', alpha=0.5)
-        # plt.axvspan(np.median(data) - 1, np.median(data) + 1, color='green', alpha=0.5)
-        # plt.show()
 
 
 if __name__ == '__main__':

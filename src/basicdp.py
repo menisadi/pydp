@@ -57,16 +57,16 @@ def a_dist(data, domain, quality_function, eps, delta):
     :param delta: privacy parameter
     :return: an element of domain with maximum value of quality function or 'bottom'
     """
-    qualified_data = [quality_function(data, x) for x in domain]
-    h1_score = max(qualified_data)
-    h1 = domain[qualified_data.index(h1_score)]  # h1 is domain element with highest quality
-    qualified_data.remove(h1_score)
-    h2_score = max(qualified_data)
-    h2 = domain[qualified_data.index(h2_score)]  # h2 is domain element with second-highest quality
+    qualified_domain = [quality_function(data, x) for x in domain]
+    h1_score = max(qualified_domain)
+    h1 = domain[qualified_domain.index(h1_score)]  # h1 is domain element with highest quality
+    qualified_domain.remove(h1_score)
+    domain.remove(h1)
+    h2_score = max(qualified_domain)
+    h2 = domain[qualified_domain.index(h2_score)]  # h2 is domain element with second-highest quality
     noisy_gap = quality_function(data, h1) - quality_function(data, h2) + np.random.laplace(0, 1 / eps, 1)
     if noisy_gap < np.log(1/delta)/eps:
         return 'bottom'
-        # raise ValueError('ERR: The quality function is too sensitive')
     else:
         return h1
 

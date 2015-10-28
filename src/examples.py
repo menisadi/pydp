@@ -21,7 +21,7 @@ def quality_median(data, range_element):
 
 
 # for rec_concave testing
-# TODO can we use quality_median instead?
+# TODO can we use quality_median instead? can we delete this?
 def quality_minmax(data, range_element):
     """
     sensitivity-1 quality function
@@ -32,6 +32,14 @@ def quality_minmax(data, range_element):
     greater_than = sum(e > range_element for e in data)
     less_than = sum(e < range_element for e in data)
     return min(greater_than, less_than)
+
+
+def quality_mode(data, range_element):
+    return sum([d == range_element for d in data])
+
+
+def quality_point_mode(data, range_element):
+    sum([(data[0][i], data[1][i]) == (range_element, 1) for i in xrange(len(data[0]))])
 
 
 # page 9 -  used for a proper private learner for POINT_d
@@ -76,7 +84,7 @@ def __make_threshold_data(data_size, specify_threshold):
     return threshold_data
 
 
-def get_random_data(data_size, distribution_type='normal', specify_parameter=-1):
+def get_random_data(data_size, distribution_type='normal', pivot=0, specify_parameter=-1):
     """
     get a simple random data set
     :param data_size: number of elements
@@ -87,11 +95,11 @@ def get_random_data(data_size, distribution_type='normal', specify_parameter=-1)
     # TODO is this a good design??
     # lazy switch to get the desirable distribution
     data_switch = {
-        'normal': lambda: np.random.normal(0, data_size / 20.0, data_size),
-        'laplace': lambda: np.random.laplace(0, data_size / 100.0, data_size),
+        'normal': lambda: np.random.normal(pivot, data_size / 20.0, data_size),
+        'laplace': lambda: np.random.laplace(pivot, data_size / 100.0, data_size),
         'bimodal': lambda: np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
                                    np.random.normal(data_size / 2, data_size / 10.0, data_size / 2)]),
-        'uniform': lambda: np.random.uniform(0, data_size, data_size),
+        'uniform': lambda: np.random.uniform(pivot, data_size, data_size),
         'point': lambda: __make_point_data(data_size, specify_parameter),  # POINT_d
         'threshold': lambda: __make_threshold_data(data_size, specify_parameter),  # THRESH_d
     }
