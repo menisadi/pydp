@@ -6,6 +6,7 @@ helper module containing:
  c) methods related to differential privacy notions
 """
 import numpy as np
+from collections import deque
 
 
 def quality_median(data, range_element):
@@ -20,7 +21,32 @@ def quality_median(data, range_element):
     return -max(0, len(data) / 2 - min(greater_than, less_than))
 
 
+def bulk_quality_median(data, domain):
+    """
+
+    :param data:
+    :param domain:
+    :return:
+    """
+    greater_than = len(data)
+    less_than = 0
+    domain_que = deque(sorted(data))
+    qualities = []
+    data_next = min(domain)-1
+    while len(domain_que)>0:
+        data_prev = data_next
+        data_next = domain_que.popleft()
+        qualities.append([-max(0, len(data) / 2 - min(greater_than, less_than))
+                          for i in domain if data_prev<i<= data_next])
+        greater_than -= 1
+        less_than += 1
+    # qualities is a list of lists of qualities so:
+    # return flatted qualities list
+    return [item for sublist in qualities for item in sublist]
+
+
 # for rec_concave testing
+# TODO not in use!
 # TODO can we use quality_median instead? can we delete this?
 def quality_minmax(data, range_element):
     """
@@ -34,6 +60,7 @@ def quality_minmax(data, range_element):
     return min(greater_than, less_than)
 
 
+# TODO not in use!
 def quality_mode(data, range_element):
     return sum([d == range_element for d in data])
 

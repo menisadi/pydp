@@ -1,5 +1,4 @@
 import numpy as np
-import examples
 
 
 def noisy_max(data, domain, quality_function, eps):

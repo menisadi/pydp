@@ -4,7 +4,6 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import examples
-from scipy import stats
 
 
 class TestBasicdp(unittest.TestCase):
@@ -112,8 +111,6 @@ class TestBasicdp(unittest.TestCase):
                                 self.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
-    # TODO looks awful, fix!
-    # TODO not working!!!!!!!!
     def test_dist(self):
         """tests the A_dist method
         over data sampled with replacements, from point_d data-set
@@ -132,14 +129,8 @@ class TestBasicdp(unittest.TestCase):
             print "A_dist returned: %s" % result
         else:
             print "A_dist returned: %d" % result
+        # pass the test if result is a value and not 'bottom'
         self.assertNotEqual(type(result), str)
-
-        # general mode version - not working, stability problem
-        # rounded_data = [int(d) for d in data]
-        # print "the mode of the rounded data is: %d " % stats.mode(rounded_data)[0][0]
-        # plt.hist(rounded_data, bins=30, normed=True)
-        # plt.axvspan(result - 1, result + 1, color='green', alpha=0.5)
-        # plt.show()
 
 
 if __name__ == '__main__':
