@@ -39,7 +39,7 @@ def quality_mode(data, range_element):
 
 
 def quality_point_mode(data, range_element):
-    sum([(data[0][i], data[1][i]) == (range_element, 1) for i in xrange(len(data[0]))])
+    return sum([(data[0][i], data[1][i]) == (range_element, 1) for i in xrange(len(data[0]))])
 
 
 # page 9 -  used for a proper private learner for POINT_d

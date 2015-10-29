@@ -116,41 +116,30 @@ class TestBasicdp(unittest.TestCase):
     # TODO not working!!!!!!!!
     def test_dist(self):
         """tests the A_dist method
-
-        :return: Pass if the A_dist returns a value
+        over data sampled with replacements, from point_d data-set
+        A_dist should return the mode - the only value that is labeled by 1
+        :return: Pass if the A_dist returns a value and not 'bottom'
         """
-        data = examples.get_random_data(10, 'point')
+        data = examples.get_random_data(self.DATA_SIZE, 'point')
+        delta = 1e-6
+        factor = np.log(1/delta)/self.eps # mode should appear at least this amount of times for stability
         print "the spike is at index: %d" % data.index(1)
-        rounded_data = examples.get_labeled_sample(data, 10*5)
-        print examples.quality_point_mode(rounded_data, data.index(1))
-        # rounded_data = [int(d) for d in data]
-        delta = 0.001
-        answers_set = range(10)
-        # print "the mode of the rounded data is: %d " % stats.mode(rounded_data)[0][0]
-        result = basicdp.a_dist(rounded_data, answers_set, examples.quality_point_mode, self.eps, delta)
+        samples = examples.get_labeled_sample(data, self.DATA_SIZE*factor*2)
+        print "the spike appears %d times in the samples" % examples.quality_point_mode(samples, data.index(1))
+        answers_set = range(self.DATA_SIZE)
+        result = basicdp.a_dist(samples, answers_set, examples.quality_point_mode, self.eps, delta)
         if type(result) == str:
-            print "A_dist returned - %s" % result
+            print "A_dist returned: %s" % result
         else:
-            print "A_dist returned - %.2f" % result
-            # plt.hist(rounded_data, bins=30, normed=True)
-            # plt.axvspan(result - 1, result + 1, color='green', alpha=0.5)
-            # plt.show()
-
+            print "A_dist returned: %d" % result
         self.assertNotEqual(type(result), str)
 
-
-        """
-        data = examples.get_random_data(self.DATA_SIZE, 'laplace')
-        delta = 0.01
-        answers_set = range(-50, 50)
-        result = basicdp.a_dist(data, answers_set, self.quality_median, self.eps, delta)
-        if type(result) == str:
-            print "A_dist returned - %s" % result
-        else:
-            print "A_dist returned - %.2f" % result
-        print "the true median is: %.2f\n" % np.median(data)
-        """
-
+        # general mode version - not working, stability problem
+        # rounded_data = [int(d) for d in data]
+        # print "the mode of the rounded data is: %d " % stats.mode(rounded_data)[0][0]
+        # plt.hist(rounded_data, bins=30, normed=True)
+        # plt.axvspan(result - 1, result + 1, color='green', alpha=0.5)
+        # plt.show()
 
 
 if __name__ == '__main__':

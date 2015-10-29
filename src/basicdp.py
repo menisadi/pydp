@@ -1,4 +1,5 @@
 import numpy as np
+import examples
 
 
 def noisy_max(data, domain, quality_function, eps):
@@ -101,4 +102,5 @@ def above_threshold(data, threshold, eps):
         else:
             return 'bottom'
     return threshold_instance
+
 
