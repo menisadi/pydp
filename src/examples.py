@@ -16,17 +16,17 @@ def quality_median(data, range_element):
     quality_median( data , range_element )
     :return: the "distance" of range_element from the median of the data
     """
-    greater_than = sum(e > range_element for e in data)
+    greater_than = sum(e >= range_element for e in data)
     less_than = sum(e < range_element for e in data)
     return -max(0, len(data) / 2 - min(greater_than, less_than))
 
 
 def bulk_quality_median(data, domain):
     """
-
-    :param data:
-    :param domain:
-    :return:
+    sensitivity-1 bulk quality function
+    used to find the median fo the data
+    quality_median( data , domain )
+    :return: list of "distances" of every domain elements from the median of the data
     """
     greater_than = len(data)
     less_than = 0
@@ -37,12 +37,14 @@ def bulk_quality_median(data, domain):
         data_prev = data_next
         data_next = domain_que.popleft()
         qualities.append([-max(0, len(data) / 2 - min(greater_than, less_than))
-                          for i in domain if data_prev<i<= data_next])
+                          for i in domain if data_prev < i <= data_next])
         greater_than -= 1
         less_than += 1
+    qualities.append([-max(0, len(data) / 2 - min(greater_than, less_than))
+                      for i in domain if data_next < i])
     # qualities is a list of lists of qualities so:
     # return flatted qualities list
-    return [item for sublist in qualities for item in sublist]
+    return [item for sub_list in qualities for item in sub_list]
 
 
 # for rec_concave testing

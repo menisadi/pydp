@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def noisy_max(data, domain, quality_function, eps):
+def noisy_max(data, domain, quality_function, eps, bulk=False):
     """Noisy-Max Mechanism
     noisy_max ( data , domain, quality function , privacy parameter )
     :param data:
@@ -11,26 +11,36 @@ def noisy_max(data, domain, quality_function, eps):
     :return: an element of domain with approximately maximum value of quality function
     """
 
-    # compute q(X,i) + Lap(1/eps) for all the elements in D
-    noisy = [quality_function(data, i) + np.random.laplace(0, 1 / eps, 1) for i in domain]
+    # compute q(X,i) for all the elements in D
+    if bulk:
+        qualities = quality_function(data, domain)
+    else:
+        qualities = [quality_function(data, i) for i in domain]
+    # add Lap(1/eps) noise for each element in qualities
+    noisy = [q + np.random.laplace(0, 1 / eps, 1) for q in qualities]
     # return element with maximum noisy q(X,i)
     return domain[noisy.index(max(noisy))]
 
 
-def exponential_mechanism(data, domain, quality_function, eps):
+def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
     """Exponential Mechanism
     exponential_mechanism ( data , domain , quality function , privacy parameter )
     :param data:
     :param domain:
     :param quality_function:
     :param eps: privacy parameter
+    :param bulk:
     :return: an element of domain with approximately maximum value of quality function
     """
 
     # calculate a list of probabilities for each element in the domain D
     # probability of element d in domain proportional to exp(eps*quality(data,d)/2)
-    domain_pdf = [np.exp(eps * quality_function(data, d) / 2) for d in domain]
-    normalizer = sum(domain_pdf)
+    if bulk:
+        domain_pdf = quality_function(data, domain) # <------------------------------ WRONG
+        # np.exp(eps * quality_function(data, d) / 2)
+    else:
+        domain_pdf = [np.exp(eps * quality_function(data, d) / 2) for d in domain]
+    normalizer = float(sum(domain_pdf))
     domain_pdf = [d / normalizer for d in domain_pdf]
     normalizer = sum(domain_pdf)
     # for debugging and other reasons: check that domain_cdf indeed defines a distribution

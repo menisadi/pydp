@@ -37,7 +37,7 @@ class TestBasicdp(unittest.TestCase):
                     alpha=0.5)
         plt.show()
 
-    def __test_mechanism(self, mechanism, rand_data, range_set):
+    def __test_mechanism(self, mechanism, rand_data, range_set, bulk):
         """
         helper function for testing the utility of the basicdp mechanisms
         over a normally distributed data and mean quality function
@@ -46,10 +46,10 @@ class TestBasicdp(unittest.TestCase):
         Taking the worst case from NUMBER_OF_ITERATIONS tries
         """
 
-        worst_result = mechanism(rand_data, range_set, self.quality_median, self.eps)
+        worst_result = mechanism(rand_data, range_set, examples.bulk_quality_median, self.eps, bulk)
         # evaluate self.number_of_iterations times and save the worst case
         for k in range(self.NUMBER_OF_ITERATIONS):
-            current_result = mechanism(rand_data, range_set, examples.quality_median, self.eps)
+            current_result = mechanism(rand_data, range_set, examples.bulk_quality_median, self.eps, bulk)
             if self.quality_median(rand_data, current_result) < \
                     self.quality_median(rand_data, worst_result):
                 worst_result = current_result
@@ -70,7 +70,7 @@ class TestBasicdp(unittest.TestCase):
         print "The maximum 'allowed' difference between the " \
             "mechanism result and the true median is: %.2f" % difference
 
-        result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set)
+        result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set, True)
         # TODO change the print to something more accurate
 
         print "The Noisy-Max Mechanism returned: %.2f" % result
@@ -98,7 +98,7 @@ class TestBasicdp(unittest.TestCase):
         print "The maximum 'allowed' difference between the " \
             "mechanism result and the true median is: %.2f" % difference
 
-        result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set)
+        result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set, True)
 
         print "The Exponential Mechanism returned: %.2f" % result
         print "Result quality: %d\n" % self.quality_median(rand_data, result)
