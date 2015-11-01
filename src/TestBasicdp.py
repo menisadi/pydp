@@ -7,14 +7,6 @@ import examples
 
 
 class TestBasicdp(unittest.TestCase):
-    def quality_median(self, data, range_element):
-        """
-        quality_median( data , range_element )
-        :return: the "distance" of range_element from the median of the data
-        """
-        greater_than = sum(e > range_element for e in data)
-        less_than = sum(e < range_element for e in data)
-        return -max(0, len(data) / 2 - min(greater_than, less_than))
 
     def setUp(self):
         # TODO check if this initialization should be in setup or not

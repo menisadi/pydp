@@ -13,11 +13,11 @@ def noisy_max(data, domain, quality_function, eps, bulk=False):
 
     # compute q(X,i) for all the elements in D
     if bulk:
-        qualities = quality_function(data, domain)
+        qualified_domain = quality_function(data, domain)
     else:
-        qualities = [quality_function(data, i) for i in domain]
-    # add Lap(1/eps) noise for each element in qualities
-    noisy = [q + np.random.laplace(0, 1 / eps, 1) for q in qualities]
+        qualified_domain = [quality_function(data, i) for i in domain]
+    # add Lap(1/eps) noise for each element in qualified_domain
+    noisy = [q + np.random.laplace(0, 1 / eps, 1) for q in qualified_domain]
     # return element with maximum noisy q(X,i)
     return domain[noisy.index(max(noisy))]
 
@@ -36,8 +36,8 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
     # calculate a list of probabilities for each element in the domain D
     # probability of element d in domain proportional to exp(eps*quality(data,d)/2)
     if bulk:
-        qualities = quality_function(data, domain)
-        domain_pdf = [np.exp(eps * q / 2) for q in qualities]
+        qualified_domain = quality_function(data, domain)
+        domain_pdf = [np.exp(eps * q / 2) for q in qualified_domain]
     else:
         domain_pdf = [np.exp(eps * quality_function(data, d) / 2) for d in domain]
     normalizer = float(sum(domain_pdf))
@@ -58,7 +58,7 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
     return domain[min(np.searchsorted(domain_cdf, pick) + 1, len(domain)-1)]
 
 
-def a_dist(data, domain, quality_function, eps, delta):
+def a_dist(data, domain, quality_function, eps, delta, bulk=False):
     """A_dist algorithm
     :param data: database
     :param domain:
@@ -67,14 +67,19 @@ def a_dist(data, domain, quality_function, eps, delta):
     :param delta: privacy parameter
     :return: an element of domain with maximum value of quality function or 'bottom'
     """
-    qualified_domain = [quality_function(data, x) for x in domain]
+
+    # compute q(X,i) for all the elements in D
+    if bulk:
+        qualified_domain = quality_function(data, domain)
+    else:
+        qualified_domain = [quality_function(data, i) for i in domain]
     h1_score = max(qualified_domain)
     h1 = domain[qualified_domain.index(h1_score)]  # h1 is domain element with highest quality
     qualified_domain.remove(h1_score)
     domain.remove(h1)
     h2_score = max(qualified_domain)
-    h2 = domain[qualified_domain.index(h2_score)]  # h2 is domain element with second-highest quality
-    noisy_gap = quality_function(data, h1) - quality_function(data, h2) + np.random.laplace(0, 1 / eps, 1)
+    # h2 = domain[qualified_domain.index(h2_score)]  # h2 is domain element with second-highest quality
+    noisy_gap = h1_score - h2_score + np.random.laplace(0, 1 / eps, 1)
     if noisy_gap < np.log(1/delta)/eps:
         return 'bottom'
     else:
