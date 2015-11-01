@@ -10,7 +10,7 @@ def rec_concave_basis(range_max_value, quality_function, eps, data):
     return basicdp.exponential_mechanism(data, range(int(range_max_value + 1)), quality_function, eps)
 
 
-def evaluate(range_max_value, quality_function, quality_promise, approximation, eps, delta, data, recursion_bound):
+def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound):
     # TODO go through variables names and see if they are more or less accurate
     # TODO and maybe change some of the 'k' 'j' 'i'
     if recursion_bound == 1 or range_max_value <= 32:
@@ -49,8 +49,8 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
     recursive_quality_promise = quality_promise * approximation / 2
 
     # step 6 - recursion call
-    recursion_returned = evaluate(log_of_range, recursive_quality_function, recursive_quality_promise, 1/4,
-                                  eps, delta, data, recursion_bound)
+    recursion_returned = evaluate(data, log_of_range, recursive_quality_function, recursive_quality_promise, 1/4,
+                                  eps, delta, recursion_bound)
     good_interval = 8 * (2 ** recursion_returned)
 
     # step 7
@@ -70,3 +70,4 @@ def evaluate(range_max_value, quality_function, quality_promise, approximation, 
     # step 10
     return basicdp.exponential_mechanism(data, first_chosen_interval.append(second_chosen_interval),
                                          extended_quality_function, eps)
+
