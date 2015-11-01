@@ -42,8 +42,8 @@ class TestBasicdp(unittest.TestCase):
         # evaluate self.number_of_iterations times and save the worst case
         for k in range(self.NUMBER_OF_ITERATIONS):
             current_result = mechanism(rand_data, range_set, examples.bulk_quality_median, self.eps, bulk)
-            if self.quality_median(rand_data, current_result) < \
-                    self.quality_median(rand_data, worst_result):
+            if examples.quality_median(rand_data, current_result) < \
+                    examples.quality_median(rand_data, worst_result):
                 worst_result = current_result
 
         return worst_result

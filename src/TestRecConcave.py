@@ -42,5 +42,16 @@ class TestRecConcave(unittest.TestCase):
         # print "result quality: %d \n" % examples.quality_minmax(rounded_data, result_depth_1)
         self.assertGreaterEqual(examples.quality_minmax(rounded_data, result_depth_1), -3)
 
+    def test_rec_concave_median(self):
+        data_center = np.random.uniform(50, 100)
+        data = examples.get_random_data(100, pivot=data_center)
+        rounded_data = [int(x) for x in data]
+        result_depth_1 = rec_concave.evaluate(rounded_data, max(rounded_data), examples.quality_minmax, len(data)/2,
+                                    self.alpha, self.eps, self.delta, 2)
+        print "the exact median is: %d" % np.median(rounded_data)
+        print "result from rec_concave with basis run only: %d " % result_depth_1
+        # print "result quality: %d \n" % examples.quality_minmax(rounded_data, result_depth_1)
+        self.assertGreaterEqual(examples.quality_minmax(rounded_data, result_depth_1), len(data)/2-3)
+
 if __name__ == '__main__':
     unittest.main()
