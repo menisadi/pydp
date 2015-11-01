@@ -36,8 +36,8 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
     # calculate a list of probabilities for each element in the domain D
     # probability of element d in domain proportional to exp(eps*quality(data,d)/2)
     if bulk:
-        domain_pdf = quality_function(data, domain) # <------------------------------ WRONG
-        # np.exp(eps * quality_function(data, d) / 2)
+        qualities = quality_function(data, domain)
+        domain_pdf = [np.exp(eps * q / 2) for q in qualities]
     else:
         domain_pdf = [np.exp(eps * quality_function(data, d) / 2) for d in domain]
     normalizer = float(sum(domain_pdf))
