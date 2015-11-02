@@ -1,6 +1,5 @@
 import basicdp
 import math
-# import matplotlib.pyplot as plt
 
 
 def rec_concave_basis(range_max_value, quality_function, eps, data):
@@ -25,7 +24,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
 
     def extended_quality_function(data_base, j):
         if range_max_value < j <= range_max_value_tag:
-            min(0, quality_function(data_base, range_max_value))
+            return min(0, quality_function(data_base, range_max_value))
         else:
             return quality_function(data_base, j)
 
@@ -34,32 +33,18 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
         # TODO why the +1?
         if j == log_of_range + 1:
             return min(0, intervals_bounding(data_base, j-1))
-        if j == log_of_range:
-            print "test"
         # TODO should we add 1 to range input? (here and in step 7)
-        intervals_sized_2_to_the_j = [range(range_max_value_tag)[k:k+(2 ** j)]
-                                      for k in range(range_max_value_tag-(2 ** j)+2)]
+        intervals_sized_2_to_the_j = [range(range_max_value_tag+1)[k:k+(2 ** j)]
+                                      for k in xrange(range_max_value_tag-(2 ** j)+2)]
         qualified_intervals = [[extended_quality_function(data_base, k) for k in inner_list]
                                for inner_list in intervals_sized_2_to_the_j]
         min_of_intervals = [min(interval) for interval in qualified_intervals if interval]
         return max(min_of_intervals)
 
-#    eqf = [extended_quality_function(data, i) for i in xrange(range_max_value_tag)]
-#    plt.plot(range(range_max_value_tag), eqf, range_max_value_tag, quality_promise+5)
-    # plt.show()
-#    ibq = [intervals_bounding(data, i) for i in xrange(log_of_range)]
-#    print eqf
-#    print ibq
-#    print log_of_range
-
     # step 4
     def recursive_quality_function(data_base, j):
         return min(intervals_bounding(data_base, j) - (1 - approximation) * quality_promise,
                    quality_promise-intervals_bounding(data_base, j + 1))
-
-#    print recursive_quality_function(data, log_of_range)
-#    rqf = [recursive_quality_function(data, i) for i in xrange(log_of_range-1)]
-#    print rqf
 
     # step 5
     recursive_quality_promise = quality_promise * approximation / 2
@@ -67,6 +52,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 6 - recursion call
     recursion_returned = evaluate(data, log_of_range, recursive_quality_function, recursive_quality_promise, 1/4,
                                   eps, delta, recursion_bound)
+
     good_interval = 8 * (2 ** recursion_returned)
 
     # step 7
@@ -80,10 +66,10 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
         return max([extended_quality_function(data_base, j) for j in interval])
 
     # step 9 ( using 'dist' algorithm)
-    first_chosen_interval = basicdp.a_dist(eps, delta, first_intervals, data, interval_quality)
-    second_chosen_interval = basicdp.a_dist(eps, delta, second_intervals, data, interval_quality)
+    first_chosen_interval = basicdp.a_dist(data, first_intervals, interval_quality, eps, delta)
+    second_chosen_interval = basicdp.a_dist(data, second_intervals, interval_quality, eps, delta)
 
     # step 10
-    return basicdp.exponential_mechanism(data, first_chosen_interval.append(second_chosen_interval),
+    return basicdp.exponential_mechanism(data, first_chosen_interval + second_chosen_interval,
                                          extended_quality_function, eps)
 
