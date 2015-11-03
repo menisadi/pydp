@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import examples
 
 
+# TODO fix test to be equivalent with bulk
 class TestBasicdp(unittest.TestCase):
 
     def setUp(self):
@@ -66,7 +67,7 @@ class TestBasicdp(unittest.TestCase):
         # TODO change the print to something more accurate
 
         print "The Noisy-Max Mechanism returned: %.2f" % result
-        print "Result quality: %d\n" % self.quality_median(rand_data, result)
+        # print "Result quality: %d\n" % self.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
@@ -93,7 +94,7 @@ class TestBasicdp(unittest.TestCase):
         result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set, True)
 
         print "The Exponential Mechanism returned: %.2f" % result
-        print "Result quality: %d\n" % self.quality_median(rand_data, result)
+        # print "Result quality: %d\n" % self.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
