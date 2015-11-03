@@ -5,7 +5,7 @@ def noisy_max(data, domain, quality_function, eps, bulk=False):
     """Noisy-Max Mechanism
     noisy_max ( data , domain, quality function , privacy parameter )
     :param data:
-    :param domain:
+    :param domain: list of possible results
     :param quality_function:
     :param eps: privacy parameter
     :return: an element of domain with approximately maximum value of quality function
@@ -26,7 +26,7 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
     """Exponential Mechanism
     exponential_mechanism ( data , domain , quality function , privacy parameter )
     :param data:
-    :param domain:
+    :param domain: list of possible results
     :param quality_function:
     :param eps: privacy parameter
     :param bulk:

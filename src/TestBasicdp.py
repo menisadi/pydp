@@ -67,14 +67,14 @@ class TestBasicdp(unittest.TestCase):
         # TODO change the print to something more accurate
 
         print "The Noisy-Max Mechanism returned: %.2f" % result
-        # print "Result quality: %d\n" % self.quality_median(rand_data, result)
+        print "Result quality: %d\n" % examples.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(self.quality_median(rand_data, result),
-                                self.quality_median(rand_data,
+        self.assertGreaterEqual(examples.quality_median(rand_data, result),
+                                examples.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
     def test_exponential_mechanism(self):
@@ -94,14 +94,14 @@ class TestBasicdp(unittest.TestCase):
         result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set, True)
 
         print "The Exponential Mechanism returned: %.2f" % result
-        # print "Result quality: %d\n" % self.quality_median(rand_data, result)
+        print "Result quality: %d\n" % examples.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(self.quality_median(rand_data, result),
-                                self.quality_median(rand_data,
+        self.assertGreaterEqual(examples.quality_median(rand_data, result),
+                                examples.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
     def test_dist(self):

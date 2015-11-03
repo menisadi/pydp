@@ -10,6 +10,7 @@ def rec_concave_basis(range_max_value, quality_function, eps, data):
     return basicdp.exponential_mechanism(data, range(int(range_max_value + 1)), quality_function, eps)
 
 
+# A. Beimel, K. Nissim, and U. Stemmer. Private learning and sanitization
 def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound):
     # TODO go through variables names and see if they are more or less accurate
     # TODO and maybe change some of the 'k' 'j' 'i'

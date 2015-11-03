@@ -53,13 +53,39 @@ def bulk_quality_median(data, domain):
 def quality_minmax(data, range_element):
     """
     sensitivity-1 quality function
-    used to find the minmax fo the data
+    used to find the minmax or median for the data
     quality_minmax( data , range_element )
     :return: the minimum between the amount of data above the element and the data below
     """
     greater_than = sum(e > range_element for e in data)
     less_than = sum(e < range_element for e in data)
     return min(greater_than, less_than)
+
+
+def bulk_quality_minmax(data, domain):
+    """
+    sensitivity-1 bulk quality function
+    used to find a minmax or median for the data
+    bulk_quality_minmax( data , domain )
+    :return: the minimum between the amount of data above the element and the data below
+    """
+    greater_than = len(data)
+    less_than = 0
+    domain_que = deque(sorted(data))
+    qualities = []
+    data_next = min(domain)-1
+    while len(domain_que)>0:
+        data_prev = data_next
+        data_next = domain_que.popleft()
+        qualities.append([min(greater_than, less_than)
+                          for i in domain if data_prev < i <= data_next])
+        greater_than -= 1
+        less_than += 1
+    qualities.append([-max(0, len(data) / 2 - min(greater_than, less_than))
+                      for i in domain if data_next < i])
+    # qualities is a list of lists of qualities so:
+    # return flatted qualities list
+    return [item for sub_list in qualities for item in sub_list]
 
 
 # TODO not in use!
