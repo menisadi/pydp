@@ -1,5 +1,6 @@
 import basicdp
 import math
+import matplotlib.pyplot as plt
 
 
 def rec_concave_basis(range_max_value, quality_function, eps, data):
@@ -65,6 +66,14 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 8
     def interval_quality(data_base, interval):
         return max([extended_quality_function(data_base, j) for j in interval])
+
+    # for testing
+    fq = [interval_quality(data, i) for i in first_intervals]
+    plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
+    plt.show()
+    fq = [interval_quality(data, i) for i in second_intervals]
+    plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
+    plt.show()
 
     # step 9 ( using 'dist' algorithm)
     first_chosen_interval = basicdp.a_dist(data, first_intervals, interval_quality, eps, delta)

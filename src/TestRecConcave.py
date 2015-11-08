@@ -17,11 +17,11 @@ class TestRecConcave(unittest.TestCase):
     def setUp(self):
         self.alpha = 0.2
         self.eps = 0.5
-        self.delta = 1e-2
+        self.delta = 1e-1
         self.RECURSION_BOUND = 2
 
-        self.range_end = 200 + 1
-        self.samples_size = 70
+        self.range_end = 500 + 1
+        self.samples_size = 50
 
         data_center = np.random.uniform(0, self.range_end)
         self.data = examples.get_random_data(self.samples_size, pivot=data_center)
