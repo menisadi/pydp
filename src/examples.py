@@ -33,7 +33,7 @@ def bulk_quality_median(data, domain):
     domain_que = deque(sorted(data))
     qualities = []
     data_next = min(domain)-1
-    while len(domain_que)>0:
+    while len(domain_que) > 0:
         data_prev = data_next
         data_next = domain_que.popleft()
         qualities.append([-max(0, len(data) / 2 - min(greater_than, less_than))
@@ -73,15 +73,15 @@ def bulk_quality_minmax(data, domain):
     less_than = 0
     domain_que = deque(sorted(data))
     qualities = []
-    data_next = min(domain)-1
-    while len(domain_que)>0:
+    data_next = min(domain) - 1
+    while len(domain_que) > 0:
         data_prev = data_next
         data_next = domain_que.popleft()
         qualities.append([min(greater_than, less_than)
                           for i in domain if data_prev < i <= data_next])
         greater_than -= 1
         less_than += 1
-    qualities.append([-max(0, len(data) / 2 - min(greater_than, less_than))
+    qualities.append([min(greater_than, less_than)
                       for i in domain if data_next < i])
     # qualities is a list of lists of qualities so:
     # return flatted qualities list
@@ -150,7 +150,7 @@ def get_random_data(data_size, distribution_type='normal', pivot=0, specify_para
     # TODO is this a good design??
     # lazy switch to get the desirable distribution
     data_switch = {
-        'normal': lambda: np.random.normal(pivot, data_size / 20.0, data_size),
+        'normal': lambda: np.random.normal(pivot, data_size / 10.0, data_size),
         'laplace': lambda: np.random.laplace(pivot, data_size / 100.0, data_size),
         'bimodal': lambda: np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
                                    np.random.normal(data_size / 2, data_size / 10.0, data_size / 2)]),
