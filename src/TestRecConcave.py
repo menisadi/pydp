@@ -3,6 +3,7 @@ import rec_concave
 import examples
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.stats
 
 
 class TestRecConcave(unittest.TestCase):
@@ -20,13 +21,12 @@ class TestRecConcave(unittest.TestCase):
         self.delta = 1e-1
         self.RECURSION_BOUND = 2
 
-        self.range_end = 500 + 1
+        self.range_end = 1000 + 1
         self.samples_size = 50
 
-        data_center = np.random.uniform(0, self.range_end)
+        data_center = np.random.uniform(self.range_end/3, self.range_end/3*2)
         self.data = examples.get_random_data(self.samples_size, pivot=data_center)
-        self.data = [i % self.range_end for i in self.data]
-
+        self.data = sorted(filter(lambda x: 0 <= x <= self.range_end, self.data))
         qualities = examples.bulk_quality_minmax(self.data, range(self.range_end))
         self.maximum_quality = max(qualities)
 
@@ -34,6 +34,13 @@ class TestRecConcave(unittest.TestCase):
         print "the best quality of a domain element: %d" % self.maximum_quality
         print "which lies within the range: %s" % (self.exact_median_interval(self.data, self.range_end),)
 
+        # TODO temp - remove later
+        # plot the samples
+        norm_pdf = scipy.stats.norm(data_center, self.samples_size)
+        xs = np.linspace(0, self.range_end, self.range_end)
+        plt.plot(self.data, [norm_pdf.pdf(sample) for sample in self.data], 'ro', xs, norm_pdf.pdf(xs), 'b')
+        plt.show()
+        # plot the range qualities
         plt.plot(range(self.range_end), qualities, 'bo')
         plt.show()
 
@@ -42,10 +49,7 @@ class TestRecConcave(unittest.TestCase):
 
         result_depth_1 = rec_concave.evaluate(self.data, self.range_end, examples.quality_minmax, self.maximum_quality,
                                     self.alpha, self.eps, self.delta, 1)
-        if type(result_depth_1) == int:
-            print "result from rec_concave: %d" % result_depth_1
-        else:
-            raise ValueError('stability problem')
+        print "result from rec_concave: %d" % result_depth_1
         result_quality = examples.quality_minmax(self.data, result_depth_1)
         print "and its quality: %d \n" % result_quality
         self.assertLessEqual(np.abs(result_quality - self.maximum_quality), 10)
@@ -55,10 +59,7 @@ class TestRecConcave(unittest.TestCase):
 
         result_depth_2 = rec_concave.evaluate(self.data, self.range_end, examples.quality_minmax, self.maximum_quality,
                                     self.alpha, self.eps, self.delta, 2)
-        if type(result_depth_2) == int:
-            print "result from rec_concave: %d" % result_depth_2
-        else:
-            raise ValueError('stability problem')
+        print "result from rec_concave: %d" % result_depth_2
         result_quality = examples.quality_minmax(self.data, result_depth_2)
         print "and its quality: %d \n" % result_quality
         self.assertLessEqual(np.abs(result_quality - self.maximum_quality), 10)

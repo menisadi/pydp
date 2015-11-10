@@ -150,7 +150,7 @@ def get_random_data(data_size, distribution_type='normal', pivot=0, specify_para
     # TODO is this a good design??
     # lazy switch to get the desirable distribution
     data_switch = {
-        'normal': lambda: np.random.normal(pivot, data_size / 1.0, data_size),
+        'normal': lambda: np.random.normal(pivot, data_size * 2.0, data_size),
         'laplace': lambda: np.random.laplace(pivot, data_size / 100.0, data_size),
         'bimodal': lambda: np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
                                    np.random.normal(data_size / 2, data_size / 10.0, data_size / 2)]),

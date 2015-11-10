@@ -60,24 +60,45 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 7
     first_intervals = [range(range_max_value_tag)[i:i + good_interval]
                        for i in range(0, range_max_value_tag, good_interval)]
+    # TODO temp - remove
+    if len(first_intervals) == 0:
+        print recursion_returned
+        print first_intervals
     second_intervals = [range(good_interval/2, range_max_value_tag)[i:i + good_interval]
                         for i in range(0, range_max_value_tag-good_interval/2, good_interval)]
+    # TODO temp - remove
+    if len(first_intervals) == 0:
+        print recursion_returned
+        print first_intervals
 
     # step 8
     def interval_quality(data_base, interval):
         return max([extended_quality_function(data_base, j) for j in interval])
 
-    # for testing
+    # TODO temp - remove later
+    # plotting for testing
     fq = [interval_quality(data, i) for i in first_intervals]
     plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
+    if len(fq) == 0:
+        print recursion_returned
+        print first_intervals
+        print second_intervals
+    lower_bound = max(fq) - math.log(1/delta)/eps
+    plt.axhspan(lower_bound, lower_bound, color='green', alpha=0.5)
     plt.show()
     fq = [interval_quality(data, i) for i in second_intervals]
     plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
+    lower_bound = max(fq) - math.log(1/delta)/eps
+    plt.axhspan(lower_bound, lower_bound, color='green', alpha=0.5)
     plt.show()
 
     # step 9 ( using 'dist' algorithm)
     first_chosen_interval = basicdp.a_dist(data, first_intervals, interval_quality, eps, delta)
     second_chosen_interval = basicdp.a_dist(data, second_intervals, interval_quality, eps, delta)
+    print first_chosen_interval
+    print second_chosen_interval
+    if type(first_chosen_interval) != int or type(second_chosen_interval) != int:
+        raise ValueError('stability problem')
 
     # step 10
     return basicdp.exponential_mechanism(data, first_chosen_interval + second_chosen_interval,
