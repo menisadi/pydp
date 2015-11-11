@@ -15,14 +15,24 @@ class TestRecConcave(unittest.TestCase):
         last = (len(qualities) - 1) - qualities[::-1].index(max_quality)
         return first, last
 
+    def dist_bound(self, eps, delta, alpha, beta):
+        """
+        calculate the minimum sample size for which A_dist at step 9 will fail
+        only in probability < beta
+        :return: the minimum samples required for A_dist to run
+        """
+        promise = 4 * np.log(1 / (beta * delta)) / alpha / eps
+        return 2 * promise
+
     def setUp(self):
+        self.range_end = 1000  # 2**14 + 1
+
         self.alpha = 0.2
         self.eps = 0.5
-        self.delta = 1e-1
+        self.delta = 1/float(self.range_end)
         self.RECURSION_BOUND = 2
 
-        self.range_end = 1000 + 1
-        self.samples_size = 50
+        self.samples_size = 50  # self.dist_bound(self.eps, self.delta, self.alpha, 0.1)
 
         data_center = np.random.uniform(self.range_end/3, self.range_end/3*2)
         self.data = examples.get_random_data(self.samples_size, pivot=data_center)
