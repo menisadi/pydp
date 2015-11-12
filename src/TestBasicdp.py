@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import examples
 
 
-# TODO fix test to be equivalent with bulk
 class TestBasicdp(unittest.TestCase):
 
     def setUp(self):
@@ -60,11 +59,11 @@ class TestBasicdp(unittest.TestCase):
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
         error_parameter = 10
         difference = (2 / self.eps * (math.log(self.DOMAIN_SIZE) + error_parameter))
+        # TODO change the print to something more accurate. here and in the next method
         print "The maximum 'allowed' difference between the " \
             "mechanism result and the true median is: %.2f" % difference
 
         result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set, True)
-        # TODO change the print to something more accurate
 
         print "The Noisy-Max Mechanism returned: %.2f" % result
         print "Result quality: %d\n" % examples.quality_median(rand_data, result)

@@ -158,7 +158,6 @@ def get_random_data(data_size, distribution_type='normal', pivot=0, specify_para
         'point': lambda: __make_point_data(data_size, specify_parameter),  # POINT_d
         'threshold': lambda: __make_threshold_data(data_size, specify_parameter),  # THRESH_d
     }
-    # TODO should we return this or an empty one?
     # if user call for unknown data-type return a normal distributed one
     return data_switch.get(distribution_type, data_switch['normal'])()
 
