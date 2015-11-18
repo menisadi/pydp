@@ -41,12 +41,13 @@ def exponential_upper_bound(delta, beta):
     return float(np.sqrt(beta/delta))
 
 
+"""
 my_alpha = 0.2
 my_beta = 0.01
 my_rec = 2
 my_eps = 0.5
 
-exponent = 10
+exponent = 14
 my_t = 2**exponent
 my_delta = 1/float(my_t)
 db = dist_bound(my_eps, my_delta, my_alpha, my_beta)
@@ -60,5 +61,4 @@ print "proportion to T: %.5f" % (db/my_t)
 print "rec bound: %.2f" % rb
 print "proportion to T: %.5f" % (rb/my_t)
 print "\nexponential upper bound on the domain: %.2f" % eb
-
-
+"""

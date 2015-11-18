@@ -102,46 +102,14 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     print "step 8"
     def interval_quality(data_base, interval):
         return max([extended_quality_function(j) for j in interval])
-
+    
     # TODO temp - remove later
     # plotting for testing
     fq = [interval_quality(data, i) for i in first_intervals]
     plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
-    if len(fq) == 0:
-        print first_intervals
     lower_bound = max(fq) - math.log(1/delta)/eps
     plt.axhspan(lower_bound, lower_bound, color='green', alpha=0.5)
     plt.show()
-
-    interval_quality(data, i)
-    
-    fi = list(first_intervals)
-    h1_score = max(fq)
-    h1 = fi[fq.index(h1_score)]  # h1 is domain element with highest quality
-    fq.remove(h1_score)
-    fi.remove(h1)
-    h2_score = max(fq)
-    print "two higest scores: %d, %d" %(h1_score, h2_score)
-
-    fq = [interval_quality(data, i) for i in second_intervals]
-    if len(fq) == 0:
-        print second_intervals
-    plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
-    lower_bound = max(fq) - math.log(1/delta)/eps
-    plt.axhspan(lower_bound, lower_bound, color='green', alpha=0.5)
-    plt.show()
-
-    fi = list(second_intervals)
-    # print second_intervals
-    h1_score = max(fq)
-    h1 = fi[fq.index(h1_score)]  # h1 is domain element with highest quality
-    # print "h1 index: %d" % fq.index(h1_score)
-    print "h1 score apears in indexes: "
-    print [t[0] for t in enumerate(fq) if t[1]==h1_score]
-    fq.remove(h1_score)
-    h2_score = max(fq)    
-    print "two higest scores: %d, %d" %(h1_score, h2_score)
-    # end of long test section that will be deleted
 
     # step 9 ( using 'dist' algorithm)
     print "step 9"
