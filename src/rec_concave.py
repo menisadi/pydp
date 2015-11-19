@@ -13,8 +13,8 @@ def rec_concave_basis(range_max_value, quality_function, eps, data, bulk=False):
 
 # A. Beimel, K. Nissim, and U. Stemmer. Private learning and sanitization
 def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound, bulk=False):
-    # TODO go through variables names and see if they are more or less accurate
-    # TODO and maybe change some of the 'k' 'j' 'i'
+    # TODO add docstring
+    # TODO go through variables names
     if recursion_bound == 1 or range_max_value <= 32:
         return rec_concave_basis(range_max_value, quality_function, eps, data, bulk)
     else:
@@ -34,6 +34,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     def extended_quality_function(j):
         return qualities[j]
 
+    # same but with signature that fits exponential mechanism requirements (used in step 10)
     def extended_quality_function_for_exponential_mechanism(data_set, j):
         return qualities[j]
 
@@ -85,18 +86,8 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     first_intervals = [range(range_max_value_tag)[i:i + good_interval]
                        for i in range(0, range_max_value_tag, good_interval)]
     
-    # TODO temp - remove
-    if len(first_intervals) == 0:
-        print recursion_returned
-        print first_intervals
-    
     second_intervals = [range(good_interval/2, range_max_value_tag)[i:i + good_interval]
                         for i in range(0, range_max_value_tag-good_interval/2, good_interval)]
-    
-    # TODO temp - remove
-    if len(first_intervals) == 0:
-        print recursion_returned
-        print first_intervals
 
     # step 8
     print "step 8"
