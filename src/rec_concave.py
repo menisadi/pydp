@@ -12,11 +12,15 @@ def rec_concave_basis(range_max_value, quality_function, eps, data, bulk=False):
 
 
 # A. Beimel, K. Nissim, and U. Stemmer. Private learning and sanitization
-def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound, bulk=False):
+def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound,
+             bulk_interval=False, bulk_interval_quality=None, bulk_quality=False, bulk_quality_function=None):
     # TODO add docstring
     # TODO go through variables names
     if recursion_bound == 1 or range_max_value <= 32:
-        return rec_concave_basis(range_max_value, quality_function, eps, data, bulk)
+        if bulk_quality:
+            return rec_concave_basis(range_max_value, bulk_quality_function, eps, data, bulk=bulk_quality)
+        else:
+            return rec_concave_basis(range_max_value, quality_function, eps, data)
     else:
         recursion_bound -= 1
 
@@ -25,59 +29,63 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     log_of_range = int(math.ceil(math.log(range_max_value, 2)))
     range_max_value_tag = 2 ** log_of_range
 
-    if bulk:
-        qualities = quality_function(data, range(int(range_max_value)+1))
-    else:
-        qualities = [quality_function(data, i) for i in domain]
-    qualities.extend([min(0, qualities[range_max_value]) for i in xrange(range_max_value,range_max_value_tag)])
-    
-    def extended_quality_function(j):
-        return qualities[j]
+    def extended_quality_function(data_base, j):
+        if range_max_value < j <= range_max_value_tag:
+            return min(0, quality_function(data_base, range_max_value))
+        else:
+            return quality_function(data_base, j)
 
-    # same but with signature that fits exponential mechanism requirements (used in step 10)
-    def extended_quality_function_for_exponential_mechanism(data_set, j):
-        return qualities[j]
+    if bulk_quality:
+        # TODO improve
+        def bulk_extended_quality_function(data_base, domain):
+            domain_up_to_range_max = [d for d in domain if d <= range_max_value]
+            domain_after_range_max = [d for d in domain if d > range_max_value]
+            qualities = bulk_quality_function(data_base, domain_up_to_range_max)  # range(int(range_max_value)+1)
+            extra_domain = len(domain_after_range_max)
+            qualities.extend([min(0, qualities[len(domain_up_to_range_max)-1])]*extra_domain)
+            return qualities
 
     # step 3
     print "step 3"
-    # TODO delete variable - recursion_limit
-    def min_of_intervals(data_base, j, recursion_limit=log_of_range*2):
-        if j == 0:
-            return [qualities]
-        else:
-            if recursion_limit == 0 : 
-                raise ValueError('recursion problem')
-            mins = min_of_intervals(data_base, j-1, recursion_limit-1)
-            last_mins = mins[len(mins) - 1]
-            mins.append([min(last_mins[2*i:2*i+2]) for i in range(len(last_mins)/2)])
-            return mins
-
-    def intervals_bounding(data_base, log_range_max):
-        maxs = [max(j) for j in min_of_intervals(data_base, log_range_max)]
-        # why do we need this?
-        maxs.append(min(0,maxs[len(maxs)-1]))
-        return maxs
+    if bulk_interval:
+        intervals_bounding = bulk_interval_quality
+    else:
+        def intervals_bounding(data_base, j):
+            # TODO why the +1?
+            if j == log_of_range + 1:
+                return min(0, intervals_bounding(data_base, j-1))
+            intervals_sized_2_to_the_j = [range(range_max_value_tag+1)[k:k+(2 ** j)]
+                                          for k in xrange(range_max_value_tag-(2 ** j)+2)]
+            qualified_intervals = [[extended_quality_function(data_base, k) for k in inner_list]
+                                   for inner_list in intervals_sized_2_to_the_j]
+            min_of_intervals = [min(interval) for interval in qualified_intervals if interval]
+            return max(min_of_intervals)
     
     # step 4
     print "step 4"
+
+    """
     def recursive_quality_function(data_base, domain):
         if type(domain) == int:
             domain_len = domain
         else:
             domain_len = max(domain)
-        intervals_bounding_list = intervals_bounding(data_base, domain_len)
-        return [min(intervals_bounding_list[j] - (1 - approximation) * quality_promise,
-                   quality_promise-intervals_bounding_list[j + 1]) for j in xrange(domain_len+1)]
+        return [min(intervals_bounding(data_base, j) - (1 - approximation) * quality_promise,
+                    quality_promise-intervals_bounding(data_base, j + 1)) for j in xrange(domain_len+1)]
+    """
+    def recursive_quality_function(data_base, j):
+        return min(intervals_bounding(data_base, j) - (1 - approximation) * quality_promise,
+                   quality_promise-intervals_bounding(data_base, j + 1))
 
     # step 5
     print "step 5"
     recursive_quality_promise = quality_promise * approximation / 2
-        
+
     # step 6 - recursion call
     print "step 6 - recursive call"
     recursion_returned = evaluate(data, log_of_range, recursive_quality_function, recursive_quality_promise, 1/4,
-                                  eps, delta, recursion_bound, True)
-        
+                                  eps, delta, recursion_bound, False, None, bulk_quality, bulk_quality_function)
+
     good_interval = 8 * (2 ** recursion_returned)
     print "good interval: %d" % good_interval
 
@@ -91,16 +99,22 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
 
     # step 8
     print "step 8"
+
     def interval_quality(data_base, interval):
-        return max([extended_quality_function(j) for j in interval])
+        if bulk_quality:
+            return max(bulk_extended_quality_function(data_base, interval))
+        else:
+            return max([extended_quality_function(data_base, j) for j in interval])
     
     # TODO temp - remove later
     # plotting for testing
+    """
     fq = [interval_quality(data, i) for i in first_intervals]
     plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
     lower_bound = max(fq) - math.log(1/delta)/eps
     plt.axhspan(lower_bound, lower_bound, color='green', alpha=0.5)
     plt.show()
+    """
 
     # step 9 ( using 'dist' algorithm)
     print "step 9"
@@ -115,6 +129,11 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
 
     # step 10
     print "step 10"
+    """
+    if bulk_quality:
+        return basicdp.exponential_mechanism(data, first_chosen_interval + second_chosen_interval,
+                                             bulk_extended_quality_function, eps, bulk=True)
+    else:
+    """
     return basicdp.exponential_mechanism(data, first_chosen_interval + second_chosen_interval,
-                                         extended_quality_function_for_exponential_mechanism, eps, False)
-
+                                             extended_quality_function, eps, bulk=False)

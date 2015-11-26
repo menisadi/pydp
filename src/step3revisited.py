@@ -1,6 +1,15 @@
 import numpy as np
 import bisect
-import examples
+from examples import quality_minmax, bulk_quality_minmax
+
+def new_bulk(data, j):
+    ceil_data = [np.ceil(i) for i in data]
+    floor_data = [np.floor(i) for i in data]
+    rounded_data = floor_data + ceil_data
+    points_of_interest = list(set(rounded_data))
+    start_point = [min(quality_minmax(data,i), quality_minmax(data,i+2**j-1)) for i in  points_of_interest]
+    end_point = [min(quality_minmax(data,i-2**j+1), quality_minmax(data,i)) for i in  points_of_interest]
+    return max(start_point+end_point)
 
 
 def bulk_interval_quality_minmax(data, j):
@@ -25,8 +34,8 @@ def bulk_interval_quality_minmax(data, j):
 
         interval_start += 1
         interval_end = interval_start + int(2**(j-1))
-        min_quality = min(examples.quality_minmax(sorted_data, interval_start),
-                          examples.quality_minmax(sorted_data, interval_end))
+        min_quality = min(quality_minmax(sorted_data, interval_start),
+                          quality_minmax(sorted_data, interval_end))
         mins.append(min_quality)  # testing
         max_of_min_quality = max(max_of_min_quality, min_quality)
 
@@ -41,8 +50,8 @@ i = 0
 r = range(2**n2)
 
 d = np.random.normal(2**n2/2, 2**n1, 2**n1)
-qs2 = examples.quality_minmax.bulk_quality_minmax(d, r)
-qs = bulk_interval_quality_minmax(d, i)
+qs2 = bulk_quality_minmax(d, r)
+qs = new_bulk(d, i)
 print max(qs2)
 print qs
-# print [bulk_interval_quality_minmax(d, x) for x in xrange(0, n2+2)]
+print [new_bulk(d, x) for x in xrange(0, n2)]

@@ -88,6 +88,16 @@ def bulk_quality_minmax(data, domain):
     return [item for sub_list in qualities for item in sub_list]
 
 
+def min_max_intervals_bounding(data, j):
+    ceil_data = [np.ceil(i) for i in data]
+    floor_data = [np.floor(i) for i in data]
+    rounded_data = floor_data + ceil_data
+    points_of_interest = list(set(rounded_data))
+    start_point = [min(quality_minmax(data, i), quality_minmax(data, i+2**j-1)) for i in points_of_interest]
+    end_point = [min(quality_minmax(data, i-2**j+1), quality_minmax(data, i)) for i in points_of_interest]
+    return max(start_point+end_point)
+
+
 # TODO not in use!
 def quality_mode(data, range_element):
     return sum([d == range_element for d in data])

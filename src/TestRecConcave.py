@@ -17,7 +17,7 @@ class TestRecConcave(unittest.TestCase):
         return first, last
 
     def setUp(self):
-        self.range_end = 2**14
+        self.range_end = 2**12
 
         self.alpha = 0.2
         self.eps = 0.5
@@ -50,8 +50,9 @@ class TestRecConcave(unittest.TestCase):
     def test_rec_concave_basis_median(self):
         print "testing basis to find median"
 
-        result_depth_1 = rec_concave.evaluate(self.data, self.range_end, examples.bulk_quality_minmax, self.maximum_quality,
-                                    self.alpha, self.eps, self.delta, 1, True)
+        result_depth_1 = rec_concave.evaluate(self.data, self.range_end, examples.quality_minmax, self.maximum_quality,
+                                              self.alpha, self.eps, self.delta, 1,
+                                              bulk_quality=True, bulk_quality_function=examples.bulk_quality_minmax)
         print "result from rec_concave: %d" % result_depth_1
         result_quality = examples.quality_minmax(self.data, result_depth_1)
         print "and its quality: %d \n" % result_quality
@@ -60,8 +61,9 @@ class TestRecConcave(unittest.TestCase):
     def test_rec_concave_median(self):
         print "testing depth-2 to find median"
 
-        result_depth_2 = rec_concave.evaluate(self.data, self.range_end, examples.bulk_quality_minmax, self.maximum_quality,
-                                    self.alpha, self.eps, self.delta, 2, True)
+        result_depth_2 = rec_concave.evaluate(self.data, self.range_end, examples.quality_minmax,
+                                              self.maximum_quality, self.alpha, self.eps, self.delta, 2,
+                                              True, examples.min_max_intervals_bounding, True, examples.bulk_quality_minmax)
         print "result from rec_concave: %d" % result_depth_2
         result_quality = examples.quality_minmax(self.data, result_depth_2)
         print "and its quality: %d \n" % result_quality
