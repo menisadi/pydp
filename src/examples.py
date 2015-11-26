@@ -57,9 +57,7 @@ def quality_minmax(data, range_element):
     quality_minmax( data , range_element )
     :return: the minimum between the amount of data above the element and the data below
     """
-    greater_than = sum(e > range_element for e in data)
-    less_than = sum(e < range_element for e in data)
-    return min(greater_than, less_than)
+    return min(np.count_nonzero(data < range_element),np.count_nonzero(data > range_element))
 
 
 def bulk_quality_minmax(data, domain):

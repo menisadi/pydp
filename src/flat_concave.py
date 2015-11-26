@@ -1,5 +1,6 @@
 import basicdp
 import math
+import matplotlib.pyplot as plt
 
 
 def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta,
@@ -38,11 +39,21 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     second_intervals = [range(good_interval/2, range_max_value_tag)[i:i + good_interval]
                         for i in range(0, range_max_value_tag-good_interval/2, good_interval)]
 
+    # TODO temp - remove later
+    # plotting for testing
+    fq = [max_in_interval(data, i) for i in first_intervals]
+    plt.plot(range(len(fq)), fq, 'bo', range(len(fq)), fq, 'r')
+    lower_bound = max(fq) - math.log(1/delta)/eps
+    plt.axhspan(lower_bound, lower_bound, color='green', alpha=0.5)
+    plt.show()
+
     # step 9 ( using 'dist' algorithm)
     print "step 9"
     first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
     second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
 
+    print type(first_chosen_interval)
+    print type(second_chosen_interval)
     if type(first_chosen_interval) == str or type(second_chosen_interval) == str:
         raise ValueError("stability problem, try taking more samples!")
 
