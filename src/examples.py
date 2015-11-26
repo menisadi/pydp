@@ -88,14 +88,28 @@ def bulk_quality_minmax(data, domain):
     return [item for sub_list in qualities for item in sub_list]
 
 
-def min_max_intervals_bounding(data, j):
+def min_max_intervals_bounding(data, max_range, j):
+    if j == 0:
+        return min_max_maximum_quality(data,range(max_range + 1))
     ceil_data = [np.ceil(i) for i in data]
     floor_data = [np.floor(i) for i in data]
     rounded_data = floor_data + ceil_data
-    points_of_interest = list(set(rounded_data))
+    points_of_interest = list(set(filter(lambda x: 0 <= x <= max_range, rounded_data)))
     start_point = [min(quality_minmax(data, i), quality_minmax(data, i+2**j-1)) for i in points_of_interest]
     end_point = [min(quality_minmax(data, i-2**j+1), quality_minmax(data, i)) for i in points_of_interest]
     return max(start_point+end_point)
+
+
+def min_max_maximum_quality(data, domain):
+    greater_than = np.count_nonzero(data > domain[0])
+    # greater_than = np.size(np.where())
+    less_than = len(data) - greater_than
+    after_domain = np.count_nonzero(data > domain[len(domain) - 1])
+    # after_domain = np.size(np.where(data > domain[len(domain) - 1]))
+    while greater_than > less_than and greater_than > after_domain:
+        greater_than -= 1
+        less_than += 1
+    return greater_than
 
 
 # TODO not in use!
