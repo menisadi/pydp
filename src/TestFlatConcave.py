@@ -15,7 +15,7 @@ class TestRecConcave(unittest.TestCase):
         return first, last
 
     def setUp(self):
-        self.range_end = 2**14
+        self.range_end = 2**15
 
         self.alpha = 0.2
         self.eps = 0.5
@@ -27,6 +27,7 @@ class TestRecConcave(unittest.TestCase):
         data_center = np.random.uniform(self.range_end/3, self.range_end/3*2)
         self.data = examples.get_random_data(self.samples_size, pivot=data_center)
         self.data = sorted(filter(lambda x: 0 <= x <= self.range_end, self.data))
+        # self.data = self.data[np.sort(np.where((self.data >= 0) & (self.data < self.range_end)))]
         qualities = examples.bulk_quality_minmax(self.data, range(self.range_end))
         self.maximum_quality = max(qualities)
 

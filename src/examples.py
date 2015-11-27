@@ -9,6 +9,10 @@ import numpy as np
 from collections import deque
 
 
+def iterlen(it):
+    return sum(1 for _ in it)
+
+
 def quality_median(data, range_element):
     """
     sensitivity-1 quality function
@@ -57,7 +61,9 @@ def quality_minmax(data, range_element):
     quality_minmax( data , range_element )
     :return: the minimum between the amount of data above the element and the data below
     """
-    return min(np.count_nonzero(data < range_element),np.count_nonzero(data > range_element))
+    greater_than = iterlen(x for x in data if x > range_element)
+    less_than = iterlen(x for x in data if x < range_element)
+    return min(less_than, greater_than)
 
 
 def bulk_quality_minmax(data, domain):
@@ -88,7 +94,7 @@ def bulk_quality_minmax(data, domain):
 
 def min_max_intervals_bounding(data, max_range, j):
     if j == 0:
-        return min_max_maximum_quality(data,range(max_range + 1))
+        return min_max_maximum_quality(data, (0, max_range))
     ceil_data = [np.ceil(i) for i in data]
     floor_data = [np.floor(i) for i in data]
     rounded_data = floor_data + ceil_data
@@ -98,16 +104,14 @@ def min_max_intervals_bounding(data, max_range, j):
     return max(start_point+end_point)
 
 
-def min_max_maximum_quality(data, domain):
-    greater_than = np.count_nonzero(data > domain[0])
-    # greater_than = np.size(np.where())
+def min_max_maximum_quality(data, interval):
+    greater_than = iterlen(x for x in data if x > interval[0])
     less_than = len(data) - greater_than
-    after_domain = np.count_nonzero(data > domain[len(domain) - 1])
-    # after_domain = np.size(np.where(data > domain[len(domain) - 1]))
+    after_domain = iterlen(x for x in data if x > interval[1])
     while greater_than > less_than and greater_than > after_domain:
         greater_than -= 1
         less_than += 1
-    return greater_than
+    return min(less_than, greater_than)
 
 
 # TODO not in use!
