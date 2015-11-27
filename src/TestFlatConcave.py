@@ -15,7 +15,7 @@ class TestRecConcave(unittest.TestCase):
         return first, last
 
     def setUp(self):
-        self.range_end = 2**15
+        self.range_end = 2**20
 
         self.alpha = 0.2
         self.eps = 0.5
@@ -28,12 +28,11 @@ class TestRecConcave(unittest.TestCase):
         self.data = examples.get_random_data(self.samples_size, pivot=data_center)
         self.data = sorted(filter(lambda x: 0 <= x <= self.range_end, self.data))
         # self.data = self.data[np.sort(np.where((self.data >= 0) & (self.data < self.range_end)))]
-        qualities = examples.bulk_quality_minmax(self.data, range(self.range_end))
-        self.maximum_quality = max(qualities)
+        self.maximum_quality = examples.min_max_maximum_quality(self.data, (0, self.range_end))
 
         print "the exact median is: %d" % np.median(self.data)
         print "the best quality of a domain element: %d" % self.maximum_quality
-        print "which lies within the range: %s" % (self.exact_median_interval(self.data, self.range_end),)
+        # print "which lies within the range: %s" % (self.exact_median_interval(self.data, self.range_end),)
 
     def test_flat_concave_median(self):
         print "testing flat_concave to find median"
