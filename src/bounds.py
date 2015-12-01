@@ -1,12 +1,23 @@
-import numpy as np
+from numpy import log, sqrt
 
 
 def log_n(x, n):
     if n == 0:
         return x
     else:
-        return np.log(log_n(x, n-1))
+        return log(log_n(x, n-1))
 
+
+def step6_n2_bound(max_range, eps, alpha, beta):
+    """
+    for the case when the recurssion bound N=2
+    calculate the minimum sample size for which the call in step 6 will
+    fail to return a 'good interval' only in probability < beta
+    assuming the median problem so: r = samples/2
+    :return: the minimum samples required for step 6 to succeed
+    """
+    r = 16 * log(log(max_range) / beta) / alpha / eps
+    return 2*r
 
 def dist_bound(eps, delta, alpha, beta):
     """
@@ -15,7 +26,7 @@ def dist_bound(eps, delta, alpha, beta):
     assuming the median problem so: r = samples/2
     :return: the minimum samples required for A_dist to run
     """
-    r = 8 * np.log(1 / (beta * delta)) / alpha / eps /2
+    r = 8 * log(1 / (beta * delta)) / alpha / eps / 3
     return 2*r
 
 
@@ -27,7 +38,7 @@ def rec_bound(t, rec, eps, delta, alpha, beta):
     Theorem ----
     :return: the minimum samples required for rec_concave to run
     """
-    return 8**rec*4/alpha/eps*(np.log(32/beta/delta) + log_n(t, rec))
+    return 8**rec*4/alpha/eps*(log(32/beta/delta) + log_n(t, rec))
 
 
 def exponential_upper_bound(delta, beta):
@@ -38,7 +49,7 @@ def exponential_upper_bound(delta, beta):
     log (1 / (delta * beta)) / eps
     :return: maximum domain size
     """
-    return float(np.sqrt(beta/delta))
+    return float(sqrt(beta/delta))
 
 
 """
