@@ -1,4 +1,4 @@
-from numpy import log, sqrt
+from math import log, sqrt
 
 
 def log_n(x, n):
@@ -16,7 +16,7 @@ def step6_n2_bound(max_range, eps, alpha, beta):
     assuming the median problem so: r = samples/2
     :return: the minimum samples required for step 6 to succeed
     """
-    r = 16 * log(log(max_range) / beta) / alpha / eps
+    r = 16 * log(log(max_range, 2) / beta) / alpha / eps
     return 2*r
 
 def dist_bound(eps, delta, alpha, beta):
