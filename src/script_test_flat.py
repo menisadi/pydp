@@ -33,5 +33,4 @@ except:
     result_quality = -1
 
 print "result from flat_concave: %d" % result
-result_quality = examples.quality_minmax(data, result)
 print "and its quality: %d \n" % result_quality
