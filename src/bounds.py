@@ -10,22 +10,34 @@ def log_n(x, n):
 
 def step6_n2_bound(max_range, eps, alpha, beta):
     """
-    for the case when the recurssion bound N=2
+    for the case when the recursion bound N=2
     calculate the minimum sample size for which the call in step 6 will
     fail to return a 'good interval' only in probability < beta
     assuming the median problem so: r = samples/2
+
+    :param max_range: maximum output possible
+    :param eps: privacy parameter
+    :param alpha: approximation parameter (from 0 to 1)
+    :param beta: failre probability
     :return: the minimum samples required for step 6 to succeed
     """
+
     r = 16 * log(log(max_range, 2) / beta) / alpha / eps
     return 2*r
+
 
 def dist_bound(eps, delta, alpha, beta):
     """
     calculate the minimum sample size for which A_dist at step 9 will fail
     only in probability < beta
     assuming the median problem so: r = samples/2
+
+    :param eps, delta: privacy parameter
+    :param alpha: approximation parameter (from 0 to 1)
+    :param beta: failre probability
     :return: the minimum samples required for A_dist to run
     """
+
     r = 8 * log(1 / (beta * delta)) / alpha / eps / 3
     return 2*r
 
@@ -50,26 +62,3 @@ def exponential_upper_bound(delta, beta):
     :return: maximum domain size
     """
     return float(sqrt(beta/delta))
-
-
-"""
-my_alpha = 0.2
-my_beta = 0.01
-my_rec = 2
-my_eps = 0.5
-
-exponent = 14
-my_t = 2**exponent
-my_delta = 1/float(my_t)
-db = dist_bound(my_eps, my_delta, my_alpha, my_beta)
-rb = rec_bound(my_t, my_rec, my_eps, my_delta, my_alpha, my_beta)
-eb = exponential_upper_bound(my_delta**3, my_beta)  # for this one we must take a very small delta
-
-print "n: %d" % exponent
-print "T: %d\n" % my_t
-print "dist bound: %.2f" % db
-print "proportion to T: %.5f" % (db/my_t)
-print "rec bound: %.2f" % rb
-print "proportion to T: %.5f" % (rb/my_t)
-print "\nexponential upper bound on the domain: %.2f" % eb
-"""

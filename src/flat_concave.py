@@ -4,8 +4,20 @@ import math
 
 def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta,
              intervals_bounding, max_in_interval):
-    # TODO go through variables names and see if they are more or less accurate
-    # TODO and maybe change some of the 'k' 'j' 'i'
+    """
+    RecConcave algorithm for the specific case of N=2
+    :param data:
+    :param range_max_value: maximum possible output (the minimum output is 0)
+    :param quality_function:
+    :param quality_promise:
+    :param approximation: approximation parameter (from 0 to 1)
+    :param eps, delta: privacy parameters
+    :param intervals_bounding: function L(data,domain_element)
+    :param max_in_interval: function u(data,interval) that returns the maximum of quality_function(data,j)
+    for j in the interval
+    :return:
+    """
+
     # step 2
     print "step 2"
     log_of_range = int(math.ceil(math.log(range_max_value, 2)))
@@ -36,7 +48,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     first_intervals = [(i, i + good_interval) for i in xrange(0, range_max_value_tag, good_interval)]
     second_intervals = [(i, i + good_interval) for i in xrange(good_interval/2, range_max_value_tag, good_interval)]
 
-    # step 9 ( using 'dist' algorithm)
+    # step 9 ( using 'dist' algorithm )
     print "step 9"
     first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
     second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
