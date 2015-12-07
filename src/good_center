@@ -1,0 +1,9 @@
+import numpy as np
+import basicdp
+
+
+def find(data, number_of_points, radius, points_in_ball, failure, eps, delta):
+    k = 46 * np.log(2 * number_of_points / failure)
+    threshold = points_in_ball - 32 * np.log(2 / failure) / eps
+    above_thresh = basicdp.above_threshold(data, threshold, eps/3.0)
+    return
