@@ -118,3 +118,25 @@ def above_threshold(data, threshold, eps):
     return threshold_instance
 
 
+def choosing_mechanism(data, solution_set, quality_function, growth_bound, alpha, beta, eps, delta):
+    """
+    Choosing Mechanism for solving bounded-growth choice problems
+    :param data:
+    :param solution_set:
+    :param quality_function: k-bounded-growth quality function
+    :param growth_bound: bounding parameter on the growth of the quality function
+    :param alpha: approximation parameter
+    :param beta:
+    :param eps, delta: privacy parameters
+    :return:
+    """
+    data_size = len(data)
+    if data_size < 16 * np.log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps:
+        raise ValueError("data size - too small")
+    best_quality = max(quality_function(data, f) for f in solution_set) + np.random.laplace(0, 4 / eps, 1)
+    if best_quality < alpha * data_size / 2.0:
+        return 'bottom'
+    smaller_solution_set = [f for f in solution_set if quality_function(data, f) >= 1]
+    return exponential_mechanism(data, smaller_solution_set, quality_function, eps)
+
+
