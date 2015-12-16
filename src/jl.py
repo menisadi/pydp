@@ -18,6 +18,21 @@ def johnson_lindenstrauss_bound(samples, miu):
     return int(16*np.log(2*samples)/(miu**2))
 
 
+def johnson_lindenstrauss_transform_init(original_dimension, target_dimension):
+    """
+    Johnson Lindenstrauss transform
+    low-distortion embeddings of points from high-dimensional into low-dimensional Euclidean space
+    :param original_dimension: the dimension from which the points where taken
+    :param target_dimension: the target dimension
+    :return: instance of jl transform
+    that gets set of points in R^d space when d = original_dimension as an numpy array
+    and returns a projected set in R^k space when k = target_dimension as numpy array
+    """
+    normal_matrix = np.random.normal(0, 1, original_dimension*target_dimension)
+    normal_matrix = normal_matrix.reshape(target_dimension, original_dimension)
+    return lambda points: np.array([np.dot(normal_matrix, p.transpose())/np.sqrt(target_dimension) for p in points])
+
+
 def johnson_lindenstrauss_transform(points, original_dimension, target_dimension):
     """
     Johnson Lindenstrauss transform
@@ -25,9 +40,8 @@ def johnson_lindenstrauss_transform(points, original_dimension, target_dimension
     :param points: set of point in R^d space when d = original_dimension : numpy array
     :param original_dimension: the dimension from which the points where taken
     :param target_dimension: the target dimension
-    :return: set of points in R^k space when k = target_dimension : numpy array
+    :return: projected set of points in R^k space when k = target_dimension : numpy array
     """
-
     normal_matrix = np.random.normal(0, 1, original_dimension*target_dimension)
     normal_matrix = normal_matrix.reshape(target_dimension, original_dimension)
     return np.array([np.dot(normal_matrix, p.transpose())/np.sqrt(target_dimension) for p in points])
