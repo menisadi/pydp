@@ -74,13 +74,13 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball, failure
     points_in_best_box = [p for p in data
                           if our_box_point(transform(p.reshape(1, data_dimension)).reshape(data_dimension,)) == best_box]
 
-    return best_box, points_in_best_box
+    return best_box, box_quality(data, best_box)
 
 
-n, k, r = 4000, 2, 1
-dr2 = np.random.normal(0, 300, (n, 2))
-gcn = 10
-gc = np.random.normal(6, 0.5, (gcn, 2))
-dr2 = np.vstack((dr2, gc))
-n += gcn
-print find(dr2, n, 2, 1, 5, 0.01, 0.5, 0.5, 0.001)
+sample_number, k, r = 3000, 2, 1
+data_2d = np.random.normal(0, 300, (sample_number, 2))
+artificial_cluster_size = 1500
+artificial_cluster = np.random.normal(6, 0.5, (artificial_cluster_size, 2))
+data_2d = np.vstack((data_2d, artificial_cluster))
+sample_number += artificial_cluster_size
+print find(data_2d, sample_number, 2, 1, 5, 0.01, 0.5, 0.5, 0.001)
