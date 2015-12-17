@@ -62,3 +62,31 @@ def exponential_upper_bound(delta, beta):
     :return: maximum domain size
     """
     return float(sqrt(beta/delta))
+
+
+def good_center_points_in_cluster(data_size, dimension, eps, delta, beta):
+    """
+    calculate the minimum amount of points required to be located in a cluster
+    so algorithm good_center will return the center of the cluster in good probability
+    :param data_size:
+    :param dimension:
+    :param eps:
+    :param delta:
+    :param beta:
+    :return:
+    """
+    return 86645 * sqrt(dimension) / eps * log(64 * data_size * dimension / beta / eps / delta) * sqrt(log(8 / delta))
+
+
+def choosing_mechanism_data_size(growth_bound, alpha, beta, eps, delta):
+    """
+    calculate the minimum data size in which choosing_mechanism will return a good approximation to the optimal result
+    while preserving privacy
+    :param growth_bound:
+    :param alpha:
+    :param beta:
+    :param eps:
+    :param delta:
+    :return:
+    """
+    return 16 * log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps

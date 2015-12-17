@@ -10,7 +10,8 @@ def box_point(point, partition, dimension, side_length):
 
 
 # do we really need jl? it works only if approximately data_dimension > 900
-def find(data, number_of_points, data_dimension, radius, points_in_ball, failure, approximation, eps, delta, shrink=False):
+def find(data, number_of_points, data_dimension, radius, points_in_ball,
+         failure, approximation, eps, delta, shrink=False):
     # step 1
     print "step 1"
     if shrink:
@@ -83,4 +84,4 @@ artificial_cluster_size = 1500
 artificial_cluster = np.random.normal(6, 0.5, (artificial_cluster_size, 2))
 data_2d = np.vstack((data_2d, artificial_cluster))
 sample_number += artificial_cluster_size
-print find(data_2d, sample_number, 2, 1, 5, 0.01, 0.5, 0.5, 0.001)
+print find(data_2d, sample_number, 2, 1, 5, 0.01, 0.05, 0.5, 0.001)
