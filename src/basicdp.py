@@ -134,9 +134,16 @@ def choosing_mechanism(data, solution_set, quality_function, growth_bound, alpha
     if data_size < 16 * np.log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps:
         raise ValueError("privacy problem - data size too small")
     best_quality = max(quality_function(data, f) for f in solution_set) + np.random.laplace(0, 4 / eps, 1)
+    print best_quality, alpha * data_size / 2.0
     if best_quality < alpha * data_size / 2.0:
         return 'bottom'
     smaller_solution_set = [f for f in solution_set if quality_function(data, f) >= 1]
     return exponential_mechanism(data, smaller_solution_set, quality_function, eps)
 
 
+def q(db, r):
+    sum(1 for i in db if i==r)
+
+d = np.random.randint(0, 100, 4000)
+rb = range(4000)
+print choosing_mechanism(d, rb, q, 1, 0.2, 0.01, 0.5, 0.001)
