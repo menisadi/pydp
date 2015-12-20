@@ -142,7 +142,7 @@ def concept_quality(sampled_data, concept):
     return sum([sampled_data[1][i] == concept(sampled_data[0][i]) for i in xrange(len(sampled_data[0]))])
 
 
-def __make_point_data(data_size, specify_spike):
+def __make_point_data__(data_size, specify_spike):
     if specify_spike == -1:
         spike = np.random.randint(data_size, size=1)
     else:
@@ -154,7 +154,7 @@ def __make_point_data(data_size, specify_spike):
     return point_data
 
 
-def __make_threshold_data(data_size, specify_threshold):
+def __make_threshold_data__(data_size, specify_threshold):
     if specify_threshold == -1:
         threshold = np.random.randint(data_size, size=1)[0]
     else:
@@ -181,8 +181,8 @@ def get_random_data(data_size, distribution_type='normal', pivot=0, specify_para
         'bimodal': lambda: np.concatenate([np.random.exponential(data_size * 0.07, data_size / 2),
                                    np.random.normal(data_size / 2, data_size / 10.0, data_size / 2)]),
         'uniform': lambda: np.random.uniform(pivot, data_size, data_size),
-        'point': lambda: __make_point_data(data_size, specify_parameter),  # POINT_d
-        'threshold': lambda: __make_threshold_data(data_size, specify_parameter),  # THRESH_d
+        'point': lambda: __make_point_data__(data_size, specify_parameter),  # POINT_d
+        'threshold': lambda: __make_threshold_data__(data_size, specify_parameter),  # THRESH_d
     }
     # if user call for unknown data-type return a normal distributed one
     return data_switch.get(distribution_type, data_switch['normal'])()
