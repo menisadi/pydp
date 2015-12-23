@@ -8,7 +8,7 @@ range_end = 2**20
 alpha = 0.2
 eps = 0.5
 delta = 1e-6
-beta = 0.1
+beta = 0.01
 
 samples_size = int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
 print "range size: %d" % range_end

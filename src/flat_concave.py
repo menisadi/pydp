@@ -4,6 +4,8 @@ from collections import deque
 
 
 def __build_intervals_set__(data_base, interval_length, range_max, shift = False):
+    # TODO move thins method outside of the module
+    # TODO remove non-negative assumption dependence
     # assuming all the data is non-negative
     data_que = deque(sorted(data_base))
     list_of_intervals = []
@@ -65,21 +67,12 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 7
     print "step 7"
     first_intervals = __build_intervals_set__(data, good_interval, range_max_value_tag)
-    # old_first_intervals =  [(i, i+good_interval) for i in xrange(0, range_max_value_tag, good_interval)]
     second_intervals = __build_intervals_set__(data, good_interval, range_max_value_tag, True)
-    # old_second_intervals = [(i, i+good_interval) for i in xrange(good_interval/2, range_max_value_tag, good_interval)]
 
     # step 9 ( using 'dist' algorithm )
     print "step 9"
     first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
-    # old_first_chosen_interval = basicdp.a_dist(data, old_first_intervals, max_in_interval, eps, delta)
     second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
-    # old_second_chosen_interval = basicdp.a_dist(data, old_second_intervals, max_in_interval, eps, delta)
-    # print first_chosen_interval, old_first_chosen_interval
-    # print second_chosen_interval, old_second_chosen_interval
-
-    # print type(first_chosen_interval)
-    # print type(second_chosen_interval)
     if type(first_chosen_interval) == str or type(second_chosen_interval) == str:
         raise ValueError("stability problem, try taking more samples!")
 
