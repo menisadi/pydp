@@ -90,3 +90,5 @@ def choosing_mechanism_data_size(growth_bound, alpha, beta, eps, delta):
     :return:
     """
     return 16 * log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps
+
+
