@@ -2,6 +2,7 @@ import flat_concave
 import examples
 import numpy as np
 import bounds
+import time
 
 
 def check(t, alpha, eps, delta, beta, samples_size=0):
@@ -20,14 +21,17 @@ def check(t, alpha, eps, delta, beta, samples_size=0):
     except ValueError:
         # result = -1
         result_quality = -1
-    return result_quality != -1, result_quality >= quality_result_lower_bound, result_quality-quality_result_lower_bound
+    return result_quality != -1, result_quality >= quality_result_lower_bound, result_quality/float(maximum_quality)
+
+start_time = time.time()
 
 range_end_exponent = 20
-my_alpha = 0.2
+my_alpha = 0.1
 my_eps = 0.1
 my_delta = 2**-20
-my_beta = 0.01
+my_beta = 0.1
 
+# here we can play with the sample size if we want
 samples = 1000
 
 iters = 20
@@ -39,6 +43,9 @@ for i in xrange(iters):
 did_not_fail = sum(i[0] for i in checks)
 good_quality = sum(i[1] for i in checks)
 min_quality = min(i[2] for i in checks)
+average_quality = np.average([i[2] for i in checks])
 print "proportion of times Adist returned a value: %.2f" % (did_not_fail/float(iters))
-print "proportion of times we got good quality: %.2f" % (did_not_fail/float(iters))
-print "minimum distance from quality-lower-bound: %d" % min_quality
+print "proportion of times we got good quality: %.2f" % (good_quality/float(iters))
+print "minimum max_quality/Q(result): %.2f" % min_quality
+print "average max_quality/Q(result): %.2f" % average_quality
+print "run-time: %.2f seconds" % (time.time() - start_time)
