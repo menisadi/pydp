@@ -95,13 +95,29 @@ def bulk_quality_minmax(data, domain):
 def min_max_intervals_bounding(data, max_range, j):
     if j == 0:
         return min_max_maximum_quality(data, (0, max_range))
-    ceil_data = [np.ceil(i) for i in data]
-    floor_data = [np.floor(i) for i in data]
-    rounded_data = floor_data + ceil_data
-    points_of_interest = list(set(filter(lambda x: 0 <= x <= max_range, rounded_data)))
-    start_point = [min(quality_minmax(data, i), quality_minmax(data, i+2**j-1)) for i in points_of_interest]
-    end_point = [min(quality_minmax(data, i-2**j+1), quality_minmax(data, i)) for i in points_of_interest]
-    return max(start_point+end_point)
+
+    ceil_data = set(np.ceil(x) for x in data)
+    floor_data = set(np.floor(x) for x in data)
+    rounded_data = floor_data.union(ceil_data)
+    points_of_interest = [x for x in rounded_data if x >= 2**j - 1 or x <= max_range - 2**j + 1]
+    before = set(y - 2**j + 1 for y in points_of_interest if y >= 2**j - 1)
+    after = set(y + 2**j - 1 for y in points_of_interest if y <= max_range - 2**j + 1)
+
+    points_to_qualify = sorted(list(set(points_of_interest).union(before, after)))
+    if len(points_to_qualify) == 0:
+        return 0
+    else:
+        interest_qualities = bulk_quality_minmax(data, points_to_qualify)
+
+        def __quality__(d):
+            ind = points_to_qualify.index(d)
+            return interest_qualities[ind]
+
+        start_point = [min(__quality__(x), __quality__(x+2**j-1))
+                       for x in points_of_interest if x <= max_range - 2**j + 1]
+        end_point = [min(__quality__(x-2**j+1), __quality__(x))
+                     for x in points_of_interest if x >= 2**j - 1]
+        return max(start_point+end_point)
 
 
 def min_max_maximum_quality(data, interval):
