@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="906c0e72-48a7-488e-bb18-debb718b5848" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/probability_flat_concave_test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/bounds.py" afterPath="$PROJECT_DIR$/src/bounds.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/flat_concave.py" afterPath="$PROJECT_DIR$/src/flat_concave.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Cluster.iws" />
@@ -77,8 +74,8 @@
       <file leaf-file-name="probability_flat_concave_test.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/probability_flat_concave_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4608">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7696">
+              <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -493,18 +490,6 @@
       <option name="number" value="Default" />
       <updated>1442480449443</updated>
     </task>
-    <task id="LOCAL-00031" summary="temp example">
-      <created>1445418726551</created>
-      <option name="number" value="00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1445418726551</updated>
-    </task>
-    <task id="LOCAL-00032" summary="looks better">
-      <created>1445421108194</created>
-      <option name="number" value="00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1445421108195</updated>
-    </task>
     <task id="LOCAL-00033" summary="deleted few lines">
       <created>1445421183523</created>
       <option name="number" value="00033" />
@@ -787,7 +772,19 @@
       <option name="project" value="LOCAL" />
       <updated>1450865534153</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="added probability test and changed the Adist to exponential mechanism">
+      <created>1450869624160</created>
+      <option name="number" value="00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1450869624160</updated>
+    </task>
+    <task id="LOCAL-00081" summary="fixes in probability test">
+      <created>1450875687452</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1450875687453</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TodoView">
@@ -801,7 +798,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-3" width="1284" height="1004" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792208" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -811,7 +808,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20700637" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47326508" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2536974" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2536974" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32844242" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32844242" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -838,8 +835,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="added plot for testing" />
-    <MESSAGE value="testing - a_dist bounds and some errors" />
     <MESSAGE value="working on bounds" />
     <MESSAGE value="cosmetics" />
     <MESSAGE value="added - bounds" />
@@ -863,11 +858,13 @@
     <MESSAGE value="nothing important" />
     <MESSAGE value="new min_max_interval_bound (faster one)" />
     <MESSAGE value="working up to 2**30!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="working up to 2**30!!" />
+    <MESSAGE value="added probability test and changed the Adist to exponential mechanism" />
+    <MESSAGE value="fixes in probability test" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes in probability test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="99" />
+      <option name="time" value="102" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1267,8 +1264,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/probability_flat_concave_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4608">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.7696">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

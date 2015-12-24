@@ -25,16 +25,17 @@ def check(t, alpha, eps, delta, beta, samples_size=0):
 
 start_time = time.time()
 
-range_end_exponent = 20
+range_end_exponent = 30
 my_alpha = 0.1
 my_eps = 0.1
-my_delta = 2**-20
+my_delta = 2**-30
+# note that flat-concave preserve (4*eps,4*delta)-difrenttial privacy
 my_beta = 0.1
 
 # here we can play with the sample size if we want
-samples = 1000
+samples = 1200
 
-iters = 20
+iters = 52
 checks = []
 for i in xrange(iters):
     print i
