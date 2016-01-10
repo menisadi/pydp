@@ -158,6 +158,10 @@ def concept_quality(sampled_data, concept):
     return sum([sampled_data[1][i] == concept(sampled_data[0][i]) for i in xrange(len(sampled_data[0]))])
 
 
+def concept_query(data, concept):
+    return sum([1 for i in data if concept(i) == 1])/float(len(data))
+
+
 def __make_point_data__(data_size, specify_spike):
     if specify_spike == -1:
         spike = np.random.randint(data_size, size=1)

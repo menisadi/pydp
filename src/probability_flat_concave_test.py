@@ -31,17 +31,17 @@ range_end_exponent = 30
 my_alpha = 0.1
 my_eps = 0.1
 my_delta = 2**-30
-# note that flat-concave preserve (4*eps,4*delta)-difrenttial privacy
+# note that flat-concave preserve (4*eps,delta)-differential privacy
 my_beta = 0.1
 
 # here we can play with the sample size if we want
 samples = 1200
 
-iters = 20
+iters = 10
 checks = []
 for i in xrange(iters):
     print i
-    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples))
+    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples,False))
 
 did_not_fail = sum(i[0] for i in checks)
 good_quality = sum(i[1] for i in checks)
