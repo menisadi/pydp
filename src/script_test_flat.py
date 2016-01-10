@@ -3,14 +3,14 @@ import examples
 import numpy as np
 import bounds
 
-range_end = 2**20
+range_end = 2**40
 
 alpha = 0.2
 eps = 0.5
 delta = 1e-6
 beta = 0.01
 
-samples_size = int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
+samples_size = 1200  # int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
 print "range size: %d" % range_end
 print "sample size: %d" % samples_size
 data_center = np.random.uniform(range_end/3, range_end/3*2)

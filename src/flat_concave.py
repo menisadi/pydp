@@ -24,7 +24,7 @@ def __build_intervals_set__(data_base, interval_length, range_max, shift = False
 
 # TODO check endpoints of interval along the code
 def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta,
-             intervals_bounding, max_in_interval):
+             intervals_bounding, max_in_interval, use_exponential=True):
     """
     RecConcave algorithm for the specific case of N=2
     :param data:
@@ -71,8 +71,12 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
 
     # step 9 ( using 'dist' algorithm )
     # print "step 9"
-    first_chosen_interval = basicdp.exponential_mechanism(data, first_intervals, max_in_interval, eps)
-    second_chosen_interval = basicdp.exponential_mechanism(data, second_intervals, max_in_interval, eps)
+    if use_exponential:
+        first_chosen_interval = basicdp.exponential_mechanism(data, first_intervals, max_in_interval, eps)
+        second_chosen_interval = basicdp.exponential_mechanism(data, second_intervals, max_in_interval, eps)
+    else:
+        first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
+        second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
 
     if type(first_chosen_interval) == str or type(second_chosen_interval) == str:
         raise ValueError("stability problem, try taking more samples!")
