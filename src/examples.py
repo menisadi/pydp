@@ -162,6 +162,41 @@ def concept_query(data, concept):
     return sum([1 for i in data if concept(i) == 1])/float(len(data))
 
 
+# TODO choose approach
+# first approach
+def interval_threshold_quality(sampled_data, threshold_index):
+    # assuming that sampled_data is two list of the same length - one of x's and one of y's
+    xs = sampled_data[0]
+    ys = sampled_data[1]
+    # sum the number of indexes which 'agree' to the give threshold
+    return sum([(ys[i] == 0 and xs[i] >= threshold_index) or
+                (ys[i] == 1 and xs[i] < threshold_index) for i in xrange(len(xs))])
+
+
+# second approach
+def threshold_function(index, threshold):
+    if index < threshold:
+        return 1
+    else:
+        return 0
+
+
+# second approach
+def interval_threshold_quality2(sampled_data, threshold_index):
+    def concept(x):
+        return threshold_function(x, threshold_index)
+    return concept_quality(sampled_data, concept)
+
+
+def point_concept(p):
+    def concept(x):
+        if x == p:
+            return 1
+        else:
+            return 0
+    return concept
+
+
 def __make_point_data__(data_size, specify_spike):
     if specify_spike == -1:
         spike = np.random.randint(data_size, size=1)
@@ -250,31 +285,4 @@ def make_neighbour_set(data, label_type='float'):
 # TODO needed?
 def databases_distance(data_1, data_2):
     return sum(data_1 != data_2)
-
-
-# TODO choose approach
-# first approach
-def interval_threshold_quality(sampled_data, threshold_index):
-    # assuming that sampled_data is two list of the same length - one of x's and one of y's
-    xs = sampled_data[0]
-    ys = sampled_data[1]
-    # sum the number of indexes which 'agree' to the give threshold
-    return sum([(ys[i] == 0 and xs[i] >= threshold_index) or
-                (ys[i] == 1 and xs[i] < threshold_index) for i in xrange(len(xs))])
-
-
-# second approach
-def threshold_function(index, threshold):
-    if index < threshold:
-        return 1
-    else:
-        return 0
-
-
-# second approach
-def interval_threshold_quality2(sampled_data, threshold_index):
-    def concept(x):
-        return threshold_function(x, threshold_index)
-    return concept_quality(sampled_data, concept)
-
 
