@@ -4,6 +4,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import examples
+import qualities
 
 
 class TestBasicdp(unittest.TestCase):
@@ -38,12 +39,12 @@ class TestBasicdp(unittest.TestCase):
         Taking the worst case from NUMBER_OF_ITERATIONS tries
         """
 
-        worst_result = mechanism(rand_data, range_set, examples.bulk_quality_median, self.eps, bulk)
+        worst_result = mechanism(rand_data, range_set, qualities.bulk_quality_median, self.eps, bulk)
         # evaluate self.number_of_iterations times and save the worst case
         for k in range(self.NUMBER_OF_ITERATIONS):
-            current_result = mechanism(rand_data, range_set, examples.bulk_quality_median, self.eps, bulk)
-            if examples.quality_median(rand_data, current_result) < \
-                    examples.quality_median(rand_data, worst_result):
+            current_result = mechanism(rand_data, range_set, qualities.bulk_quality_median, self.eps, bulk)
+            if qualities.quality_median(rand_data, current_result) < \
+                    qualities.quality_median(rand_data, worst_result):
                 worst_result = current_result
 
         return worst_result
@@ -66,14 +67,14 @@ class TestBasicdp(unittest.TestCase):
         result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set, True)
 
         print "The Noisy-Max Mechanism returned: %.2f" % result
-        print "Result quality: %d\n" % examples.quality_median(rand_data, result)
+        print "Result quality: %d\n" % qualities.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(examples.quality_median(rand_data, result),
-                                examples.quality_median(rand_data,
+        self.assertGreaterEqual(qualities.quality_median(rand_data, result),
+                                qualities.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
     def test_exponential_mechanism(self):
@@ -93,14 +94,14 @@ class TestBasicdp(unittest.TestCase):
         result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set, True)
 
         print "The Exponential Mechanism returned: %.2f" % result
-        print "Result quality: %d\n" % examples.quality_median(rand_data, result)
+        print "Result quality: %d\n" % qualities.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(examples.quality_median(rand_data, result),
-                                examples.quality_median(rand_data,
+        self.assertGreaterEqual(qualities.quality_median(rand_data, result),
+                                qualities.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
     def test_dist(self):
@@ -114,9 +115,9 @@ class TestBasicdp(unittest.TestCase):
         factor = np.log(1/delta)/self.eps # mode should appear at least this amount of times for stability
         print "the spike is at index: %d" % data.index(1)
         samples = examples.get_labeled_sample(data, self.DATA_SIZE*factor*2)
-        print "the spike appears %d times in the samples" % examples.quality_point_mode(samples, data.index(1))
+        print "the spike appears %d times in the samples" % qualities.quality_point_mode(samples, data.index(1))
         answers_set = range(self.DATA_SIZE)
-        result = basicdp.a_dist(samples, answers_set, examples.quality_point_mode, self.eps, delta)
+        result = basicdp.a_dist(samples, answers_set, qualities.quality_point_mode, self.eps, delta)
         if type(result) == str:
             print "A_dist returned: %s" % result
         else:

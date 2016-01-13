@@ -1,3 +1,7 @@
+"""
+naive implementation of rec_concave
+generic but not efficient
+"""
 import basicdp
 import math
 import matplotlib.pyplot as plt
@@ -13,6 +17,7 @@ def rec_concave_basis(range_max_value, quality_function, eps, data, bulk=False):
 
 # A. Beimel, K. Nissim, and U. Stemmer. Private learning and sanitization
 def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound, bulk=False):
+    # TODO fix so it will work
     # TODO add docstring
     # TODO go through variables names
     if recursion_bound == 1 or range_max_value <= 32:

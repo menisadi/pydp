@@ -1,25 +1,6 @@
 import basicdp
 import math
-from collections import deque
-
-
-def __build_intervals_set__(data_base, interval_length, range_max, shift = False):
-    # TODO move thins method outside of the module
-    # TODO remove non-negative assumption dependence
-    # assuming all the data is non-negative
-    data_que = deque(sorted(data_base))
-    list_of_intervals = []
-    data_next = -1
-    while len(data_que) > 0 and data_next <= range_max:
-        data_next = data_que.popleft()
-        next_relevant_interval_start = (int(data_next - shift * interval_length/2) / interval_length) \
-                                       * interval_length + shift*interval_length/2
-        next_relevant_interval = (next_relevant_interval_start, next_relevant_interval_start + interval_length)
-        list_of_intervals.append(next_relevant_interval)
-        while data_next < next_relevant_interval[1] and len(data_que) > 0:
-            data_next = data_que.popleft()
-
-    return list_of_intervals
+from examples import __build_intervals_set__
 
 
 # TODO check endpoints of interval along the code

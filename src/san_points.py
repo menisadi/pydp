@@ -1,6 +1,7 @@
 from collections import Counter
 from basicdp import choosing_mechanism
-from examples import concept_query, point_concept
+from qualities import concept_query
+from examples import point_concept
 from numpy import log, sqrt, abs
 from numpy.random import randint, laplace
 from bounds import choosing_mechanism_data_size
@@ -48,7 +49,7 @@ m = int(choosing_mechanism_data_size(1, n_a, n_b, n_e, n_d)) + 1
 n = 20
 print m
 d = [randint(1, n/2) for i in xrange(m/5)]
-d.extend([randint(n/2, n) for i in xrange(4*m/5+1)])
+d.extend([randint(n/2, n) for k in xrange(4*m/5+1)])
 print len(d)
 print Counter(d)
 san = sanitize(d, set(range(n)), 0.2, 0.1, 0.5, 2**-20)

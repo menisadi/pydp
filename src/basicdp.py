@@ -88,11 +88,22 @@ def a_dist(data, domain, quality_function, eps, delta, bulk=False):
 
 
 def above_threshold_on_queries(data, queries, threshold, eps):
+    """
+    above_threshold algorithm - privacy preserving algorithm that given a list of sensitivity-1 queries
+    tests if their evaluation over the given data exceeds the threshold
+    :param data: database
+    :param queries: list of queries
+    :param threshold: fixed threshold
+    :param eps: privacy parameter
+    :return: list of answers to the queries until the first time we get answer above the threshold
+    """
+
     initialized_threshold = above_threshold(data, threshold, eps)
     answers = []
     for q in queries:
-        answers.append(initialized_threshold(q))
-        if q == 'up':
+        query_result = initialized_threshold(q)
+        answers.append(query_result)
+        if query_result == 'up':
             break
     return answers
 

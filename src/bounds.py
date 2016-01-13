@@ -2,6 +2,13 @@ from math import log, sqrt
 
 
 def log_n(x, n):
+    """
+    recursive log
+    preform natural log - n times
+    :param x: input wchich the recursive log will be calculated upon
+    :param n: number of times the log will be performed
+    :return: ln(ln(ln...[n times]...ln(x)))...)
+    """
     if n == 0:
         return x
     else:

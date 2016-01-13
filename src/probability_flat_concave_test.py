@@ -3,9 +3,21 @@ import examples
 import numpy as np
 import bounds
 import time
+from qualities import quality_minmax, min_max_maximum_quality, min_max_intervals_bounding
 
 
 def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
+    """
+    run flat_concave on random data using the given parameters
+    :param t:
+    :param alpha:
+    :param eps:
+    :param delta:
+    :param beta:
+    :param samples_size:
+    :param use_exponential:
+    :return:
+    """
     range_end = 2**t
     if samples_size == 0:
         samples_size = int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
@@ -13,13 +25,13 @@ def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
     data = examples.get_random_data(samples_size, pivot=data_center)
     # data = examples.get_random_data(samples_size, 'bimodal')
     data = sorted(filter(lambda x: 0 <= x <= range_end, data))
-    maximum_quality = examples.min_max_maximum_quality(data, (0, range_end))
+    maximum_quality = min_max_maximum_quality(data, (0, range_end))
     quality_result_lower_bound = maximum_quality * (1-alpha)
     try:
-        result = flat_concave.evaluate(data, range_end, examples.quality_minmax, maximum_quality, alpha, eps, delta,
-                                       examples.min_max_intervals_bounding, examples.min_max_maximum_quality,
+        result = flat_concave.evaluate(data, range_end, quality_minmax, maximum_quality, alpha, eps, delta,
+                                       min_max_intervals_bounding, min_max_maximum_quality,
                                        use_exponential)
-        result_quality = examples.quality_minmax(data, result)
+        result_quality = quality_minmax(data, result)
     except ValueError:
         # result = -1
         result_quality = -1
