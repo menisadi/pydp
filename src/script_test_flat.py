@@ -7,12 +7,12 @@ import qualities
 
 range_end = 2**40
 
-alpha = 0.2
-eps = 0.5
+alpha = 0.1
+eps = 0.1
 delta = 1e-6
 beta = 0.01
 
-samples_size = 1200  # int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
+samples_size = 1000  # int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
 print "range size: %d" % range_end
 print "sample size: %d" % samples_size
 data_center = np.random.uniform(range_end/3, range_end/3*2)
@@ -30,7 +30,7 @@ print "testing flat_concave to find median"
 
 try:
     result = flat_concave.evaluate(data, range_end, qualities.quality_minmax, maximum_quality, alpha, eps, delta,
-                                   qualities.min_max_intervals_bounding, qualities.min_max_maximum_quality)
+                                   qualities.min_max_intervals_bounding, qualities.min_max_maximum_quality,True)
     result_quality = qualities.quality_minmax(data, result)
 except ValueError:
     print "Adist returned 'Bottom'"

@@ -119,9 +119,9 @@ def __build_intervals_set__(data_base, interval_length, range_max, shift = False
     # assuming all the data is non-negative
     data_que = deque(sorted(data_base))
     list_of_intervals = []
-    data_next = -1
+    # data_next = -1
+    data_next = data_que.popleft()
     while len(data_que) > 0 and data_next <= range_max:
-        data_next = data_que.popleft()
         next_relevant_interval_start = (int(data_next - shift * interval_length/2) / interval_length) \
                                        * interval_length + shift*interval_length/2
         next_relevant_interval = (next_relevant_interval_start, next_relevant_interval_start + interval_length)
