@@ -1,10 +1,8 @@
-from collections import Counter
 from basicdp import choosing_mechanism
 from qualities import concept_query
 from examples import point_concept
-from numpy import log, sqrt, abs
-from numpy.random import randint, laplace
-from bounds import choosing_mechanism_data_size
+from numpy import log, sqrt
+from numpy.random import laplace
 
 
 def __point_choice_quality__(subset):
@@ -38,22 +36,4 @@ def sanitize(samples, domain, alpha, beta, eps, delta):
             # remaining_samples += Counter()
             est[b] = concept_query(samples, point_concept(b)) + laplace(0, 1 / eps / len(samples), 1)[0]
     return est
-
-
-a, b, e, d = 0.2, 0.1, 0.5, 2**-20
-n_a = a / 2
-n_b = a * b / 4
-n_e = e / sqrt(32 * log(5/d) / a)
-n_d = a * d / 5
-m = int(choosing_mechanism_data_size(1, n_a, n_b, n_e, n_d)) + 1
-n = 20
-print m
-d = [randint(1, n/2) for i in xrange(m/5)]
-d.extend([randint(n/2, n) for k in xrange(4*m/5+1)])
-print len(d)
-print Counter(d)
-san = sanitize(d, set(range(n)), 0.2, 0.1, 0.5, 2**-20)
-print [enumerate((d, point_concept(z))) for z in xrange(1, n)]
-print san
-print sum([abs(concept_query(d, point_concept(z)) - san[z]) > a for z in xrange(1, n)])/float(n)
 

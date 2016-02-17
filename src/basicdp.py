@@ -143,8 +143,8 @@ def choosing_mechanism(data, solution_set, quality_function, growth_bound, alpha
     :return:
     """
     data_size = len(data)
-    if data_size < 16 * np.log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps:
-        raise ValueError("privacy problem - data size too small")
+    #    if data_size < 16 * np.log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps:
+    #        raise ValueError("privacy problem - data size too small")
     best_quality = max(quality_function(data, f) for f in solution_set) + np.random.laplace(0, 4 / eps, 1)
     if best_quality < alpha * data_size / 2.0:
         return 'bottom'
