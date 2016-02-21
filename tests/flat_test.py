@@ -1,8 +1,8 @@
-import flat_concave
-import examples
+import src.flat_concave
+import src.examples
 import numpy as np
-import bounds
-import qualities
+import src.bounds
+import src.qualities
 
 
 range_end = 2**40
@@ -16,10 +16,10 @@ samples_size = 1000  # int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
 print "range size: %d" % range_end
 print "sample size: %d" % samples_size
 data_center = np.random.uniform(range_end/3, range_end/3*2)
-data = examples.get_random_data(samples_size, pivot=data_center)
+data = src.examples.get_random_data(samples_size, pivot=data_center)
 data = sorted(filter(lambda x: 0 <= x <= range_end, data))
 
-maximum_quality = qualities.min_max_maximum_quality(data, (0, range_end))
+maximum_quality = src.qualities.min_max_maximum_quality(data, (0, range_end))
 
 print "the exact median is: %d" % np.median(data)
 print "the best quality of a domain element: %d" % maximum_quality
@@ -29,9 +29,9 @@ print 'minimum "allowed" quality: %d' % quality_result_lower_bound
 print "testing flat_concave to find median"
 
 try:
-    result = flat_concave.evaluate(data, range_end, qualities.quality_minmax, maximum_quality, alpha, eps, delta,
-                                   qualities.min_max_intervals_bounding, qualities.min_max_maximum_quality,True)
-    result_quality = qualities.quality_minmax(data, result)
+    result = src.flat_concave.evaluate(data, range_end, src.qualities.quality_minmax, maximum_quality, alpha, eps, delta,
+                                   src.qualities.min_max_intervals_bounding, src.qualities.min_max_maximum_quality,True)
+    result_quality = src.qualities.quality_minmax(data, result)
 except ValueError:
     print "Adist returned 'Bottom'"
     result = -1

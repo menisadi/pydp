@@ -1,9 +1,9 @@
-import flat_concave
-import examples
+import src.flat_concave
+import src.examples
 import numpy as np
-import bounds
+import src.bounds
 import time
-from qualities import quality_minmax, min_max_maximum_quality, min_max_intervals_bounding
+from src.qualities import quality_minmax, min_max_maximum_quality, min_max_intervals_bounding
 
 
 def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
@@ -20,15 +20,15 @@ def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
     """
     range_end = 2**t
     if samples_size == 0:
-        samples_size = int(bounds.step6_n2_bound(range_end, eps, alpha, beta))
+        samples_size = int(src.bounds.step6_n2_bound(range_end, eps, alpha, beta))
     data_center = np.random.uniform(range_end/3, range_end/3*2)
-    data = examples.get_random_data(samples_size, pivot=data_center)
+    data = src.examples.get_random_data(samples_size, pivot=data_center)
     # data = examples.get_random_data(samples_size, 'bimodal')
     data = sorted(filter(lambda x: 0 <= x <= range_end, data))
     maximum_quality = min_max_maximum_quality(data, (0, range_end))
     quality_result_lower_bound = maximum_quality * (1-alpha)
     try:
-        result = flat_concave.evaluate(data, range_end, quality_minmax, maximum_quality, alpha, eps, delta,
+        result = src.flat_concave.evaluate(data, range_end, quality_minmax, maximum_quality, alpha, eps, delta,
                                        min_max_intervals_bounding, min_max_maximum_quality,
                                        use_exponential)
         result_quality = quality_minmax(data, result)
@@ -49,11 +49,11 @@ my_beta = 0.1
 # here we can play with the sample size if we want
 samples = 1200
 
-iters = 10
+iters = 2
 checks = []
 for i in xrange(iters):
     print i
-    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples,False))
+    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples, True))
 
 did_not_fail = sum(i[0] for i in checks)
 good_quality = sum(i[1] for i in checks)

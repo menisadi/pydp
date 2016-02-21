@@ -1,7 +1,6 @@
 import basicdp
 import math
 from examples import __build_intervals_set__
-import matplotlib.pyplot as plt
 
 
 # TODO check endpoints of interval along the code
@@ -56,38 +55,6 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     if use_exponential:
         first_chosen_interval = basicdp.exponential_mechanism(data, first_intervals, max_in_interval, eps)
         second_chosen_interval = basicdp.exponential_mechanism(data, second_intervals, max_in_interval, eps)
-        test1 = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
-        test2 = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
-        print test1,test2
-        print first_chosen_interval, second_chosen_interval
-        if type(test1) == str or type(test2) == str:
-            print "dist would have fail"
-            print first_chosen_interval
-            qualified_domain = [max_in_interval(data, i) for i in first_intervals]
-            ys = [i for i in qualified_domain]
-            xs = [i[0] for i in first_intervals]
-            h1_score = max(qualified_domain)
-            h1 = first_intervals[qualified_domain.index(h1_score)] 
-            qualified_domain.remove(h1_score)
-            first_intervals.remove(h1)
-            h2_score = max(qualified_domain)
-            h2 = first_intervals[qualified_domain.index(h2_score)]
-            print h1, h2
-            plt.plot(xs, ys, 'o')
-            plt.show()
-            print second_chosen_interval
-            qualified_domain = [max_in_interval(data, i) for i in second_intervals]
-            ys = [i for i in qualified_domain]
-            xs = [i[0] for i in second_intervals]
-            h1_score = max(qualified_domain)
-            h1 = second_intervals[qualified_domain.index(h1_score)] 
-            qualified_domain.remove(h1_score)
-            second_intervals.remove(h1)
-            h2_score = max(qualified_domain)
-            h2 = second_intervals[qualified_domain.index(h2_score)]
-            print h1, h2
-            plt.plot(xs, ys, 'o')
-            plt.show()
     else:
         first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
         second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)

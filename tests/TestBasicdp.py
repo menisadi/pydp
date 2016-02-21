@@ -1,10 +1,10 @@
 import unittest
-import basicdp
+import src.basicdp
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import examples
-import qualities
+import src.examples
+import src.qualities
 
 
 class TestBasicdp(unittest.TestCase):
@@ -39,12 +39,12 @@ class TestBasicdp(unittest.TestCase):
         Taking the worst case from NUMBER_OF_ITERATIONS tries
         """
 
-        worst_result = mechanism(rand_data, range_set, qualities.bulk_quality_median, self.eps, bulk)
+        worst_result = mechanism(rand_data, range_set, src.qualities.bulk_quality_median, self.eps, bulk)
         # evaluate self.number_of_iterations times and save the worst case
         for k in range(self.NUMBER_OF_ITERATIONS):
-            current_result = mechanism(rand_data, range_set, qualities.bulk_quality_median, self.eps, bulk)
-            if qualities.quality_median(rand_data, current_result) < \
-                    qualities.quality_median(rand_data, worst_result):
+            current_result = mechanism(rand_data, range_set, src.qualities.bulk_quality_median, self.eps, bulk)
+            if src.qualities.quality_median(rand_data, current_result) < \
+                    src.qualities.quality_median(rand_data, worst_result):
                 worst_result = current_result
 
         return worst_result
@@ -54,7 +54,7 @@ class TestBasicdp(unittest.TestCase):
         over a normally distributed data and mean quality function
         :return: Pass if the noisy_max returns a relatively high value result
         """
-        rand_data = examples.get_random_data(self.DATA_SIZE)
+        rand_data = src.examples.get_random_data(self.DATA_SIZE)
         range_set = range(-self.DOMAIN_SIZE, self.DOMAIN_SIZE)
 
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
@@ -64,17 +64,17 @@ class TestBasicdp(unittest.TestCase):
         print "The maximum 'allowed' difference between the " \
             "mechanism result and the true median is: %.2f" % difference
 
-        result = self.__test_mechanism(basicdp.noisy_max, rand_data, range_set, True)
+        result = self.__test_mechanism(src.basicdp.noisy_max, rand_data, range_set, True)
 
         print "The Noisy-Max Mechanism returned: %.2f" % result
-        print "Result quality: %d\n" % qualities.quality_median(rand_data, result)
+        print "Result quality: %d\n" % src.qualities.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(qualities.quality_median(rand_data, result),
-                                qualities.quality_median(rand_data,
+        self.assertGreaterEqual(src.qualities.quality_median(rand_data, result),
+                                src.qualities.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
     def test_exponential_mechanism(self):
@@ -82,7 +82,7 @@ class TestBasicdp(unittest.TestCase):
         over a normally distributed data and mean quality function
         :return: Pass if the exponential_mechanism returns a relatively high value result
         """
-        rand_data = examples.get_random_data(self.DATA_SIZE)
+        rand_data = src.examples.get_random_data(self.DATA_SIZE)
         range_set = range(-self.DOMAIN_SIZE, self.DOMAIN_SIZE)
 
         # Pr[quality_median(result) < quality_median(np.median(randD))-2/eps*(log(domain_size)+t)] < exp(-t)
@@ -91,17 +91,17 @@ class TestBasicdp(unittest.TestCase):
         print "The maximum 'allowed' difference between the " \
             "mechanism result and the true median is: %.2f" % difference
 
-        result = self.__test_mechanism(basicdp.exponential_mechanism, rand_data, range_set, True)
+        result = self.__test_mechanism(src.basicdp.exponential_mechanism, rand_data, range_set, True)
 
         print "The Exponential Mechanism returned: %.2f" % result
-        print "Result quality: %d\n" % qualities.quality_median(rand_data, result)
+        print "Result quality: %d\n" % src.qualities.quality_median(rand_data, result)
 
         # print and plot the results
         # self.__plot_test_results(result, rand_data, range_set)
 
         # pass if both mechanism returns a relatively high value result
-        self.assertGreaterEqual(qualities.quality_median(rand_data, result),
-                                qualities.quality_median(rand_data,
+        self.assertGreaterEqual(src.qualities.quality_median(rand_data, result),
+                                src.qualities.quality_median(rand_data,
                                                     np.median(rand_data)) - difference)
 
     def test_dist(self):
@@ -110,14 +110,14 @@ class TestBasicdp(unittest.TestCase):
         A_dist should return the mode - the only value that is labeled by 1
         :return: Pass if the A_dist returns a value and not 'bottom'
         """
-        data = examples.get_random_data(self.DATA_SIZE, 'point')
+        data = src.examples.get_random_data(self.DATA_SIZE, 'point')
         delta = 1e-6
         factor = np.log(1/delta)/self.eps # mode should appear at least this amount of times for stability
         print "the spike is at index: %d" % data.index(1)
-        samples = examples.get_labeled_sample(data, self.DATA_SIZE*factor*2)
-        print "the spike appears %d times in the samples" % qualities.quality_point_mode(samples, data.index(1))
+        samples = src.examples.get_labeled_sample(data, self.DATA_SIZE*factor*2)
+        print "the spike appears %d times in the samples" % src.qualities.quality_point_mode(samples, data.index(1))
         answers_set = range(self.DATA_SIZE)
-        result = basicdp.a_dist(samples, answers_set, qualities.quality_point_mode, self.eps, delta)
+        result = src.basicdp.a_dist(samples, answers_set, src.qualities.quality_point_mode, self.eps, delta)
         if type(result) == str:
             print "A_dist returned: %s" % result
         else:
