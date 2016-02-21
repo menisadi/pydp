@@ -27,7 +27,6 @@ dim = ceil(log2(max_sample + 1))
 end_domain = 2**int(dim)
 print max_sample
 print dim
-# print end_domain
 print Counter(data)
 san = sanitize(data, a, b, e, d)
 print [(z, concept_query(data, point_concept(z))) for z in xrange(end_domain)]
