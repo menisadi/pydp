@@ -1,26 +1,17 @@
-import src.flat_concave
+"""
+An atempt to compare the result from flat_concave and the basic exponential-mechanism
+ right now - not working due to memory problem
+"""
+from src.basicdp import exponential_mechanism
 import src.examples
 import numpy as np
 import src.bounds
 import time
-from src.qualities import quality_minmax, min_max_maximum_quality, min_max_intervals_bounding
+from src.qualities import bulk_quality_minmax, quality_minmax, min_max_maximum_quality
 
 
-def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
-    """
-    run flat_concave on random data using the given parameters
-    :param t:
-    :param alpha:
-    :param eps:
-    :param delta:
-    :param beta:
-    :param samples_size:
-    :param use_exponential:
-    :return:
-    """
+def check(t, alpha, eps, samples_size):
     range_end = 2**t
-    if samples_size == 0:
-        samples_size = int(src.bounds.step6_n2_bound(range_end, eps, alpha, beta))
     data_center = np.random.uniform(range_end/3, range_end/3*2)
     data = src.examples.get_random_data(samples_size, pivot=data_center)
     # data = examples.get_random_data(samples_size, 'bimodal')
@@ -28,9 +19,7 @@ def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
     maximum_quality = min_max_maximum_quality(data, (0, range_end))
     quality_result_lower_bound = maximum_quality * (1-alpha)
     try:
-        result = src.flat_concave.evaluate(data, range_end, quality_minmax, maximum_quality, alpha, eps, delta,
-                                       min_max_intervals_bounding, min_max_maximum_quality,
-                                       use_exponential)
+        result = exponential_mechanism(data, range(range_end), bulk_quality_minmax, eps, True)
         result_quality = quality_minmax(data, result)
     except ValueError:
         # result = -1
@@ -53,7 +42,7 @@ iters = 10
 checks = []
 for i in xrange(iters):
     print i
-    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples, True))
+    checks.append(check(range_end_exponent, my_alpha, my_eps, samples))
 
 did_not_fail = sum(i[0] for i in checks)
 good_quality = sum(i[1] for i in checks)

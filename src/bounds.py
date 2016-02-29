@@ -37,16 +37,15 @@ def dist_bound(eps, delta, alpha, beta):
     """
     calculate the minimum sample size for which A_dist at step 9 will fail
     only in probability < beta
-    assuming the median problem so: r = samples/2
 
     :param eps, delta: privacy parameter
     :param alpha: approximation parameter (from 0 to 1)
     :param beta: failre probability
-    :return: the minimum samples required for A_dist to run
+    :return: the minimum promise-parameter required for A_dist to run
     """
 
     r = 8 * log(1 / (beta * delta)) / alpha / eps / 3
-    return 2*r
+    return r
 
 
 def rec_bound(t, rec, eps, delta, alpha, beta):
@@ -60,15 +59,16 @@ def rec_bound(t, rec, eps, delta, alpha, beta):
     return 8**rec*4/alpha/eps*(log(32/beta/delta) + log_n(t, rec))
 
 
-def exponential_upper_bound(delta, beta):
+def exponential_bound(eps, alpha, beta, domain_size):
     """
     calculate the maximum domain size for which the exponential mechanism
     will fail to return the highest rated element only in probability < beta
     assuming that the gap between the highest score and the second highest score is at least
     log (1 / (delta * beta)) / eps
-    :return: maximum domain size
+    :return: the minimum promise-parameter required for the exponential-mechanism to run well
     """
-    return float(sqrt(beta/delta))
+    r = 16 * log(log(domain_size, 2) / beta) / alpha / eps / 3
+    return r
 
 
 def good_center_points_in_cluster(data_size, dimension, eps, delta, beta):
@@ -97,5 +97,9 @@ def choosing_mechanism_data_size(growth_bound, alpha, beta, eps, delta):
     :return:
     """
     return 16 * log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps
+
+
+def san_points(eps, delta, alpha, beta):
+    return 16/alpha**1.5/eps*sqrt(log(5/delta))*log(16/alpha/beta/eps/delta)
 
 
