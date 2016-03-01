@@ -40,10 +40,10 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
 
     # step 6
     # print "step 6"
-    recursion_returned = basicdp.exponential_mechanism(data, range(log_of_range+1), recursive_quality_function, eps)
+    recursion_returned = basicdp.exponential_mechanism_big(data, range(log_of_range+1), recursive_quality_function, eps)
 
     good_interval = 8 * (2 ** recursion_returned)
-    # print "good interval: %d" % good_interval
+    print "good interval: %d" % good_interval
 
     # step 7
     # print "step 7"
@@ -53,19 +53,26 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 9 ( using 'dist' algorithm )
     # print "step 9"
     if use_exponential:
-        first_chosen_interval = basicdp.exponential_mechanism(data, first_intervals, max_in_interval, eps)
-        second_chosen_interval = basicdp.exponential_mechanism(data, second_intervals, max_in_interval, eps)
+        first_chosen_interval = basicdp.exponential_mechanism_big(data, first_intervals, max_in_interval, eps)
+        second_chosen_interval = basicdp.exponential_mechanism_big(data, second_intervals, max_in_interval, eps)
     else:
         first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
         second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
 
-    if type(first_chosen_interval) == str or type(second_chosen_interval) == str:
+    if type(first_chosen_interval) == str and type(second_chosen_interval) == str:
         raise ValueError("stability problem, try taking more samples!")
 
     # step 10
     # print "step 10"
-    first_chosen_interval_as_list = range(first_chosen_interval[0], first_chosen_interval[1]+1)
-    second_chosen_interval_as_list = range(second_chosen_interval[0], second_chosen_interval[1]+1)
-    return basicdp.exponential_mechanism(data, first_chosen_interval_as_list + second_chosen_interval_as_list,
+    if type(first_chosen_interval) == str:
+        first_chosen_interval_as_list = []
+    else:
+        first_chosen_interval_as_list = range(first_chosen_interval[0], first_chosen_interval[1]+1)
+    if type(second_chosen_interval) == str:
+        second_chosen_interval_as_list = []
+    else:
+        second_chosen_interval_as_list = range(second_chosen_interval[0], second_chosen_interval[1]+1)
+
+    return basicdp.exponential_mechanism_big(data, first_chosen_interval_as_list + second_chosen_interval_as_list,
                                          extended_quality_function, eps)
 

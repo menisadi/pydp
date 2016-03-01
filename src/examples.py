@@ -64,6 +64,7 @@ def get_random_data(data_size, distribution_type='normal', pivot=0, specify_para
         'uniform': lambda: np.random.uniform(pivot, data_size, data_size),
         'point': lambda: __make_point_data__(data_size, specify_parameter),  # POINT_d
         'threshold': lambda: __make_threshold_data__(data_size, specify_parameter),  # THRESH_d
+        'splitted': lambda: np.array([pivot/3., pivot/3.*5] * (data_size / 2))
     }
     # if user call for unknown data-type return a normal distributed one
     return data_switch.get(distribution_type, data_switch['normal'])()

@@ -22,7 +22,7 @@ def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
     if samples_size == 0:
         samples_size = int(src.bounds.step6_n2_bound(range_end, eps, alpha, beta))
     data_center = np.random.uniform(range_end/3, range_end/3*2)
-    data = src.examples.get_random_data(samples_size, pivot=data_center)
+    data = src.examples.get_random_data(samples_size, distribution_type='splitted', pivot=data_center)
     # data = examples.get_random_data(samples_size, 'bimodal')
     data = sorted(filter(lambda x: 0 <= x <= range_end, data))
     maximum_quality = min_max_maximum_quality(data, (0, range_end))
@@ -47,13 +47,13 @@ my_delta = 2**-30
 my_beta = 0.1
 
 # here we can play with the sample size if we want
-samples = 1200
+samples = 50000
 
-iters = 10
+iters = 1
 checks = []
 for i in xrange(iters):
     print i
-    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples, True))
+    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples, False))
 
 did_not_fail = sum(i[0] for i in checks)
 good_quality = sum(i[1] for i in checks)
