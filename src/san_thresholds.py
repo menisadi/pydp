@@ -1,18 +1,16 @@
 from numpy.random import laplace
 from math import log, ceil
-
-
-def points_in_subset(data, subset):
-    return len([i for i in data if subset[0] <= i <= subset[1]])
+from qualities import points_in_subset, point_count_intervals_bounding
+import flat_concave
 
 
 def sanitize(samples, domain_range, alpha, beta, eps, delta):
     san_data = []
     calls = 77 / alpha
-    return rec_sanitize(samples, domain_range, alpha, beta, eps, delta, san_data, calls)
+    return __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta, san_data, calls)
 
 
-def rec_sanitize(samples, domain_range, alpha, beta, eps, delta, san_data, calls):
+def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta, san_data, calls):
     # step 1
     if calls == 0:
         return
@@ -29,8 +27,19 @@ def rec_sanitize(samples, domain_range, alpha, beta, eps, delta, san_data, calls
     domain_size = domain_range[1] - domain_range[0] + 1
     log_size = int(ceil(log(domain_size, 2)))
     size_tag = 2**log_size
-    # step 5
-    for j in xrange(log_size+1):
-        pass
+    # step 6
+
+    def quality(data, j):
+        min(point_count_intervals_bounding(data, domain_range, j)-alpha * sample_size / 32,
+            3 * alpha * sample_size / 32 - point_count_intervals_bounding(data, domain_range, j-1))
+
+    # step 7
+    r = alpha * sample_size / 32
+
+    # step 8
+    # new_eps = eps/3/
+    # flat_concave.evaluate(samples, log_size, quality, r, 1/4., eps, delta, )
+    # (data, range_max_value, quality_function, quality_promise, approximation, eps, delta,
+    #          intervals_bounding, max_in_interval, use_exponential=True):
     return
 

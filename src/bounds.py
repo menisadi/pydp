@@ -1,6 +1,13 @@
 from math import log, sqrt
 
 
+def log_star(x):
+    if x <= 1:
+        return 0
+    else:
+        return 1 + log_star(log(x))
+
+
 def log_n(x, n):
     """
     recursive log

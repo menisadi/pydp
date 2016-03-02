@@ -128,6 +128,29 @@ def min_max_maximum_quality(data, interval):
     return min(less_than, greater_than)
 
 
+def point_in_interval(point, interval):
+    return interval[0] <= point <= interval[1]
+
+
+def points_in_subset(data, subset):
+    return len([i for i in data if point_in_interval(i, subset)])
+
+
+# TODO no so efficient
+def point_count_intervals_bounding(data, interval, j):
+    if j == -1:
+        return 0
+    if j == 0:
+        return min(len(data), 1)
+    data_in_interval = [i for i in data if point_in_interval(i, interval)]
+    max_points_in_interval = 0
+    for d in data_in_interval:
+        sub_interval_d = min(d + 2**j - 1, interval[1])
+        points_in_sub_interval = sum(1 for i in data if d <= i <= sub_interval_d)
+        max_points_in_interval = max(max_points_in_interval, points_in_sub_interval)
+    return max_points_in_interval
+
+
 # TODO not in use!
 def quality_mode(data, range_element):
     return sum([d == range_element for d in data])

@@ -29,8 +29,9 @@ print 'minimum "allowed" quality: %d' % quality_result_lower_bound
 print "testing flat_concave to find median"
 
 try:
-    result = src.flat_concave.evaluate(data, range_end, src.qualities.quality_minmax, maximum_quality, alpha, eps, delta,
-                                   src.qualities.min_max_intervals_bounding, src.qualities.min_max_maximum_quality,True)
+    result = src.flat_concave.evaluate(data, range_end, src.qualities.quality_minmax, maximum_quality,
+                                       alpha, eps, delta, src.qualities.min_max_intervals_bounding,
+                                       src.qualities.min_max_maximum_quality, True)
     result_quality = src.qualities.quality_minmax(data, result)
 except ValueError:
     print "Adist returned 'Bottom'"
