@@ -1,6 +1,6 @@
 import numpy as np
-from collections import deque
-
+from collections import deque, Counter
+from numpy.random import exponential
 
 def iterlen(it):
     """
@@ -137,7 +137,8 @@ def points_in_subset(data, subset):
 
 
 # TODO no so efficient
-def point_count_intervals_bounding(data, interval, j):
+# TODO there is also a correctness problem
+def point_count_intervals_bounding2(data, interval, j):
     if j == -1:
         return 0
     if j == 0:
@@ -149,6 +150,50 @@ def point_count_intervals_bounding(data, interval, j):
         points_in_sub_interval = sum(1 for i in data if d <= i <= sub_interval_d)
         max_points_in_interval = max(max_points_in_interval, points_in_sub_interval)
     return max_points_in_interval
+
+
+def point_count_intervals_bounding(data, interval, j):
+    if j == 0:
+        return min(len(data), 1)
+    data_in_interval = [i for i in data if point_in_interval(i, interval)]
+    if len(data_in_interval) == 0:
+        return 0
+    data_que = deque(sorted(data_in_interval))
+    start, end = interval[0], min(interval[1], interval[0]+2**j)
+    interval_remain = (end + 1, interval[1])
+    points_remain = [i for i in data_in_interval if point_in_interval(i, interval_remain)]
+    points_remain_que = deque(sorted(points_remain))
+    curr_interval = (start, end)
+    max_pis = pis = points_in_subset(data, curr_interval)
+    if len(points_remain) == 0:
+        return max_pis
+    # checks if the sub-lists sum-up to the entire list
+    # assert sum([i in points_remain for i in data])==len(data_in_interval)-pis
+    next_in = data_que.popleft()
+    next_out = points_remain_que.popleft()
+    start_in_data, end_in_data = start in data_in_interval,  end in data_in_interval
+    dist_to_next_in, dist_to_next_out = next_in - start, next_out - end
+    while len(points_remain_que) > 0:
+        if dist_to_next_in < dist_to_next_out:
+            pis -= int(start_in_data)
+            start_in_data, end_in_data = True, False
+            start = next_in
+            next_in = data_que.popleft()
+            end = start + 2**j
+            dist_to_next_in, dist_to_next_out = next_in - start, next_out - end
+        else:
+            pis += int(not start_in_data)
+            max_pis = max(pis, max_pis)
+            end = next_out
+            next_out = points_remain_que.popleft()
+            start = end - 2**j
+            if dist_to_next_in == dist_to_next_out:
+                start_in_data, end_in_data = True, True
+                next_in = data_que.popleft()
+            else:
+                start_in_data, end_in_data = False, True
+            dist_to_next_in, dist_to_next_out = next_in - start, next_out - end
+    return max_pis
 
 
 # TODO not in use!
