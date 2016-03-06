@@ -7,7 +7,7 @@ import math
 import matplotlib.pyplot as plt
 
 
-def rec_concave_basis(range_max_value, quality_function, eps, data, bulk=False):
+def __rec_concave_basis__(range_max_value, quality_function, eps, data, bulk=False):
     """recursion basis for the reconcave procedure - execute the exponential mechanism
     note that the parameters r,alpha,delta and N are not being used
     reconcave_basis(solution set size, quality function of sensitivity 1, eps privacy parameter, solution set)
@@ -16,12 +16,13 @@ def rec_concave_basis(range_max_value, quality_function, eps, data, bulk=False):
 
 
 # A. Beimel, K. Nissim, and U. Stemmer. Private learning and sanitization
-def evaluate(data, range_max_value, quality_function, quality_promise, approximation, eps, delta, recursion_bound, bulk=False):
+def evaluate(data, range_max_value, quality_function, quality_promise,
+             approximation, eps, delta, recursion_bound, bulk=False):
     # TODO fix so it will work
     # TODO add docstring
     # TODO go through variables names
     if recursion_bound == 1 or range_max_value <= 32:
-        return rec_concave_basis(range_max_value, quality_function, eps, data, bulk)
+        return __rec_concave_basis__(range_max_value, quality_function, eps, data, bulk)
     else:
         recursion_bound -= 1
 
@@ -34,7 +35,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
         qualities = quality_function(data, range(int(range_max_value)+1))
     else:
         qualities = [quality_function(data, i) for i in range(int(range_max_value)+1)]
-    qualities.extend([min(0, qualities[range_max_value]) for i in xrange(range_max_value,range_max_value_tag)])
+    qualities.extend([min(0, qualities[range_max_value]) for _ in xrange(range_max_value, range_max_value_tag)])
     
     def extended_quality_function(j):
         return qualities[j]
@@ -46,35 +47,18 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 3
     print "step 3"
 
-    # TODO delete variable - recursion_limit
-    def min_of_intervals(data_base, j, recursion_limit=log_of_range*2):
-        if j == 0:
-            return [qualities]
-        else:
-            if recursion_limit == 0 : 
-                raise ValueError('recursion problem')
-            mins = min_of_intervals(data_base, j-1, recursion_limit-1)
-            last_mins = mins[len(mins) - 1]
-            mins.append([min(last_mins[2*i:2*i+2]) for i in range(len(last_mins)/2)])
-            return mins
+    def intervals_bounding(j):
+        if j == log_of_range+1:
+            return min(0, intervals_bounding(log_of_range))
+        return max(min(extended_quality_function(e) for e in xrange(a, a+2**j-1))
+                   for a in xrange(0, range_max_value_tag-2**j+1))
 
-    def intervals_bounding(data_base, log_range_max):
-        maxs = [max(j) for j in min_of_intervals(data_base, log_range_max)]
-        # why do we need this?
-        maxs.append(min(0,maxs[len(maxs)-1]))
-        return maxs
-    
     # step 4
     print "step 4"
 
-    def recursive_quality_function(data_base, domain):
-        if type(domain) == int:
-            domain_len = domain
-        else:
-            domain_len = max(domain)
-        intervals_bounding_list = intervals_bounding(data_base, domain_len)
-        return [min(intervals_bounding_list[j] - (1 - approximation) * quality_promise,
-                    quality_promise-intervals_bounding_list[j + 1]) for j in xrange(domain_len+1)]
+    def recursive_quality_function(data_base, range_element):
+        return min(intervals_bounding(range_element) - (1 - approximation) * quality_promise,
+                   quality_promise - intervals_bounding(range_element + 1))
 
     # step 5
     print "step 5"
@@ -91,10 +75,10 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 7
     print "step 7"
     first_intervals = [range(range_max_value_tag)[i:i + good_interval]
-                       for i in range(0, range_max_value_tag, good_interval)]
+                       for i in xrange(0, range_max_value_tag, good_interval)]
     
     second_intervals = [range(good_interval/2, range_max_value_tag)[i:i + good_interval]
-                        for i in range(0, range_max_value_tag-good_interval/2, good_interval)]
+                        for i in xrange(0, range_max_value_tag-good_interval/2, good_interval)]
 
     # step 8
     print "step 8"
