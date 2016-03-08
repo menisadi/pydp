@@ -19,7 +19,7 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta, san_data, c
     calls -= 1
 
     # step 2
-    samples_domain_points = points_in_subset(data = samples)
+    samples_domain_points = partial(points_in_subset, data = samples)
     noisy_points_in_range = samples_domain_points(domain_range) + laplace(0, 1/eps, 1)
     sample_size = len(samples)
 
