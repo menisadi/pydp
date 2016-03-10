@@ -114,14 +114,18 @@ def databases_distance(data_1, data_2):
     return sum(data_1 != data_2)
 
 
-def __build_intervals_set__(data_base, interval_length, range_max, shift = False):
-    # TODO move thins method outside of the module
+def __build_intervals_set__(data_base, interval_length, range_start, range_max, shift=False):
+    # TODO move this method outside of the module
     # TODO remove non-negative assumption dependence
     # assuming all the data is non-negative
     data_que = deque(sorted(data_base))
     list_of_intervals = []
     # data_next = -1
     data_next = data_que.popleft()
+
+    while data_next < range_start:
+        data_next = data_que.popleft()
+
     while len(data_que) > 0 and data_next <= range_max:
         next_relevant_interval_start = (int(data_next - shift * interval_length/2) / interval_length) \
                                        * interval_length + shift*interval_length/2

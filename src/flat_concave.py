@@ -47,11 +47,12 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
 
     # step 7
     # print "step 7"
-    first_intervals = __build_intervals_set__(data, good_interval, range_max_value_tag)
-    second_intervals = __build_intervals_set__(data, good_interval, range_max_value_tag, True)
+    first_intervals = __build_intervals_set__(data, good_interval, 0, range_max_value_tag)
+    second_intervals = __build_intervals_set__(data, good_interval, 0, range_max_value_tag, True)
 
     # step 9 ( using 'dist' algorithm )
     # print "step 9"
+    # TODO series problem - intervals with utility=0 should be included!!
     if use_exponential:
         first_chosen_interval = basicdp.exponential_mechanism_big(data, first_intervals, max_in_interval, eps)
         second_chosen_interval = basicdp.exponential_mechanism_big(data, second_intervals, max_in_interval, eps)
