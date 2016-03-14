@@ -24,7 +24,7 @@ def noisy_max(data, domain, quality_function, eps, bulk=False):
     return domain[noisy.index(max(noisy))]
 
 
-def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
+def exponential_mechanism(data, domain, quality_function, eps, bulk=False, for_sparse=False):
     """Exponential Mechanism
     exponential_mechanism ( data , domain , quality function , privacy parameter )
     :param data:
@@ -42,8 +42,8 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
         domain_pdf = [np.exp(eps * q / 2) for q in qualified_domain]
     else:
         domain_pdf = [np.exp(eps * quality_function(data, d) / 2) for d in domain]
-    normalizer = float(sum(domain_pdf))
-    domain_pdf = [d / normalizer for d in domain_pdf]
+    total_value = float(sum(domain_pdf))
+    domain_pdf = [d / total_value for d in domain_pdf]
     normalizer = sum(domain_pdf)
     # for debugging and other reasons: check that domain_cdf indeed defines a distribution
     # use the uniform distribution (from 0 to 1) to pick an elements by the CDF
@@ -57,7 +57,54 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False):
 
     # return the index corresponding to the pick
     # take the min between the index and  len(D)-1 to prevent returning index out of bound
-    return domain[min(np.searchsorted(domain_cdf, pick), len(domain)-1)]
+    result = domain[min(np.searchsorted(domain_cdf, pick), len(domain)-1)]
+    # in exponential_mechanism_sparse we need also the total_sum value
+    if for_sparse:
+        return result, total_value
+    return result
+
+
+# TODO add documentation
+def __pick_out_of_sub_group__(group, subgroup):
+    """
+
+    :param group:
+    :param subgroup:
+    :return:
+    """
+    good_pick = False
+    while not good_pick:
+        pick = choice(group)
+        if pick not in subgroup:
+            good_pick = True
+    return pick
+
+
+# TODO add documentation
+def exponential_mechanism_sparse(data, domain, positive_value, quality_function, eps, bulk=False):
+    """
+
+    :param data:
+    :param domain:
+    :param positive_value:
+    :param quality_function:
+    :param eps:
+    :param bulk:
+    :return:
+    """
+    r1, positives = exponential_mechanism(data, positive_value, quality_function, eps, bulk)
+    r2 = __pick_out_of_sub_group__(domain, positive_value)
+    zero_size = len(domain)-len(positive_value)
+    p = float(positives/(zero_size+positives))
+    coin = np.random.binomial(1,p)
+    print r1, r2
+    print zero_size, positives
+    print p
+    print coin
+    if coin:
+        return r1
+    else:
+        return r2
 
 
 def a_dist(data, domain, quality_function, eps, delta, bulk=False):
