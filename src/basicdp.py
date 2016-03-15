@@ -81,7 +81,8 @@ def __pick_out_of_sub_group__(group, subgroup):
 
 
 # TODO add documentation
-def exponential_mechanism_sparse(data, domain, positive_value, quality_function, eps, bulk=False):
+# TODO decide - this more generic version or a more specific one
+def sparse_domain(mechanism, data, domain, positive_value, quality_function, eps, delta=0, bulk=False):
     """
 
     :param data:
@@ -92,22 +93,21 @@ def exponential_mechanism_sparse(data, domain, positive_value, quality_function,
     :param bulk:
     :return:
     """
-    r1, positives = exponential_mechanism(data, positive_value, quality_function, eps, bulk)
+    if delta == 0:
+        r1, positives = mechanism(data, positive_value, quality_function, eps, bulk, for_sparse=True)
+    else:
+        r1, positives = mechanism(data, positive_value, quality_function, eps, delta, bulk, for_sparse=True)
     r2 = __pick_out_of_sub_group__(domain, positive_value)
     zero_size = len(domain)-len(positive_value)
     p = float(positives/(zero_size+positives))
-    coin = np.random.binomial(1,p)
-    print r1, r2
-    print zero_size, positives
-    print p
-    print coin
+    coin = np.random.binomial(1, p)
     if coin:
         return r1
     else:
         return r2
 
 
-def a_dist(data, domain, quality_function, eps, delta, bulk=False):
+def a_dist(data, domain, quality_function, eps, delta, bulk=False, for_sparse=False):
     """A_dist algorithm
     :param data: database
     :param domain:
@@ -201,7 +201,7 @@ def choosing_mechanism(data, solution_set, quality_function, growth_bound, alpha
     return exponential_mechanism(data, smaller_solution_set, quality_function, eps)
 
 
-def exponential_mechanism_big(data, domain, quality_function, eps, bulk=False):
+def exponential_mechanism_big(data, domain, quality_function, eps, bulk=False, for_sparse=False):
     """Exponential Mechanism that can deal with very large qualities
     exponential_mechanism ( data , domain , quality function , privacy parameter )
     :param data:
@@ -219,8 +219,8 @@ def exponential_mechanism_big(data, domain, quality_function, eps, bulk=False):
         domain_pdf = [gmpy2.exp(eps * q / 2) for q in qualified_domain]
     else:
         domain_pdf = [gmpy2.exp(eps * quality_function(data, d) / 2) for d in domain]
-    normalizer = sum(domain_pdf)
-    domain_pdf = [d / normalizer for d in domain_pdf]
+    total_value = sum(domain_pdf)
+    domain_pdf = [d / total_value for d in domain_pdf]
     normalizer = sum(domain_pdf)
     # for debugging and other reasons: check that domain_cdf indeed defines a distribution
     # use the uniform distribution (from 0 to 1) to pick an elements by the CDF
@@ -234,7 +234,11 @@ def exponential_mechanism_big(data, domain, quality_function, eps, bulk=False):
 
     # return the index corresponding to the pick
     # take the min between the index and  len(D)-1 to prevent returning index out of bound
-    return domain[min(np.searchsorted(domain_cdf, pick), len(domain)-1)]
+    result = domain[min(np.searchsorted(domain_cdf, pick), len(domain)-1)]
+    # in exponential_mechanism_sparse we need also the total_sum value
+    if for_sparse:
+        return result, total_value
+    return result
 
 
 def choosing_mechanism_big(data, solution_set, quality_function, growth_bound, alpha, beta, eps, delta):
