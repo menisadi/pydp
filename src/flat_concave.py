@@ -53,6 +53,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     # step 9 ( using 'dist' algorithm )
     # print "step 9"
     # TODO change __build_intervals_set__ and max_in_interval according to the use of sparse_domain
+    # TODO add switch for sparse
     if use_exponential:
         first_full_domain = xrange(0, range_max_value, good_interval)
         second_full_domain = xrange(good_interval / 2, range_max_value, good_interval)

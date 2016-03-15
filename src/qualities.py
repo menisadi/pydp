@@ -118,6 +118,7 @@ def min_max_intervals_bounding(data, max_range, j):
         return max(start_point+end_point)
 
 
+# TODO modify (see flat_concave)
 def min_max_maximum_quality(data, interval):
     greater_than = iterlen(x for x in data if x > interval[0])
     less_than = len(data) - greater_than
