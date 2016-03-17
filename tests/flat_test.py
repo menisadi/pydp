@@ -19,7 +19,7 @@ data_center = np.random.uniform(range_end/3, range_end/3*2)
 data = src.examples.get_random_data(samples_size, pivot=data_center)
 data = sorted(filter(lambda x: 0 <= x <= range_end, data))
 
-maximum_quality = src.qualities.min_max_maximum_quality(data, (0, range_end))
+maximum_quality = src.qualities.min_max_maximum_quality(data, 0, range_end)
 
 print "the exact median is: %d" % np.median(data)
 print "the best quality of a domain element: %d" % maximum_quality

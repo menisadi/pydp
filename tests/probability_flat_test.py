@@ -22,10 +22,11 @@ def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
     if samples_size == 0:
         samples_size = int(src.bounds.step6_n2_bound(range_end, eps, alpha, beta))
     data_center = np.random.uniform(range_end/3, range_end/3*2)
-    data = src.examples.get_random_data(samples_size, distribution_type='splitted', pivot=data_center)
-    # data = examples.get_random_data(samples_size, 'bimodal')
+    # data = src.examples.get_random_data(samples_size, distribution_type='splitted', pivot=data_center)
+    # data = src.examples.get_random_data(samples_size, 'bimodal')
+    data = src.examples.get_random_data(samples_size, pivot=data_center)
     data = sorted(filter(lambda x: 0 <= x <= range_end, data))
-    maximum_quality = min_max_maximum_quality(data, (0, range_end))
+    maximum_quality = min_max_maximum_quality(data, 0, range_end)
     quality_result_lower_bound = maximum_quality * (1-alpha)
     try:
         result = src.flat_concave.evaluate(data, range_end, quality_minmax, maximum_quality, alpha, eps, delta,
@@ -39,21 +40,21 @@ def check(t, alpha, eps, delta, beta, samples_size=0, use_exponential=True):
 
 start_time = time.time()
 
-range_end_exponent = 30
+range_end_exponent = 40
 my_alpha = 0.1
 my_eps = 0.1
-my_delta = 2**-30
+my_delta = 1e-6
 # note that flat-concave preserve (4*eps,delta)-differential privacy
 my_beta = 0.1
 
 # here we can play with the sample size if we want
-samples = 50000
+samples = 1000
 
-iters = 1
+iters = 5
 checks = []
 for i in xrange(iters):
     print i
-    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples, False))
+    checks.append(check(range_end_exponent, my_alpha, my_eps, my_delta, my_beta, samples, True))
 
 did_not_fail = sum(i[0] for i in checks)
 good_quality = sum(i[1] for i in checks)

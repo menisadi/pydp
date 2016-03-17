@@ -1,6 +1,7 @@
 import basicdp
 import math
 from examples import __build_intervals_set__
+from functools import partial
 
 
 # TODO check endpoints of interval along the code
@@ -43,29 +44,31 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     recursion_returned = basicdp.exponential_mechanism_big(data, range(log_of_range+1), recursive_quality_function, eps)
 
     good_interval = 8 * (2 ** recursion_returned)
-    print "good interval: %d" % good_interval
+    # print "good interval: %d" % good_interval
 
     # step 7
     # print "step 7"
     first_intervals = __build_intervals_set__(data, good_interval, 0, range_max_value_tag)
     second_intervals = __build_intervals_set__(data, good_interval, 0, range_max_value_tag, True)
+    max_quality = partial(max_in_interval, interval_length=good_interval)
 
     # step 9 ( using 'dist' algorithm )
     # print "step 9"
     # TODO change __build_intervals_set__ and max_in_interval according to the use of sparse_domain
     # TODO add switch for sparse
+    # TODO make sure it is still generic!!!!!!!!!!!!!!
     if use_exponential:
         first_full_domain = xrange(0, range_max_value, good_interval)
         second_full_domain = xrange(good_interval / 2, range_max_value, good_interval)
         first_chosen_interval = basicdp.sparse_domain(basicdp.exponential_mechanism_big, data,
                                                       first_full_domain, first_intervals,
-                                                      max_in_interval, eps)
+                                                      max_quality, eps)
         second_chosen_interval = basicdp.sparse_domain(basicdp.exponential_mechanism_big, data,
                                                        second_full_domain, second_intervals,
-                                                       max_in_interval, eps)
+                                                       max_quality, eps)
     else:
-        first_chosen_interval = basicdp.a_dist(data, first_intervals, max_in_interval, eps, delta)
-        second_chosen_interval = basicdp.a_dist(data, second_intervals, max_in_interval, eps, delta)
+        first_chosen_interval = basicdp.a_dist(data, first_intervals, max_quality, eps, delta)
+        second_chosen_interval = basicdp.a_dist(data, second_intervals, max_quality, eps, delta)
 
     if type(first_chosen_interval) == str and type(second_chosen_interval) == str:
         raise ValueError("stability problem, try taking more samples!")
@@ -75,11 +78,11 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     if type(first_chosen_interval) == str:
         first_chosen_interval_as_list = []
     else:
-        first_chosen_interval_as_list = range(first_chosen_interval[0], first_chosen_interval[1]+1)
+        first_chosen_interval_as_list = range(first_chosen_interval, first_chosen_interval + good_interval)
     if type(second_chosen_interval) == str:
         second_chosen_interval_as_list = []
     else:
-        second_chosen_interval_as_list = range(second_chosen_interval[0], second_chosen_interval[1]+1)
+        second_chosen_interval_as_list = range(second_chosen_interval, second_chosen_interval + good_interval)
 
     return basicdp.exponential_mechanism_big(data, first_chosen_interval_as_list + second_chosen_interval_as_list,
                                          extended_quality_function, eps)

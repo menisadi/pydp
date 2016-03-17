@@ -92,7 +92,7 @@ def bulk_quality_minmax(data, domain):
 
 def min_max_intervals_bounding(data, max_range, j):
     if j == 0:
-        return min_max_maximum_quality(data, (0, max_range))
+        return min_max_maximum_quality(data, 0, max_range)
 
     ceil_data = set(np.ceil(x) for x in data)
     floor_data = set(np.floor(x) for x in data)
@@ -118,11 +118,20 @@ def min_max_intervals_bounding(data, max_range, j):
         return max(start_point+end_point)
 
 
-# TODO modify (see flat_concave)
-def min_max_maximum_quality(data, interval):
+def __old_min_max_maximum_quality__(data, interval):
     greater_than = iterlen(x for x in data if x > interval[0])
     less_than = len(data) - greater_than
     after_domain = iterlen(x for x in data if x > interval[1])
+    while greater_than > less_than and greater_than > after_domain:
+        greater_than -= 1
+        less_than += 1
+    return min(less_than, greater_than)
+
+
+def min_max_maximum_quality(data, interval_start, interval_length):
+    greater_than = iterlen(x for x in data if x > interval_start)
+    less_than = len(data) - greater_than
+    after_domain = iterlen(x for x in data if x > interval_start + interval_length)
     while greater_than > less_than and greater_than > after_domain:
         greater_than -= 1
         less_than += 1

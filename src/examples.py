@@ -115,6 +115,30 @@ def databases_distance(data_1, data_2):
 
 
 def __build_intervals_set__(data_base, interval_length, range_start, range_max, shift=False):
+    # TODO maybe move this method outside of the module
+    # TODO remove non-negative assumption dependence
+    # assuming all the data is non-negative
+    data_que = deque(sorted(data_base))
+    list_of_intervals = []
+    # data_next = -1
+    data_next = data_que.popleft()
+
+    while data_next < range_start:
+        data_next = data_que.popleft()
+
+    while len(data_que) > 0 and data_next <= range_max:
+        next_relevant_interval_start = (int(data_next - shift * interval_length/2) / interval_length) \
+                                       * interval_length + shift*interval_length/2
+        # TODO remove redundant variable
+        next_relevant_interval = next_relevant_interval_start
+        list_of_intervals.append(next_relevant_interval)
+        while data_next < next_relevant_interval + interval_length and len(data_que) > 0:
+            data_next = data_que.popleft()
+
+    return list_of_intervals
+
+
+def __old_build_intervals_set__(data_base, interval_length, range_start, range_max, shift=False):
     # TODO move this method outside of the module
     # TODO remove non-negative assumption dependence
     # assuming all the data is non-negative
@@ -129,9 +153,10 @@ def __build_intervals_set__(data_base, interval_length, range_start, range_max, 
     while len(data_que) > 0 and data_next <= range_max:
         next_relevant_interval_start = (int(data_next - shift * interval_length/2) / interval_length) \
                                        * interval_length + shift*interval_length/2
-        next_relevant_interval = next_relevant_interval_start
+        next_relevant_interval = (next_relevant_interval_start, next_relevant_interval_start + interval_length)
         list_of_intervals.append(next_relevant_interval)
         while data_next < next_relevant_interval[1] and len(data_que) > 0:
             data_next = data_que.popleft()
 
     return list_of_intervals
+
