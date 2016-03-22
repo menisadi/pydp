@@ -1,5 +1,5 @@
 from collections import Counter
-from numpy.random import exponential, uniform
+from numpy.random import exponential, uniform, normal
 import src.qualities as ql
 import time
 import src.basicdp as bdp
@@ -8,16 +8,16 @@ import numpy as np
 
 
 def test_point_count_intervals_bounding(j=2, both_versions=True):
-    s = [int(i) for i in exponential(100, 1000000)]
-    i = (3, 12)
+    s = [int(i) for i in normal(100, 10, 1000000)]
+    m = min(s)
+    i = (m, m + 20)
     s = sorted(s)
     # print s
     print Counter(s)
     print "number of points in %s = %d" % (str(i), ql.points_in_subset(s, i))
     start_time = time.time()
     result = ql.point_count_intervals_bounding(s, i, j)
-    print "maximum point in a sub-interval of %s with length 2^%d is %d" % (str(i), j, result[0])
-    print "and it is in the interval %s " % str(result[1])
+    print "maximum point in a sub-interval of %s with length 2^%d is %d" % (str(i), j, result)
     mid_time = time.time()
     print "run-time: %.2f seconds" % (mid_time - start_time)
     if both_versions:
@@ -79,19 +79,7 @@ def compare_interval_creation():
     print all(i[0] == j for i, j in zip(old_list, new_list))
 
 
-def point_bound_test():
-    a, b, e, d = 0.05, 0.1, 0.5, 2**-20
-    samples_no = 1000
-    parameter = 5
-    data = [int(i) for i in exponential(parameter, samples_no)]
-    max_sample = max(data)
-    dim = np.ceil(np.log2(max_sample + 1))
-    end_domain = 2**int(dim)
-    print ql.point_count_intervals_bounding(data, (9, end_domain), 0)
-
-
 print test_point_count_intervals_bounding(1, False)
 # print test_exponential_mechanism_sparse(bdp.exponential_mechanism_big, False)
 # compare_maximum_in_interval_versions()
 # compare_interval_creation()
-# point_bound_test()

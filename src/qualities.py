@@ -151,6 +151,7 @@ def points_in_subset(data, subset):
 def point_count_intervals_bounding2(data, interval, j):
     if j == -1:
         return 0
+    # why did I write this two lines???
     if j == 0:
         return min(len(data), 1)
     data_in_interval = [i for i in data if point_in_interval(i, interval)]
@@ -163,16 +164,13 @@ def point_count_intervals_bounding2(data, interval, j):
 
 
 def point_count_intervals_bounding(data, interval, j):
-    # why did I write this two lines???
-    # if j == 0:
-    #     return min(len(data), 1)
+    if j == -1:
+        return 0
     data_in_interval = [i for i in data if point_in_interval(i, interval)]
     if len(data_in_interval) == 0:
         return 0
     data_que = deque(sorted(data_in_interval))
     start, end = interval[0], min(interval[1], interval[0]+2**j - 1)
-    # TODO test variable. don't forget to remove later
-    best_interval = (start, end)
     interval_remain = (end + 1, interval[1])
     points_remain = [i for i in data_in_interval if point_in_interval(i, interval_remain)]
     points_remain_que = deque(sorted(points_remain))
@@ -196,8 +194,6 @@ def point_count_intervals_bounding(data, interval, j):
             dist_to_next_in, dist_to_next_out = next_in - start, next_out - end
         else:
             pis += int(not start_in_data)
-            if max(pis, max_pis) > max_pis:
-                best_interval = (start, end)
             max_pis = max(pis, max_pis)
             end = next_out
             next_out = points_remain_que.popleft()
@@ -208,7 +204,7 @@ def point_count_intervals_bounding(data, interval, j):
             else:
                 start_in_data, end_in_data = False, True
             dist_to_next_in, dist_to_next_out = next_in - start, next_out - end
-    return max_pis, best_interval
+    return max_pis
 
 
 # TODO not in use!

@@ -5,6 +5,7 @@ from basicdp import exponential_mechanism, choosing_mechanism
 from bounds import log_star
 from functools import partial
 from examples import __build_intervals_set__
+from collections import Counter
 
 
 calls = 0
@@ -45,8 +46,8 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
     # step 6
 
     def quality(data, j):
-        min(point_count_intervals_bounding(data, domain_range, j)-alpha * sample_size / 32,
-            3 * alpha * sample_size / 32 - point_count_intervals_bounding(data, domain_range, j-1))
+        return min(point_count_intervals_bounding(data, domain_range, j)-alpha * sample_size / 32,
+                3 * alpha * sample_size / 32 - point_count_intervals_bounding(data, domain_range, j-1))
 
     # not needed if using exponential_mechanism
     # step 7
@@ -57,12 +58,17 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
     new_eps = eps/3/log_star(log_size)
     new_delta = delta/3/log_star(log_size)
     # note the use of exponential_mechanism instead of rec_concave
-    z_tag = exponential_mechanism(samples, range(log_size+1), quality, new_eps, new_delta)
+    z_tag = exponential_mechanism(samples, range(log_size+1), quality, new_eps)
     z = 2 ** z_tag
 
     # step 9
     if z_tag == 0:
-        b = choosing_mechanism(samples, range(domain_range[0], domain_range[1] + 1), samples_domain_points,
+        point_counter = Counter(samples)
+
+        def special_quality(samples, b):
+            return point_counter[b]
+
+        b = choosing_mechanism(samples, range(domain_range[0], domain_range[1] + 1), special_quality,
                                1, alpha/64., beta, eps, delta)
         a = b
     # step 10
