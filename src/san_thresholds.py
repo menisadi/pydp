@@ -15,10 +15,13 @@ san_data = []
 def sanitize(samples, domain_range, alpha, beta, eps, delta):
     global calls
     calls = 77 / alpha
-    return __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta)
+    domain_size = domain_range[1] - domain_range[0] + 1
+    dim = int(ceil(log(domain_size, 2)))
+    return __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta, dim)
 
 
-def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
+def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta, dimension):
+    # print domain_range
     global calls
     global san_data
     # step 1
@@ -27,7 +30,8 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
     calls -= 1
 
     # step 2
-    samples_domain_points = partial(points_in_subset, data=samples)
+    # the use of partial is redundant
+    samples_domain_points = partial(points_in_subset, samples)
     noisy_points_in_range = samples_domain_points(subset=domain_range) + laplace(0, 1/eps, 1)
     sample_size = len(samples)
 
@@ -54,9 +58,8 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
     # promise = alpha * sample_size / 32
 
     # step 8
-    # TODO check if it true that : d == log_size
-    new_eps = eps/3/log_star(log_size)
-    new_delta = delta/3/log_star(log_size)
+    new_eps = eps/3/log_star(dimension)
+    # new_delta = delta/3/log_star(dimension)
     # note the use of exponential_mechanism instead of rec_concave
     z_tag = exponential_mechanism(samples, range(log_size+1), quality, new_eps)
     z = 2 ** z_tag
@@ -65,7 +68,7 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
     if z_tag == 0:
         point_counter = Counter(samples)
 
-        def special_quality(samples, b):
+        def special_quality(data, b):
             return point_counter[b]
 
         b = choosing_mechanism(samples, range(domain_range[0], domain_range[1] + 1), special_quality,
@@ -75,18 +78,22 @@ def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta):
     else:
         first_intervals = __build_intervals_set__(samples, 2*z, domain_range[0], domain_range[1] + 1)
         second_intervals = __build_intervals_set__(samples, 2*z_tag, domain_range[0], domain_range[1] + 1, True)
-        (a, b) = choosing_mechanism(samples, first_intervals+second_intervals, samples_domain_points,
-                           2, alpha/64., beta, eps, delta)
+        intervals = [(i, i+2*z-1) for i in first_intervals+second_intervals]
+        a, b = choosing_mechanism(samples, intervals, points_in_subset, 2, alpha/64., beta, eps, delta)
+
+    if type(a) == str:
+        raise ValueError("stability problem - choosing_mechanism returned 'bottom'")
 
     # step 11
-    noisy_count_ab = samples_domain_points((a, b))
+    # although not mentioned I assume the noisy value should be rounded
+    noisy_count_ab = int(samples_domain_points((a, b)) + laplace(0, 1/eps, 1))
     san_data.extend([b] * noisy_count_ab)
 
     # step 12
     if a > domain_range[0]:
         rec_range = (domain_range[0], a - 1)
-        __rec_sanitize__(samples, rec_range, alpha, beta, eps, delta)
+        __rec_sanitize__(samples, rec_range, alpha, beta, eps, delta, dimension)
     if b < domain_range[1]:
         rec_range = (b + 1, domain_range[1])
-        __rec_sanitize__(samples, rec_range, alpha, beta, eps, delta)
+        __rec_sanitize__(samples, rec_range, alpha, beta, eps, delta, dimension)
     return san_data
