@@ -4,15 +4,13 @@ import time
 from numpy import ceil, log2, linspace, mean
 import matplotlib.pyplot as plt
 from src.san_thresholds import sanitize
-
-
-def cdf(data_set, x):
-    return sum(1 for k in data_set if k < x)/len(data_set)
+from statsmodels.distributions.empirical_distribution import ECDF
 
 
 def plot_cdf(data_set, show=False):
+    cf = ECDF(data_set)
     xs = linspace(0, max(data_set), 100)
-    ys = [cdf(data_set, j) for j in xs]
+    ys = [cf(j) for j in xs]
     plt.plot(xs, ys)
     if show:
         plt.show()
@@ -20,7 +18,9 @@ def plot_cdf(data_set, show=False):
 
 def cdf_comp(data1, data2):
     m = int(ceil(max(max(data1), max(data2))))
-    return 1-sum(1 for c in xrange(m) if abs(cdf(data1, c) - cdf(data2, c)) <= a)/m
+    f1 = ECDF(data1)
+    f2 = ECDF(data2)
+    return 1-sum(1 for c in xrange(m) if abs(f1(c) - f2(c)) <= a)/m
 
 
 def check(samples_size, alpha, beta, eps, delta):
@@ -41,9 +41,9 @@ start_time = time.time()
 
 a, b, e, d = 0.1, 0.1, 0.5, 2**-20
 parameter = 20
-samples = 1000
+samples = 10000
 
-iters = 50
+iters = 5
 checks = []
 for i in xrange(iters):
     print i
