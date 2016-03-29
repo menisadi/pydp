@@ -16,16 +16,21 @@ def plot_cdf(data_set, show=False):
         plt.show()
 
 
-def cdf_comp(data1, data2):
+def cdf_comp(data1, data2, alpha):
+    """
+    :param data1:
+    :param data2:
+    :return: percentage of of the cdf's which differ in more than alpha
+    """
     m = int(ceil(max(max(data1), max(data2))))
     f1 = ECDF(data1)
     f2 = ECDF(data2)
-    return 1-sum(1 for c in xrange(m) if abs(f1(c) - f2(c)) <= a)/m
+    return 1-sum(1 for c in xrange(m) if abs(f1(c) - f2(c)) <= alpha)/m
 
 
 a, b, e, d = 0.1, 0.1, 0.5, 2**-20
-samples_no = 10000
-parameter = 10
+samples_no = 5000
+parameter = 5
 data = [int(i) for i in normal(0, parameter, samples_no)]
 m = min(data)
 data = [i-m for i in data]
@@ -39,7 +44,7 @@ start_time = time.time()
 san = sanitize(data, (0, end_domain), a, b, e, d)
 run_time = time.time() - start_time
 print max(san)
-print cdf_comp(san, data)
+print cdf_comp(san, data, a)
 plot_cdf(data)
 sorted_san = sorted(san)
 i_max_san = searchsorted(sorted_san, max_sample)

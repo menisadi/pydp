@@ -22,6 +22,7 @@ def sanitize(samples, domain_range, alpha, beta, eps, delta):
 
 def __rec_sanitize__(samples, domain_range, alpha, beta, eps, delta, dimension):
     # print domain_range
+    print calls
     global calls
     global san_data
     # step 1
