@@ -1,19 +1,27 @@
 from __future__ import division
 from numpy.random import exponential, normal, uniform
 import time
-from numpy import ceil, log2, linspace, mean
+from numpy import ceil, log2, linspace, mean, searchsorted
 import matplotlib.pyplot as plt
 from src.san_thresholds import sanitize
 from statsmodels.distributions.empirical_distribution import ECDF
 
 
-def plot_cdf(data_set, show=False):
+def plot_cdf(data_set):
     cf = ECDF(data_set)
     xs = linspace(0, max(data_set), 100)
     ys = [cf(j) for j in xs]
     plt.plot(xs, ys)
-    if show:
-        plt.show()
+
+
+def plot_san_and_original(data_set, sanitized):
+    sorted_san = sorted(sanitized)
+    max_sample = max(data_set)
+    i_max_san = searchsorted(sorted_san, max_sample)
+    limited_san = sorted_san[:i_max_san]
+    plot_cdf(data_set)
+    plot_cdf(limited_san)
+    plt.show()
 
 
 def cdf_comp(data1, data2):
@@ -23,8 +31,8 @@ def cdf_comp(data1, data2):
     return 1-sum(1 for c in xrange(m) if abs(f1(c) - f2(c)) <= a)/m
 
 
-def check(samples_size, alpha, beta, eps, delta):
-    data = [int(i) for i in exponential(parameter, samples_size)]
+def check(samples_size, alpha, beta, eps, delta, parameter):
+    data = [int(i) for i in normal(0, parameter, samples_size)]
     m = min(data)
     data = [i-m for i in data]
     max_sample = max(data)
@@ -33,6 +41,8 @@ def check(samples_size, alpha, beta, eps, delta):
     try:
         san = sanitize(data, (0, end_domain), alpha, beta, eps, delta)
         result = cdf_comp(san, data)
+        # if result == 0:
+        #    plot_san_and_original(data, san)
     except ValueError:
         result = -1
     return result
@@ -40,20 +50,23 @@ def check(samples_size, alpha, beta, eps, delta):
 start_time = time.time()
 
 a, b, e, d = 0.1, 0.1, 0.5, 2**-20
-parameter = 20
-samples = 10000
+b *= a / 231
+p = 5
+samples = 8000
 
-iters = 5
+iters = 30
 checks = []
 for i in xrange(iters):
     print i
-    checks.append(check(samples, a, b, e, d))
+    checks.append(check(samples, a, b, e, d, p))
 
 not_bottom_results = [i for i in checks if i != -1]
-better_than_alpha_prop = sum(1 for i in checks if -1 < i <= a)/iters
-didnt_get_bottom = sum(1 for i in checks if i != -1)/iters
-# print checks
-print "proportion of times we got good result: %.2f" % better_than_alpha_prop
-print "proportion of times we didn't get good 'bottom': %.2f" % didnt_get_bottom
-print "average within the non-bottom results: %.2f" % mean(not_bottom_results)
+didnt_get_bottom_prop = len(not_bottom_results)/iters
+all_better_than_alpha = [i for i in not_bottom_results if i == 0]
+perfect_result_prop = len(all_better_than_alpha)/iters
+
+print "proportion of times we got perfect result: %.3f" % perfect_result_prop
+print "proportion of times we didn't get good 'bottom': %.3f" % didnt_get_bottom_prop
+print "average within the non-bottom results: %.5f" % mean(not_bottom_results)
+
 print "run-time: %.2f seconds" % (time.time() - start_time)
