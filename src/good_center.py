@@ -4,10 +4,15 @@ from collections import Counter
 from jl import johnson_lindenstrauss_transform_init as jl_init
 from functools import partial
 import matplotlib.pyplot as plt
+import time
 
 
 def __box_containing_point__(point, partition, dimension, side_length):
     return tuple(np.floor((point[i]-partition[i]) / side_length) for i in xrange(dimension))
+
+
+def __interval_containing_point__(point, side_length):
+    return np.floor(point / side_length)
 
 
 def find(data, number_of_points, data_dimension, radius, points_in_ball,
@@ -15,10 +20,10 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     # step 1
     print "step 1"
     if shrink:
-        new_dimension = int(46 * np.log(2 * number_of_points / failure))
+        new_dimension = int(46 * number_of_points * np.log(2 * number_of_points / failure))
     else:
         new_dimension = data_dimension
-    box_side_length = 6 * new_dimension * radius
+    box_side_length = 300 * radius
 
     # step 2
     print "step 2"
@@ -28,7 +33,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     else:
         def transform(x): return x
         projected_data = data
-    threshold = points_in_ball - 32 * np.log(2 / failure) / eps
+    threshold = points_in_ball - 100 * np.log(2 * number_of_points / failure) / eps
     print "the threshold is: %f" % threshold
     above_thresh = basicdp.above_threshold(projected_data, threshold, eps/4.0)
 
@@ -36,7 +41,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     print "step 3"
     boxes_shift = []  # just to make sure the list is defined in step 7
     found_max = False
-    tries = int(np.log(1 / failure))
+    tries = 2 * number_of_points * int(np.log(1 / failure)) / failure
     print "no. of tries: %d" % tries
     while not found_max and tries > 0:
         boxes_shift = np.random.uniform(0, box_side_length, new_dimension)
@@ -75,20 +80,33 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
 
     boxes_set = list(set(box_containing_point_our_case(p) for p in data))
     # what is the growth bound?
-    best_box = basicdp.choosing_mechanism(projected_data, boxes_set, box_quality, 1,
-                                          approximation, failure, eps/3.0, delta/3.0)
+    best_box = basicdp.choosing_mechanism_big(projected_data, boxes_set, box_quality, 1,
+                                          approximation, failure, eps/4.0, delta/4.0)
+    # the first reshape is due to the signature of the transform method
+    # the second reshape returns the box to the original structure so we can compare to the best_box
     points_in_best_box = [p for p in data
                           if box_containing_point_our_case(transform(p.reshape(1, data_dimension)).reshape(data_dimension,)) == best_box]
+
+    interval_length = 450 * radius * np.sqrt(new_dimension)
+    for axis in xrange(data_dimension):
+        axis_projection = np.array([__interval_containing_point__(d[axis], interval_length)
+                                    for d in points_in_best_box])
+        axis_counter = Counter(axis_projection)
+
+        def interval_quality(data_base, interval_index):
+            return axis_counter[interval_index]
 
     return best_box, box_quality(data, best_box)
 
 
-sample_number, k, r = 3000, 2, 1
-data_2d = np.random.normal(0, 300, (sample_number, 2))
-artificial_cluster_size = 1500
-artificial_cluster = np.random.normal(6, 5, (artificial_cluster_size, 2))
+sample_number, k, r = 2**18, 2, 1
+data_2d = np.random.normal(0, 3000, (sample_number, 2))
+artificial_cluster_size = 2**14
+artificial_cluster = np.random.normal(1000, 30, (artificial_cluster_size, 2))
 data_2d = np.vstack((data_2d, artificial_cluster))
 sample_number += artificial_cluster_size
 # plt.scatter(*zip(*data_2d))
 # plt.show()
-print find(data_2d, sample_number, 2, 1, 1000, 0.01, 0.05, 0.5, 2**-20)
+start_time = time.time()
+print find(data_2d, sample_number, 2, 1, artificial_cluster_size, 0.1, 0.05, 0.5, 2**-20)
+print "run-time: %.2f seconds" % (time.time() - start_time)
