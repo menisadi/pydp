@@ -1,10 +1,9 @@
 import numpy as np
-import basicdp
+from basicdp import choosing_mechanism_big, above_threshold
 from collections import Counter
 from jl import johnson_lindenstrauss_transform_init as jl_init
 from functools import partial
-import matplotlib.pyplot as plt
-import time
+from scipy.spatial import distance
 
 
 def __box_containing_point__(point, partition, dimension, side_length):
@@ -20,7 +19,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     # step 1
     print "step 1"
     if shrink:
-        new_dimension = int(46 * number_of_points * np.log(2 * number_of_points / failure))
+        new_dimension = int(46 * number_of_points * np.log2(2 * number_of_points / failure))
     else:
         new_dimension = data_dimension
     box_side_length = 300 * radius
@@ -33,15 +32,15 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     else:
         def transform(x): return x
         projected_data = data
-    threshold = points_in_ball - 100 * np.log(2 * number_of_points / failure) / eps
+    threshold = points_in_ball - 100 * np.log2(2 * number_of_points / failure) / eps
     print "the threshold is: %f" % threshold
-    above_thresh = basicdp.above_threshold(projected_data, threshold, eps/4.0)
+    above_thresh = above_threshold(projected_data, threshold, eps/4.0)
 
     # step 3
     print "step 3"
     boxes_shift = []  # just to make sure the list is defined in step 7
     found_max = False
-    tries = 2 * number_of_points * int(np.log(1 / failure)) / failure
+    tries = 2 * number_of_points * int(np.log2(1 / failure)) / failure
     print "no. of tries: %d" % tries
     while not found_max and tries > 0:
         boxes_shift = np.random.uniform(0, box_side_length, new_dimension)
@@ -79,15 +78,17 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         return boxes_quality[box]
 
     boxes_set = list(set(box_containing_point_our_case(p) for p in data))
-    # what is the growth bound?
-    best_box = basicdp.choosing_mechanism_big(projected_data, boxes_set, box_quality, 1,
+    # TODO what is the growth bound?
+    best_box = choosing_mechanism_big(projected_data, boxes_set, box_quality, 1,
                                           approximation, failure, eps/4.0, delta/4.0)
     # the first reshape is due to the signature of the transform method
     # the second reshape returns the box to the original structure so we can compare to the best_box
     points_in_best_box = [p for p in data
                           if box_containing_point_our_case(transform(p.reshape(1, data_dimension)).reshape(data_dimension,)) == best_box]
 
+    print "step 8"
     interval_length = 450 * radius * np.sqrt(new_dimension)
+    center_box = []
     for axis in xrange(data_dimension):
         axis_projection = np.array([__interval_containing_point__(d[axis], interval_length)
                                     for d in points_in_best_box])
@@ -96,17 +97,18 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         def interval_quality(data_base, interval_index):
             return axis_counter[interval_index]
 
-    return best_box, box_quality(data, best_box)
+        eps_tag = eps / np.sqrt(data_dimension * np.log(8/delta)) / 10.0
+        delta_tag = delta / data_dimension / 8.0
+        # TODO what is the growth bound?
+        # TODO what is the failure and approximation parameter
+        best_interval = choosing_mechanism_big(projected_data, axis_projection, interval_quality,
+                                                       1, approximation, failure, eps_tag, delta_tag)
 
+        extended_interval = (best_interval-1 * interval_length, (best_interval+2) * interval_length)
+        center_box.append(extended_interval)
+    print "step 9"
+    center_of_chosen_box = [(i[1]-i[0])/2. for i in center_box]
+    chosen_ball = [p for p in data if distance.euclidean(center_of_chosen_box, p) <= interval_length*3]
+    # TODO step 10
+    return best_box, box_quality(data, best_box), center_box, chosen_ball
 
-sample_number, k, r = 2**18, 2, 1
-data_2d = np.random.normal(0, 3000, (sample_number, 2))
-artificial_cluster_size = 2**14
-artificial_cluster = np.random.normal(1000, 30, (artificial_cluster_size, 2))
-data_2d = np.vstack((data_2d, artificial_cluster))
-sample_number += artificial_cluster_size
-# plt.scatter(*zip(*data_2d))
-# plt.show()
-start_time = time.time()
-print find(data_2d, sample_number, 2, 1, artificial_cluster_size, 0.1, 0.05, 0.5, 2**-20)
-print "run-time: %.2f seconds" % (time.time() - start_time)
