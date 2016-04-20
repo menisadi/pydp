@@ -25,6 +25,12 @@ def plot_san_and_original(data_set, sanitized):
 
 
 def cdf_comp(data1, data2):
+    """
+    compare the cdf of two data-sets
+    :param data1:
+    :param data2:
+    :return: the proportion of the data-sets which they differ by at least 'a'
+    """
     m = int(ceil(max(max(data1), max(data2))))
     f1 = ECDF(data1)
     f2 = ECDF(data2)
@@ -41,8 +47,8 @@ def check(samples_size, alpha, beta, eps, delta, parameter):
     try:
         san = sanitize(data, (0, end_domain), alpha, beta, eps, delta)
         result = cdf_comp(san, data)
-        # if result == 0:
-        #    plot_san_and_original(data, san)
+        if result == 0:
+            plot_san_and_original(data, san)
     except ValueError:
         result = -1
     return result
@@ -52,9 +58,9 @@ start_time = time.time()
 a, b, e, d = 0.1, 0.1, 0.5, 2**-20
 b *= a / 231
 p = 5
-samples = 8000
+samples = 5000
 
-iters = 30
+iters = 10
 checks = []
 for i in xrange(iters):
     print i
@@ -66,7 +72,7 @@ all_better_than_alpha = [i for i in not_bottom_results if i == 0]
 perfect_result_prop = len(all_better_than_alpha)/iters
 
 print "proportion of times we got perfect result: %.3f" % perfect_result_prop
-print "proportion of times we didn't get good 'bottom': %.3f" % didnt_get_bottom_prop
+print "proportion of times we didn't get 'bottom': %.3f" % didnt_get_bottom_prop
 print "average within the non-bottom results: %.5f" % mean(not_bottom_results)
 
 print "run-time: %.2f seconds" % (time.time() - start_time)

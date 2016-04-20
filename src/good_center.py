@@ -4,6 +4,7 @@ from collections import Counter
 from jl import johnson_lindenstrauss_transform_init as jl_init
 from functools import partial
 from scipy.spatial import distance
+from numpy.random import laplace
 
 
 def __box_containing_point__(point, partition, dimension, side_length):
@@ -12,6 +13,31 @@ def __box_containing_point__(point, partition, dimension, side_length):
 
 def __interval_containing_point__(point, side_length):
     return np.floor(point / side_length)
+
+
+def heavy_filter(data, dimension, shift, side, eps, delta):
+    """
+    find parts of R^d that contain a lot of data-points
+    when partitioning R^d into boxes of the same size
+    the boxes partitioning is given by the shift and the size of the 'boxes'
+    :param data: list of points in R^dimension
+    :param shift: the partition's shift, the i-th value represents the shift in the i-th axis
+    :param side: the side-length of each 'box' in the partition
+    :param eps, delta: privacy parameters
+    :return: parts of the partition that contain a lot of data-points
+    """
+    my_box = partial(__box_containing_point__, partition=shift, dimension=dimension, side_length=side)
+    # those are the parts of the partition that have at least one point
+    #  when each box appears as many times as the numbers of points in it
+    boxes = [my_box(point) for point in data]
+    boxes_quality = Counter(boxes)
+    for b in boxes_quality:
+        boxes_quality[b] += laplace(0, 2/eps, 1)[0]
+        if boxes_quality[b] < 2*np.log(2/delta)/eps:
+            boxes_quality[b] = 0
+    non_zero = [b for b in boxes_quality if boxes_quality[b] > 0]
+    clusters = [p for p in data if my_box(p) in non_zero]
+    return clusters
 
 
 def find(data, number_of_points, data_dimension, radius, points_in_ball,
