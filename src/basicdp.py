@@ -265,3 +265,13 @@ def choosing_mechanism_big(data, solution_set, quality_function, growth_bound, a
     return exponential_mechanism_big(data, smaller_solution_set, quality_function, eps)
 
 
+def noisy_avg(vs, g, sensitivity, dim, eps, delta):
+    st = set(map(tuple, vs))
+    gvs = sum(1 for v in st if g(v))
+    m = gvs + np.random.laplace(0, 2/eps, 1) - 2*np.log(2/delta)/eps
+    if m <= 0:
+        return 'bottom'
+    sigma = 8 * sensitivity * np.sqrt(2*np.log(8/delta)) / eps / m
+    r = np.random.normal(0, sigma, dim)
+    return sum(v for v in vs if g(v))/float(gvs) + r
+

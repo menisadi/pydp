@@ -79,7 +79,23 @@ def compare_interval_creation():
     print all(i[0] == j for i, j in zip(old_list, new_list))
 
 
-print test_point_count_intervals_bounding(1, False)
+def vec_avg(vs,q):
+    st = set(map(tuple,vs))
+    sm = sum(1 for v in st if q(v))
+    return sum(v for v in vs if q(v))/float(sm)
+
+
+def noisy_avg(dim, n, eps, delta, gs):
+    s = np.random.randint(0, gs, (n, dim))
+    p = lambda v: np.linalg.norm(v) <= gs
+    res = bdp.noisy_avg(s, p, gs, dim, eps, delta)
+    tr = vec_avg(s, p)
+    dist = np.linalg.norm(res - tr)
+    return dist / np.linalg.norm(tr)
+
+
+# print test_point_count_intervals_bounding(1, False)
 # print test_exponential_mechanism_sparse(bdp.exponential_mechanism_big, False)
 # compare_maximum_in_interval_versions()
 # compare_interval_creation()
+print noisy_avg(2, 10000, 0.5, 3**-10, 10)
