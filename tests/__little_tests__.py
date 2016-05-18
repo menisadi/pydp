@@ -5,6 +5,8 @@ import time
 import src.basicdp as bdp
 import src.examples as xp
 import numpy as np
+from src.good_radius import __neighbours__
+import matplotlib.pyplot as plt
 
 
 def test_point_count_intervals_bounding(j=2, both_versions=True):
@@ -94,8 +96,31 @@ def noisy_avg(dim, n, eps, delta, gs):
     return dist / np.linalg.norm(tr)
 
 
+def memoize_neighbours():
+    data = np.random.normal(0, 5, (10, 2))
+    r = 3
+    mat = __neighbours__(data, r)
+    print zip(*np.nonzero(mat))
+    print [(list(data[i]), list(data[j])) for i, j in zip(*np.nonzero(mat))]
+    plt.scatter(*zip(*data))
+    found = False
+    t = 0
+    while not found and t < 10:
+        i = np.random.randint(len(data))
+        p = data[i]
+        close_to_p = [list(data[j]) for j in xrange(len(data)) if mat[i, j] == 1]
+        if close_to_p:
+            found = True
+        t += 1
+    print i, p
+    print mat
+    return close_to_p
+
+
 # print test_point_count_intervals_bounding(1, False)
 # print test_exponential_mechanism_sparse(bdp.exponential_mechanism_big, False)
 # compare_maximum_in_interval_versions()
 # compare_interval_creation()
-print noisy_avg(2, 10000, 0.5, 3**-10, 10)
+# print noisy_avg(2, 10000, 0.5, 3**-10, 10)
+print memoize_neighbours()
+plt.show()
