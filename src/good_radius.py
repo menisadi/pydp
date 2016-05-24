@@ -23,10 +23,14 @@ def __max_average_ball__(points, radius, t):
     return sum(min(sum(i), t) for i in hood[a]) / t
 
 
-def find(data, goal_number, failure, eps, delta):
-    domain = min(np.min(data, axis=0)), max(np.max(data, axis=0))
-    const = log_star(2*(domain[1] - domain[0] + 1)*sqrt(data.shape[1]))
-    promise = 8**const * 144*const/eps * log(24*const/failure/delta)
+def __promise__(data, domain, eps, delta, failure):
+    const = log_star(2 * (domain[1] - domain[0] + 1) * sqrt(data.shape[1]))
+    return 8 ** const * 144 * const / eps * log(24 * const / failure / delta)
+
+
+# the parameter promise should later be removed from the input and be calculated within the function
+def find(data, domain, goal_number, failure, eps, delta, promise):
+    # domain = min(np.min(data, axis=0)), max(np.max(data, axis=0))
     if __max_average_ball__(data, 0, goal_number) + laplace(0, 4/eps, 1) >\
                             goal_number - 2*promise - 4/eps*log(2/failure):
         return 0
@@ -35,5 +39,5 @@ def find(data, goal_number, failure, eps, delta):
         return min(goal_number - __max_average_ball__(d, r/2, goal_number),
                    __max_average_ball__(d, r, goal_number) - goal_number + 4*promise) / 2
 
-    return exponential_mechanism(data, range(*domain), quality, eps)
+    return exponential_mechanism(data, range(domain[1]-domain[0]), quality, eps)
 

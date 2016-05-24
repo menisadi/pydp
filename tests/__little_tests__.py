@@ -131,11 +131,36 @@ def max_average_ball():
     return __max_average_ball__(data, r, t)
 
 
-# print test_point_count_intervals_bounding(1, False)
-# print test_exponential_mechanism_sparse(bdp.exponential_mechanism_big, False)
-# compare_maximum_in_interval_versions()
-# compare_interval_creation()
-# print noisy_avg(2, 10000, 0.5, 3**-10, 10)
-# print memoize_neighbours()
-print max_average_ball()
-plt.show()
+def max_average_ball2():
+    sample_number, k, r = 2 ** 10, 2, 4
+    data_2d = np.random.randint(0, 500, (sample_number, 2))
+    artificial_cluster_size = 2 ** 6
+    artificial_cluster = np.random.randint(100, 130, (artificial_cluster_size, 2))
+    data_2d = np.vstack((data_2d, artificial_cluster))
+    sample_number += artificial_cluster_size
+    mat = __neighbours__(data_2d, r)
+    t = 50
+    closest = np.sum(mat, axis=1).argsort()[t:]
+    return __max_average_ball__(data_2d, r, t)
+
+
+def run_all_tests():
+    print test_point_count_intervals_bounding(1, False)
+    print test_exponential_mechanism_sparse(bdp.exponential_mechanism_big, False)
+    compare_maximum_in_interval_versions()
+    compare_interval_creation()
+    print noisy_avg(2, 10000, 0.5, 3**-10, 10)
+    print memoize_neighbours()
+    print max_average_ball2()
+
+
+def run_selected_test():
+    print max_average_ball2()
+    return
+
+
+start_time = time.time()
+run_selected_test()
+# plt.show()
+print "run-time: %.2f seconds" % (time.time() - start_time)
+
