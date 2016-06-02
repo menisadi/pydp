@@ -5,7 +5,7 @@ import time
 import src.basicdp as bdp
 import src.examples as xp
 import numpy as np
-from src.good_radius import __neighbours__, __max_average_ball__
+from src.good_radius import __max_average_ball__, __distances__
 import matplotlib.pyplot as plt
 
 
@@ -96,41 +96,6 @@ def noisy_avg(dim, n, eps, delta, gs):
     return dist / np.linalg.norm(tr)
 
 
-def memoize_neighbours():
-    data = np.random.normal(0, 5, (10, 2))
-    r = 3
-    mat = __neighbours__(data, r)
-    print zip(*np.nonzero(mat))
-    print [(list(data[i]), list(data[j])) for i, j in zip(*np.nonzero(mat))]
-    plt.scatter(*zip(*data))
-    found = False
-    t = 0
-    while not found and t < 10:
-        i = np.random.randint(len(data))
-        p = data[i]
-        close_to_p = [list(data[j]) for j in xrange(len(data)) if mat[i, j] == 1]
-        if close_to_p:
-            found = True
-        t += 1
-    print i, p
-    print mat
-    return close_to_p
-
-
-def max_average_ball():
-    data = np.random.normal(0, 2.5, (10, 2))
-    plt.scatter(*zip(*data))
-    t, r = 5, 3
-    mat = __neighbours__(data, r)
-    print zip(*np.nonzero(mat))
-    print [(list(data[i]), list(data[j])) for i, j in zip(*np.nonzero(mat))]
-    print mat
-    closest = np.sum(mat, axis=1).argsort()[t:]
-    print closest
-    print np.sum(mat[closest], axis=1)
-    return __max_average_ball__(data, r, t)
-
-
 def max_average_ball2():
     sample_number, k, r = 2 ** 10, 2, 4
     data_2d = np.random.randint(0, 500, (sample_number, 2))
@@ -138,10 +103,17 @@ def max_average_ball2():
     artificial_cluster = np.random.randint(100, 130, (artificial_cluster_size, 2))
     data_2d = np.vstack((data_2d, artificial_cluster))
     sample_number += artificial_cluster_size
-    mat = __neighbours__(data_2d, r)
+    mat = __distances__(data_2d)
     t = 50
-    closest = np.sum(mat, axis=1).argsort()[t:]
-    return __max_average_ball__(data_2d, r, t)
+    # closest = np.sum(mat, axis=1).argsort()[t:]
+    return __max_average_ball__(r, mat, t)
+
+
+def distances():
+    data = np.random.normal(0, 5, (10, 2))
+    mat = __distances__(data)
+    plt.scatter(*zip(*data))
+    return mat
 
 
 def run_all_tests():
@@ -150,11 +122,10 @@ def run_all_tests():
     compare_maximum_in_interval_versions()
     compare_interval_creation()
     print noisy_avg(2, 10000, 0.5, 3**-10, 10)
-    print memoize_neighbours()
-    print max_average_ball2()
 
 
 def run_selected_test():
+    print distances()
     print max_average_ball2()
     return
 

@@ -1,11 +1,12 @@
 import numpy as np
-from basicdp import choosing_mechanism_big, above_threshold
+from basicdp import choosing_mechanism_big, above_threshold, noisy_avg
 from collections import Counter
 from jl import johnson_lindenstrauss_transform_init as jl_init
 from functools import partial
 from scipy.spatial import distance
 from numpy.random import laplace
 from random import choice
+from numpy.linalg import norm
 
 
 def __box_containing_point__(point, partition, dimension, side_length):
@@ -138,6 +139,12 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     print "step 9"
     center_of_chosen_box = [(i[1]-i[0])/2. for i in center_box]
     chosen_ball = [p for p in data if distance.euclidean(center_of_chosen_box, p) <= interval_length*3]
-    # TODO step 10
-    return best_box, box_quality(data, best_box), center_box, chosen_ball
+    print "step 10"
+
+    def predictor(x):
+        return x in chosen_ball
+
+    sensitivity = max(norm(v) for v in chosen_ball)
+    # best_box, box_quality(data, best_box), center_box, chosen_ball
+    return noisy_avg(chosen_ball, predictor, sensitivity, data_dimension, eps/4., delta/4.)
 
