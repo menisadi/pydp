@@ -81,8 +81,8 @@ def compare_interval_creation():
     print all(i[0] == j for i, j in zip(old_list, new_list))
 
 
-def vec_avg(vs,q):
-    st = set(map(tuple,vs))
+def vec_avg(vs, q):
+    st = set(map(tuple, vs))
     sm = sum(1 for v in st if q(v))
     return sum(v for v in vs if q(v))/float(sm)
 
