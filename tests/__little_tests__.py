@@ -7,6 +7,7 @@ import src.examples as xp
 import numpy as np
 from src.good_radius import __max_average_ball__, __distances__
 import matplotlib.pyplot as plt
+import src.cluster as cl
 
 
 def test_point_count_intervals_bounding(j=2, both_versions=True):
@@ -116,17 +117,26 @@ def distances():
     return mat
 
 
+def cluster():
+    sample_number, k, r = 2 ** 12, 2, 4
+    center = 100
+    data_2d = np.array([int(i) for i in normal(center, 50, sample_number)]).reshape((sample_number / 2, 2))
+    domain, desired_amount_of_points = (0, 100), 2000
+    approximation, failure, eps, delta, promise = 0.1, 0.1, 0.5, 2 ** -20, 100
+    return cl.find(data_2d, 2, domain, desired_amount_of_points, approximation, failure, eps, delta, promise, True)
+
+
 def run_all_tests():
     print test_point_count_intervals_bounding(1, False)
     print test_exponential_mechanism_sparse(bdp.exponential_mechanism_big, False)
     compare_maximum_in_interval_versions()
     compare_interval_creation()
     print noisy_avg(2, 10000, 0.5, 3**-10, 10)
+    print cluster()
 
 
 def run_selected_test():
-    print distances()
-    print max_average_ball2()
+    print cluster()
     return
 
 
