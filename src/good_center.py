@@ -10,10 +10,29 @@ from numpy.linalg import norm
 
 
 def __box_containing_point__(point, partition, dimension, side_length):
-    return tuple(np.floor((point[i]-partition[i]) / side_length) for i in xrange(dimension))
+    # TODO docstring
+    """
+
+    :param point:
+    :param partition:
+    :param dimension:
+    :param side_length:
+    :return:
+    """
+    try:
+        return tuple(np.floor((point[i]-partition[i]) / side_length) for i in xrange(dimension))
+    except IndexError:
+        return np.floor((point-partition) / side_length)
 
 
 def __interval_containing_point__(point, side_length):
+    # TODO docstring
+    """
+
+    :param point:
+    :param side_length:
+    :return:
+    """
     return np.floor(point / side_length)
 
 
@@ -40,16 +59,32 @@ def heavy_filter(data, dimension, shift, side, eps, delta):
         if boxes_quality[b] < 2*np.log(2/delta)/eps:
             boxes_quality[b] = 0
     non_zero = [b for b in boxes_quality if boxes_quality[b] > 0]
-    # TODO which element from 'non-zero' should we return?
-    return choice(non_zero)
+    print len(non_zero)
+    # TODO if we take the max why the filtering?
+    return non_zero[np.argmax(boxes_quality[b] for b in non_zero)]
 
 
 def find(data, number_of_points, data_dimension, radius, points_in_ball,
          failure, approximation, eps, delta, shrink=False):
+    # TODO docstring
+    """
+
+    :param data:
+    :param number_of_points:
+    :param data_dimension:
+    :param radius:
+    :param points_in_ball:
+    :param failure:
+    :param approximation:
+    :param eps:
+    :param delta:
+    :param shrink:
+    :return:
+    """
     # step 1
     # print "step 1"
     if shrink:
-        new_dimension = int(46 * number_of_points * np.log2(2 * number_of_points / failure))
+        new_dimension = int(46 * np.log2(2 * number_of_points / failure))
     else:
         new_dimension = data_dimension
     box_side_length = 300 * radius
@@ -100,26 +135,36 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     # print "step 7"
     box_containing_point_our_case = partial(__box_containing_point__, partition=boxes_shift, dimension=new_dimension,
                             side_length=box_side_length)
-    boxes = (box_containing_point_our_case(point) for point in data)
+    boxes = (box_containing_point_our_case(point) for point in projected_data)
     boxes_quality = Counter(boxes)
 
     # we add data_base to the signature to match the requirements of choosing_mechanism
     def box_quality(data_base, box):
         return boxes_quality[box]
 
-    boxes_set = list(set(box_containing_point_our_case(p) for p in data))
-    # TODO what is the growth bound?
-    best_box = choosing_mechanism_big(projected_data, boxes_set, box_quality, 1,
-                                          approximation, failure, eps/4.0, delta/4.0)
+    boxes_set = list(set(box_containing_point_our_case(p) for p in projected_data))
+
+    best_box = heavy_filter(projected_data, new_dimension, boxes_shift, box_side_length, eps/4., delta/4.)
+    # best_box = choosing_mechanism_big(projected_data, boxes_set, box_quality, 1,
+    #                                      approximation, failure, eps/4.0, delta/4.0)
+
     # the first reshape is due to the signature of the transform method
     # the second reshape returns the box to the original structure so we can compare to the best_box
     points_in_best_box = [p for p in data
-                          if box_containing_point_our_case(transform(p.reshape(1, data_dimension)).reshape(data_dimension,)) == best_box]
+                          if box_containing_point_our_case(transform(p.reshape(1, data_dimension)).reshape(new_dimension,)) == best_box]
 
+    print len(points_in_best_box)
     # print "step 8"
     interval_length = 450 * radius * np.sqrt(new_dimension)
     center_box = []
     for axis in xrange(data_dimension):
+        # TODO check if there a build-in function for projecting
+        projection_on_axis = np.array([d[axis] for d in points_in_best_box])
+        eps_tag = eps / np.sqrt(data_dimension * np.log(8/delta)) / 10.0
+        delta_tag = delta / data_dimension / 8.0
+        best_interval = heavy_filter(projection_on_axis, 1, 0, interval_length, eps_tag, delta_tag)
+        # TODO verify that indeed all this isn't necessary
+        """
         axis_projection = np.array([__interval_containing_point__(d[axis], interval_length)
                                     for d in points_in_best_box])
         axis_counter = Counter(axis_projection)
@@ -127,18 +172,25 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         def interval_quality(data_base, interval_index):
             return axis_counter[interval_index]
 
-        eps_tag = eps / np.sqrt(data_dimension * np.log(8/delta)) / 10.0
-        delta_tag = delta / data_dimension / 8.0
-        # TODO what is the growth bound?
         # TODO what is the failure and approximation parameter
         best_interval = choosing_mechanism_big(projected_data, axis_projection, interval_quality,
                                                        1, approximation, failure, eps_tag, delta_tag)
 
-        extended_interval = (best_interval-1 * interval_length, (best_interval+2) * interval_length)
+        try:
+            extended_interval = (best_interval-1 * interval_length, (best_interval+2) * interval_length)
+            center_box.append(extended_interval)
+        except TypeError:
+            raise ValueError("choosing mechanism returned 'bottom'")
+        """
+        extended_interval = (best_interval - 1 * interval_length, (best_interval + 2) * interval_length)
         center_box.append(extended_interval)
+
     # print "step 9"
     center_of_chosen_box = [(i[1]-i[0])/2. for i in center_box]
-    chosen_ball = [tuple(p) for p in data if distance.euclidean(center_of_chosen_box, p) <= interval_length*3]
+    try:
+        chosen_ball = [tuple(p) for p in data if distance.euclidean(center_of_chosen_box, p) <= interval_length*3]
+    except ValueError:
+        raise ValueError("something wrong! the center found is %s" % (str(center_of_chosen_box)))
 
     # step 10
     # print "step 10"
