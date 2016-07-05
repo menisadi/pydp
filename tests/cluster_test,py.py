@@ -7,7 +7,7 @@ import time
 from mpl_toolkits.mplot3d import Axes3D
 
 
-sample_number = 1000
+sample_number = 3000
 dimension, domain = 3, (0, 70)
 blobs = dss.make_blobs(sample_number, dimension, cluster_std=70)
 blob = blobs[0]
