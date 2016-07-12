@@ -195,6 +195,11 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     except ValueError:
         raise ValueError("something wrong! the center found is %s" % (str(center_of_chosen_box)))
 
+    if not chosen_ball:
+        print "chosen ball is empty!"
+        return center_of_chosen_box
+        # raise ValueError("chosen ball is empty! the center found is %s" % (str(center_of_chosen_box)))
+
     # step 10
     # print "step 10"
     def predictor(x):
