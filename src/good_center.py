@@ -168,7 +168,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         delta_tag = delta / data_dimension / 8.0
         if use_filter:
             best_interval = heavy_filter(projection_on_axis, 1, 0, interval_length, eps_tag, delta_tag)
-            extended_interval = (best_interval - 1 * interval_length, (best_interval + 2) * interval_length)
+            extended_interval = ((best_interval - 1) * interval_length, (best_interval + 2) * interval_length)
             center_box.append(extended_interval)
         else:
             axis_projection = np.array([__interval_containing_point__(d[axis], interval_length)
@@ -182,7 +182,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
             best_interval = choosing_mechanism_big(projected_data, axis_projection, interval_quality,
                                                    1, approximation, failure, eps_tag, delta_tag)
             try:
-                extended_interval = (best_interval-1 * interval_length, (best_interval+2) * interval_length)
+                extended_interval = ((best_interval-1) * interval_length, (best_interval+2) * interval_length)
                 center_box.append(extended_interval)
             except TypeError:
                 raise ValueError("choosing mechanism returned 'bottom'")
