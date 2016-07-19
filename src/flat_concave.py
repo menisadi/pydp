@@ -18,6 +18,7 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
     :param intervals_bounding: function L(data,domain_element)
     :param max_in_interval: function u(data,interval) that returns the maximum of quality_function(data,j)
     for j in the interval
+    :param use_exponential:
     :return:
     """
 

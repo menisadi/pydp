@@ -15,7 +15,7 @@ data_2d = array([int(i) for i in normal(center, 50, sample_number)]).reshape((sa
 start_time = time.time()
 domain, desired_amount_of_points = (0, 100), 2000
 approximation, failure, eps, delta, promise = 0.1, 0.1, 0.5, 2 ** -20, 100
-radius = gr.find(data_2d, domain, desired_amount_of_points, failure, eps, delta, promise)
+radius = gr.find(data_2d, domain, desired_amount_of_points, failure, eps)
 print "the radius: %d" % radius
 middle_time = time.time()
 print "good-radius run-time: %.2f seconds" % (middle_time - start_time)

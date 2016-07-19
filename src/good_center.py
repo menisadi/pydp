@@ -151,6 +151,8 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         best_box = heavy_filter(projected_data, new_dimension, boxes_shift, box_side_length, eps/4., delta/4.)
     else:
         best_box = choosing_mechanism_big(projected_data, boxes_set, box_quality, 1, approximation, failure, eps/4.0, delta/4.0)
+        if type(best_box) == str:
+            raise ValueError("choosing mechanism returned 'bottom'")
 
     # the first reshape is due to the signature of the transform method
     # the second reshape returns the box to the original structure so we can compare to the best_box
@@ -198,6 +200,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     if not chosen_ball:
         print "chosen ball is empty!"
         return center_of_chosen_box
+        # TODO when done - change the return to the error
         # raise ValueError("chosen ball is empty! the center found is %s" % (str(center_of_chosen_box)))
 
     # step 10

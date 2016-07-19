@@ -5,7 +5,7 @@ import time
 import src.basicdp as bdp
 import src.examples as xp
 import numpy as np
-from src.good_radius import __max_average_ball__, __distances__
+from src.good_radius_concave import __max_average_ball__, __distances__
 import matplotlib.pyplot as plt
 import src.cluster as cl
 
