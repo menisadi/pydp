@@ -6,12 +6,12 @@ import time
 from __non_private_cluster__ import *
 
 
-sample_number = 500
+sample_number = 1000
 dimension, domain = 800, (0, 3000)
 blobs = dss.make_blobs(sample_number, dimension, cluster_std=70)
 blob = blobs[0]
 
-desired_amount_of_points, approximation, failure, eps, delta, promise = 100, 0.1, 0.1, 0.5, 2**-10, 70
+desired_amount_of_points, approximation, failure, eps, delta, promise = 400, 0.1, 0.1, 0.5, 2**-10, 70
 
 start_time = time.time()
 test_radius, test_center = find_cluster(blob, desired_amount_of_points)

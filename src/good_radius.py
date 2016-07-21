@@ -35,6 +35,7 @@ def find(data, domain, goal_number, failure, eps):
     # domain = min(np.min(data, axis=0)), max(np.max(data, axis=0))
     all_distances = distances(data)
     # TODO since we are not using rec_concave - is this necessary?
+    # TODO if it is - should the bound stay like this?
     if __max_average_ball__(0, all_distances, goal_number) + laplace(0, 4/eps, 1) >\
                             goal_number - 4/eps*log(2/failure):
         return 0
