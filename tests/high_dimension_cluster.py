@@ -1,4 +1,3 @@
-import numpy as np
 import sklearn.datasets as dss
 from scipy.spatial.distance import euclidean
 import src.cluster as cluster
@@ -11,7 +10,7 @@ dimension, domain = 800, (0, 3000)
 blobs = dss.make_blobs(sample_number, dimension, cluster_std=70)
 blob = blobs[0]
 
-desired_amount_of_points, approximation, failure, eps, delta, promise = 400, 0.1, 0.1, 0.5, 2**-10, 70
+desired_amount_of_points, approximation, failure, eps, delta, promise = 700, 0.1, 0.1, 0.5, 2**-10, 70
 
 start_time = time.time()
 test_radius, test_center = find_cluster(blob, desired_amount_of_points)
@@ -23,7 +22,7 @@ print "Number of points in the resulting ball: %d" % test_ball
 print "Run-time: %.2f seconds" % (middle_time - start_time)
 
 radius, center = cluster.find(blob, dimension, domain, desired_amount_of_points,
-                              approximation, failure, eps, delta, shrink=True)
+                              approximation, failure, eps, delta, shrink=True, use_filter=True)
 
 ball = [p for p in blob if euclidean(p, center) <= radius]
 end_time = time.time()

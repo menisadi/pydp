@@ -61,7 +61,7 @@ def heavy_filter(data, dimension, shift, side, eps, delta):
     non_zero = [b for b in boxes_quality if boxes_quality[b] > 0]
     if not non_zero:
         raise ValueError('No high quality box')
-    print len(non_zero)
+    # print len(non_zero)
     # TODO if we take the max why the filtering?
     return non_zero[np.argmax(boxes_quality[b] for b in non_zero)]
 
@@ -180,7 +180,8 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
             def interval_quality(data_base, interval_index):
                 return axis_counter[interval_index]
 
-            # TODO what is the failure and approximation parameter
+            # TODO what is the failure and approximation parameter?
+            # TODO should I use the 'sparse' version?
             best_interval = choosing_mechanism_big(projected_data, axis_projection, interval_quality,
                                                    1, approximation, failure, eps_tag, delta_tag)
             try:

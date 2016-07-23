@@ -23,8 +23,6 @@ def find(data, dimension, domain, desired_amount_of_points, approximation, failu
     """
     sample_number = len(data)
     radius = gr.find(data, domain, desired_amount_of_points, failure, eps)
-    if not radius:
-        print 'radius is 0'
     center = gc.find(data, sample_number, dimension, radius, desired_amount_of_points,
                      failure, approximation, eps, delta, shrink, use_filter)
     result = radius, center

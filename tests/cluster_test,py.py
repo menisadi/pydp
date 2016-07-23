@@ -8,16 +8,16 @@ from mpl_toolkits.mplot3d import Axes3D
 from __non_private_cluster__ import find_cluster
 
 
-sample_number = 1000
-dimension, domain = 2, (0, 70)
+sample_number = 5000
+dimension, domain = 2, (0, 100)
 blobs = dss.make_blobs(sample_number, dimension, cluster_std=70)
 blob = blobs[0]
 
-desired_amount_of_points, approximation, failure, eps, delta, promise = 500, 0.1, 0.1, 0.5, 2**-10, 70
+desired_amount_of_points, approximation, failure, eps, delta, promise = 2000, 0.1, 0.1, 0.5, 2**-10, 70
 
 start_time = time.time()
 radius, center = cluster.find(blob, dimension, domain, desired_amount_of_points,
-                              approximation, failure, eps, delta)
+                              approximation, failure, eps, delta, use_filter=True)
 
 end_time = time.time()
 ball = [p for p in blob if euclidean(p, center) <= radius]

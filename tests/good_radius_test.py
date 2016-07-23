@@ -19,6 +19,4 @@ print "run-time: %.2f seconds" % (time.time() - start_time)
 print "good radius : %d " % result
 points_in_resulting_ball = len([i for i in data_2d if np.linalg.norm(i - (center, center)) < result])
 print "number of points in the resulting ball : %d" % points_in_resulting_ball
-points_in_resulting_ball = len([i for i in data_2d if np.linalg.norm(i - (c, c)) < result])
-print "number of points in the resulting ball : %d" % points_in_resulting_ball
 
