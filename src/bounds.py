@@ -1,4 +1,4 @@
-from math import log, sqrt
+from math import log, sqrt, ceil, exp
 
 
 def log_star(x):
@@ -109,4 +109,19 @@ def choosing_mechanism_data_size(growth_bound, alpha, beta, eps, delta):
 def san_points(eps, delta, alpha, beta):
     return 16/alpha**1.5/eps*sqrt(log(5/delta))*log(16/alpha/beta/eps/delta)
 
+
+def heavy_filter_bound(d, eps, delta):
+    eps_tag = eps / sqrt(d*log(8/delta)) / 10.
+    delta_tag = delta / float(d) / 8.
+    return ceil(2 * log(2/delta_tag) / eps_tag)
+
+
+def good_center_step_8_choosing_mechanism(s, d, eps, delta, alpha):
+    """
+    lower bound the probability of failure
+    :return:
+    """
+    def bound_by_best_score(m):
+        return exp(s*(alpha - 2*m) * eps / 80. / sqrt(d*log(8/delta))) / 2.
+    return bound_by_best_score(1), bound_by_best_score(0)
 
