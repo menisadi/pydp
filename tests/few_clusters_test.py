@@ -7,13 +7,15 @@ from __non_private_cluster__ import *
 
 
 sample_number, desired_amount_of_points = 2000, 1800
-dimension, domain = 2, (0, 30)
-approximation, failure, eps, delta, promise = 0.1, 0.1, 0.5, 2**-10, 200
 
 means = [[500, 30000], [4, 30], [30000, 500]]
 covs = [np.eye(2)*5, np.eye(2)*20, np.eye(2)*100]
 clusters = [np.random.multivariate_normal(m, v, sample_number) for m, v in zip(means, covs)]
-data = np.concatenate(([v for v in clusters]))
+data = np.round(np.concatenate(([v for v in clusters])), 1)
+domain_end = max(abs(np.min(data)), np.max(data))
+
+dimension, domain = 2, (domain_end, 0.1)
+approximation, failure, eps, delta, promise = 0.1, 0.1, 0.5, 2**-10, 200
 
 start_time = time.time()
 test_radius, test_center = find_cluster(data, desired_amount_of_points)

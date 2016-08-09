@@ -1,26 +1,42 @@
 from __future__ import division
 import numpy as np
 from numpy.linalg import norm
-
-
-def __nearest__(x, k, c):
-    norms = np.array([[p, norm(c-p)] for p in x])
-    sorted_norms = [norms[i][0] for i in np.argsort(norms[:, 1])]
-    return sorted_norms[:k]
+from sklearn.metrics.pairwise import euclidean_distances as distances
+from numpy import where
+import matplotlib.pyplot as plt
 
 
 def find_cluster(data_set, k):
+    """
+
+    :param data_set:
+    :param k: number of desired points in cluster
+    :return:
+    """
+    distance = distances(data_set)
     for point in data_set:
-        near_point = __nearest__(data_set, k, point)
-        curr_radius = max(norm(p-point) for p in near_point)
+        point_index = where(data_set == point)[0][0]
+        near_k = np.sort(distance[point_index])[k]
         try:
-            if curr_radius < r:
-                r, c = curr_radius, point
+            if near_k < r:
+                r, c = near_k, point
         except NameError:
-            r, c = curr_radius, point
+            r, c = near_k, point
     return r, c
 
 
 # for plotting
 def circle(r, phi, p):
     return r*np.cos(phi)+p[0], r*np.sin(phi)+p[1]
+
+
+def test():
+    n = 50
+    data = np.random.normal(0, 10, (n, 2))
+    r, c = find_cluster(data, 10)
+    print r, c
+    plt.scatter(*zip(*data))
+    phis = np.arange(0, 6.283, 0.01)
+    plt.plot(*circle(r, phis, c), c='g', ls='-')
+    plt.show()
+
