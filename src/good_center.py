@@ -36,7 +36,7 @@ def __interval_containing_point__(point, side_length):
     return np.floor(point / side_length)
 
 
-def heavy_filter(data, dimension, shift, side, eps, delta):
+def histograms(data, dimension, shift, side, eps, delta):
     """
     find parts of R^d that contain a lot of data-points
     when partitioning R^d into boxes of the same size
@@ -54,16 +54,17 @@ def heavy_filter(data, dimension, shift, side, eps, delta):
     #  when each box appears as many times as the numbers of points in it
     boxes = [my_box(point) for point in data]
     boxes_quality = Counter(boxes)
+    non_zero = False
     for b in boxes_quality:
         boxes_quality[b] += laplace(0, 2/eps, 1)[0]
         if boxes_quality[b] < 2*np.log(2/delta)/eps:
             boxes_quality[b] = 0
-    non_zero = [b for b in boxes_quality if boxes_quality[b] > 0]
+        # the current boxes_quality won't be '0' so the process can return an answer
+        elif not non_zero:
+            non_zero = True
     if not non_zero:
         raise ValueError('No high quality box')
-    # print len(non_zero)
-    # TODO if we take the max why the filtering?
-    return non_zero[np.argmax(boxes_quality[b] for b in non_zero)]
+    return max(boxes_quality)
 
 
 def find(data, number_of_points, data_dimension, radius, points_in_ball,
@@ -148,7 +149,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     boxes_set = list(set(box_containing_point_our_case(p) for p in projected_data))
 
     if use_filter:
-        best_box = heavy_filter(projected_data, new_dimension, boxes_shift, box_side_length, eps/4., delta/4.)
+        best_box = histograms(projected_data, new_dimension, boxes_shift, box_side_length, eps / 4., delta / 4.)
     else:
         best_box = choosing_mechanism_big(projected_data, boxes_set, box_quality, 1, approximation, failure, eps/4.0, delta/4.0)
         if type(best_box) == str:
@@ -169,7 +170,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         eps_tag = eps / np.sqrt(data_dimension * np.log(8/delta)) / 10.0
         delta_tag = delta / data_dimension / 8.0
         if use_filter:
-            best_interval = heavy_filter(projection_on_axis, 1, 0, interval_length, eps_tag, delta_tag)
+            best_interval = histograms(projection_on_axis, 1, 0, interval_length, eps_tag, delta_tag)
             extended_interval = ((best_interval - 1) * interval_length, (best_interval + 2) * interval_length)
             center_box.append(extended_interval)
         else:

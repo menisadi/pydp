@@ -1,5 +1,6 @@
 from __future__ import division
-from numpy import sum, log, sqrt, ceil
+from numpy import sum, log, sqrt, ceil, arange
+import numpy as np
 from basicdp import exponential_mechanism_big
 from sklearn.metrics.pairwise import euclidean_distances as distances
 from numpy.random import laplace
@@ -19,6 +20,12 @@ def __max_average_ball__(radius, hood, t):
     return sum(min(sum(i), t) for i in close_points[a]) / t
 
 
+def create_regular_domain(domain, dimension):
+    domain_end, domain_interval = domain
+    domain_end *= 2*ceil(sqrt(dimension))
+    return np.delete(arange(0, domain_end + domain_interval, domain_interval), 0)
+
+
 def sparse_domain(domain, dimension):
     domain_end, domain_interval = domain
     domain_end *= 2*ceil(sqrt(dimension))
@@ -29,7 +36,7 @@ def sparse_domain(domain, dimension):
     return new_domain
 
 
-def find(data, domain, goal_number, failure, eps):
+def find(data, domain, goal_number, failure, eps, sparse=True):
     # TODO docstring
     """
 
@@ -38,6 +45,7 @@ def find(data, domain, goal_number, failure, eps):
     :param goal_number:
     :param failure:
     :param eps:
+    :param sparse:
     :return:
     """
     # max(abs(np.min(data)), np.max(data))
@@ -52,13 +60,14 @@ def find(data, domain, goal_number, failure, eps):
 
     dimension = data.shape[1]
     # TODO maybe a little less sparse?
-    sparsed_domain = sparse_domain(domain, dimension)
-    # max_averages_by_radius = [__max_average_ball__(r, all_distances, goal_number)
-    #                          for r in sparsed_domain]
+    if sparse:
+        new_domain = sparse_domain(domain, dimension)
+    else:
+        new_domain = create_regular_domain(domain, dimension)
 
     def quality(d, r):
         return min(goal_number - __max_average_ball__(r / 2, all_distances, goal_number),
                    __max_average_ball__(r, all_distances, goal_number) - goal_number + 2*a) / 2
 
-    return exponential_mechanism_big(data, sparsed_domain, quality, eps / 2)
+    return exponential_mechanism_big(data, new_domain, quality, eps / 2)
 
