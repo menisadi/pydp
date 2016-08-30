@@ -12,26 +12,26 @@ from numpy.linalg import norm
 def __box_containing_point__(point, partition, dimension, side_length):
     # TODO docstring
     """
-
-    :param point:
-    :param partition:
+    finds the 'box' containing a given points
+    :param point: point in R^dimension as list of coordinates
+    :param partition: the boxes partitioning of the space, given by the shift and the size of the 'boxes'
     :param dimension:
-    :param side_length:
+    :param side_length: the size of the boxes' side
     :return:
     """
     try:
         return tuple(np.floor((point[i]-partition[i]) / side_length) for i in xrange(dimension))
+    # assuming the exception is due to the data being 1-dimensional
     except IndexError:
         return np.floor((point-partition) / side_length)
 
 
 def __interval_containing_point__(point, side_length):
-    # TODO docstring
     """
-
-    :param point:
-    :param side_length:
-    :return:
+    finds the interval containing a given value
+    :param point: float. value of points in R^1
+    :param side_length: length of intervals
+    :return: float. the interval [result, result + side_length) contains the input point
     """
     return np.floor(point / side_length)
 
@@ -68,22 +68,25 @@ def histograms(data, dimension, shift, side, eps, delta):
 
 
 def find(data, number_of_points, data_dimension, radius, points_in_ball,
-         failure, approximation, eps, delta, shrink=False, use_filter=False):
-    # TODO docstring
+         failure, approximation, eps, delta, shrink=False, use_histograms=False):
+    # TODO number_of_points is redundant
     """
-
-    :param data:
-    :param number_of_points:
-    :param data_dimension:
-    :param radius:
-    :param points_in_ball:
-    :param failure:
-    :param approximation:
-    :param eps:
-    :param delta:
-    :param shrink:
-    :param use_filter:
-    :return:
+    Given a data set, desired number of points and a radius finds the center a cluster with approximately
+    that number of points and approximately that radius
+    :param data: list of points in R^dimension
+    :param number_of_points:  number of points in the input data
+    :param data_dimension: the dimension of the space which the points are taken from
+    :param radius: the radius of cluster to find
+    :param points_in_ball: the number of desired points in the resulting cluster
+    :param approximation: 0 < float < 1. the approximation level of the result
+    :param failure: 0 < float < 1. chances that the procedure will fail to return an answer
+    :param eps: float > 0. privacy parameter
+    :param delta: 1 > float > 0. privacy parameter
+    :param shrink: boolean. default=False. if set to True will try to reduce the dimension to
+    obtain a better answer (not relevant in dimension < 600)
+    :param use_histograms: boolean. default=False. if set to True will use Theorem 2.5 from the paper
+    instead of using the choosing-mechanism (as in the older versions of the paper)
+    :return: the center a cluster with approximately that number of points and approximately that radius
     """
     # step 1
     # print "step 1"
@@ -148,7 +151,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
 
     boxes_set = list(set(box_containing_point_our_case(p) for p in projected_data))
 
-    if use_filter:
+    if use_histograms:
         best_box = histograms(projected_data, new_dimension, boxes_shift, box_side_length, eps / 4., delta / 4.)
     else:
         best_box = choosing_mechanism_big(projected_data, boxes_set, box_quality, 1, approximation, failure, eps/4.0, delta/4.0)
@@ -169,7 +172,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
         projection_on_axis = np.array([d[axis] for d in points_in_best_box])
         eps_tag = eps / np.sqrt(data_dimension * np.log(8/delta)) / 10.0
         delta_tag = delta / data_dimension / 8.0
-        if use_filter:
+        if use_histograms:
             best_interval = histograms(projection_on_axis, 1, 0, interval_length, eps_tag, delta_tag)
             extended_interval = ((best_interval - 1) * interval_length, (best_interval + 2) * interval_length)
             center_box.append(extended_interval)

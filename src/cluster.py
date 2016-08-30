@@ -7,9 +7,10 @@ def find(data, dimension, domain, desired_amount_of_points, approximation, failu
          shrink=False, use_histograms=False, return_ball=False):
     # TODO the dimension parameter is redundant
     # TODO so is the domain, or maybe not?
+    # TODO rename variables so that identical ones will ahave the same name in all procedures
     """
     Based on "Locating a Small Cluster Privately" by Kobbi Nissim, Uri Stemmer, and Salil Vadhan. PODS 2016.
-    Given a data set, finds a approximately minimal cluster of points with approximately the desired amount of points
+    Given a data set, finds an approximately minimal cluster of points with approximately the desired amount of points
     :param data: list of points in R^dimension
     :param dimension: the dimension of the space which the points are taken from
     :param domain: tuple(absolute value of domain's end as int, minimum intervals in domain as float)
