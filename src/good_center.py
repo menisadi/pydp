@@ -10,14 +10,15 @@ from numpy.linalg import norm
 
 
 def __box_containing_point__(point, partition, dimension, side_length):
-    # TODO docstring
     """
     finds the 'box' containing a given points
     :param point: point in R^dimension as list of coordinates
     :param partition: the boxes partitioning of the space, given by the shift and the size of the 'boxes'
-    :param dimension:
+    :param dimension: the dimension of the space which the points are taken from
     :param side_length: the size of the boxes' side
-    :return:
+    :return: the axis-aligned box from the given grid, which contains the input point.
+     in other words - a list of coordinates such that for each i, it holds that point[i] is in
+     the interval  [result[i], result[i] + partition[i])
     """
     try:
         return tuple(np.floor((point[i]-partition[i]) / side_length) for i in xrange(dimension))
@@ -38,11 +39,13 @@ def __interval_containing_point__(point, side_length):
 
 def histograms(data, dimension, shift, side, eps, delta):
     """
+    Based on Theorem 2.5 from "Locating a Small Cluster Privately"
+    by Kobbi Nissim, Uri Stemmer, and Salil Vadhan. PODS 2016.
     find parts of R^d that contain a lot of data-points
     when partitioning R^d into boxes of the same size
     the boxes partitioning is given by the shift and the size of the 'boxes'
     :param data: list of points in R^dimension
-    :param dimension:
+    :param dimension: the dimension of the space which the points are taken from
     :param shift: the partition's shift, the i-th value represents the shift in the i-th axis
     :param side: the side-length of each 'box' in the partition
     :param eps: privacy parameter

@@ -110,7 +110,7 @@ def san_points(eps, delta, alpha, beta):
     return 16/alpha**1.5/eps*sqrt(log(5/delta))*log(16/alpha/beta/eps/delta)
 
 
-def heavy_filter_bound(d, eps, delta):
+def histograms_bound(d, eps, delta):
     eps_tag = eps / sqrt(d*log(8/delta)) / 10.
     delta_tag = delta / float(d) / 8.
     return ceil(2 * log(2/delta_tag) / eps_tag)

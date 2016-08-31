@@ -5,7 +5,7 @@ from scipy.spatial.distance import euclidean
 
 def find(data, dimension, domain, desired_amount_of_points, approximation, failure, eps, delta,
          shrink=False, use_histograms=False, return_ball=False):
-    # TODO the dimension parameter is redundant
+    # TODO the dimension parameter is redundant, can be extracted from the data's shape
     # TODO so is the domain, or maybe not?
     # TODO rename variables so that identical ones will ahave the same name in all procedures
     """
