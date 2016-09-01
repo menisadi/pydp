@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="906c0e72-48a7-488e-bb18-debb718b5848" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/cluster.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/few clusters.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/private_clustering.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/probability test.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/real_data_test.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/real_data_test2.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/test flat_concave.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/threshold.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/basicdp.py" afterPath="$PROJECT_DIR$/src/basicdp.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/good_center.py" afterPath="$PROJECT_DIR$/src/good_center.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/__little_tests__.py" afterPath="$PROJECT_DIR$/tests/__little_tests__.py" />
     </list>
     <ignored path="Cluster.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,11 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="composition.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="composition.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/composition.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="748">
               <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -184,6 +200,7 @@
         <option value="$PROJECT_DIR$/src/good_center.py" />
         <option value="$PROJECT_DIR$/src/basicdp.py" />
         <option value="$PROJECT_DIR$/tests/__little_tests__.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -262,34 +279,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pydp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pydp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pydp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pydp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches">
@@ -321,12 +310,13 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\menis\PycharmProjects\pydp\notebooks" />
       <recent name="$PROJECT_DIR$/notebooks" />
       <recent name="$PROJECT_DIR$/tests" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
@@ -659,13 +649,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1442480449443</updated>
-    </task>
-    <task id="LOCAL-00085" summary="naive point_d sanitation">
-      <created>1452507026020</created>
-      <option name="number" value="00085" />
-      <option name="presentableId" value="LOCAL-00085" />
-      <option name="project" value="LOCAL" />
-      <updated>1452507026025</updated>
     </task>
     <task id="LOCAL-00086" summary="documentation">
       <created>1452723646657</created>
@@ -1003,7 +986,14 @@
       <option name="project" value="LOCAL" />
       <updated>1472644465955</updated>
     </task>
-    <option name="localTasksCounter" value="134" />
+    <task id="LOCAL-00134" summary="documentation of basicdp">
+      <created>1472715839898</created>
+      <option name="number" value="00134" />
+      <option name="presentableId" value="LOCAL-00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1472715839899</updated>
+    </task>
+    <option name="localTasksCounter" value="135" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1077,7 +1067,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="a bit of documentation" />
     <MESSAGE value="back to good-center" />
     <MESSAGE value="good-center - fixes and little progress" />
     <MESSAGE value="good-center - only step 10 remains" />
@@ -1102,7 +1091,8 @@
     <MESSAGE value="documentation and tests" />
     <MESSAGE value="documentation of good-radius" />
     <MESSAGE value="documentation of good-center and basicdp (partly). fixed privacy problem with choosing mechanism, need to check the effect on its use (may be less efficient on small data sets or small privacy parameters)" />
-    <option name="LAST_COMMIT_MESSAGE" value="documentation of good-center and basicdp (partly). fixed privacy problem with choosing mechanism, need to check the effect on its use (may be less efficient on small data sets or small privacy parameters)" />
+    <MESSAGE value="documentation of basicdp" />
+    <option name="LAST_COMMIT_MESSAGE" value="documentation of basicdp" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1125,13 +1115,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/basicdp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/TestBasicdp.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1441,6 +1424,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="748">
           <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
           <folding />
         </state>
       </provider>
