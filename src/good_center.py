@@ -201,7 +201,7 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     center_of_chosen_box = [(i[1]-i[0])/2. for i in center_box]
     try:
         chosen_ball = [tuple(p) for p in data if distance.euclidean(center_of_chosen_box, p) <= interval_length*3]
-    # TODO when doea this error rise?
+    # TODO when does this error rise?
     except ValueError:
         raise ValueError("something wrong! the center found is %s" % (str(center_of_chosen_box)))
 
@@ -216,7 +216,8 @@ def find(data, number_of_points, data_dimension, radius, points_in_ball,
     def predictor(x):
         return x in chosen_ball
 
-    sensitivity = max(norm(v) for v in chosen_ball)
+    # TODO delete (was in use in the past)
+    # delta_g = max(norm(v) for v in chosen_ball)
     # best_box, box_quality(data, best_box), center_box, chosen_ball
-    return noisy_avg(chosen_ball, predictor, sensitivity, data_dimension, eps/4., delta/4.)
+    return noisy_avg(chosen_ball, predictor, data_dimension, eps/4., delta/4.)
 

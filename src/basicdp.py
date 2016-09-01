@@ -41,7 +41,6 @@ def exponential_mechanism(data, domain, quality_function, eps, bulk=False, for_s
     there is a special procedure called sparse_domain. That procedure needs, beside that result from the given
     mechanism, the total weight of the domain whose quality is more than 0. If that is the case Exponential-Mechanism
     will return also the P DF before the normalization.
-
     :return: an element of domain with approximately maximum value of quality function
     """
 
@@ -129,8 +128,13 @@ def a_dist(data, domain, quality_function, eps, delta, bulk=False, for_sparse=Fa
     :param quality_function: sensitivity-1 quality function
     :param eps: privacy parameter
     :param delta: privacy parameter
-    :param bulk:
-    :param for_sparse:
+    :param bulk: in case that we can reduce run-time by evaluating the quality of the whole domain in bulk,
+    the procedure will be given a 'bulk' quality function. meaning that instead of one domain element the
+    quality function get the whole domain as input
+    :param for_sparse: in cases that the domain is a very spared one, namely a big percent of the domain has quality 0,
+    there is a special procedure called sparse_domain. That procedure needs, beside that result from the given
+    mechanism, the total weight of the domain whose quality is more than 0. If that is the case A-dist
+    will return also the total quality weight input domain.
     :return: an element of domain with maximum value of quality function or 'bottom'
     """
 
@@ -211,7 +215,7 @@ def choosing_mechanism(data, solution_set, quality_function, alpha, eps,
     :param delta: privacy parameters. only needed if check_bound=True
     :param beta: chances that the procedure will fail to return an answer. only needed if check_bound=True
     :param growth_bound: bounding parameter on the growth of the quality function. only needed if check_bound=True
-    :return:
+    :return: an element of domain with approximately maximum value of quality function
     """
     data_size = len(data)
     if check_bound:
@@ -224,15 +228,21 @@ def choosing_mechanism(data, solution_set, quality_function, alpha, eps,
     return exponential_mechanism(data, smaller_solution_set, quality_function, eps)
 
 
+# TODO i think those two 'big' versions should be merged into the normal ones somehow
 def exponential_mechanism_big(data, domain, quality_function, eps, bulk=False, for_sparse=False):
-    """Exponential Mechanism that can deal with very large qualities
+    """Exponential Mechanism that can deal with very large or very small qualities
     exponential_mechanism ( data , domain , quality function , privacy parameter )
-    :param data:
+    :param data: list or array of values
     :param domain: list of possible results
-    :param quality_function:
+    :param quality_function: function which get as input the data and a domain element and 'qualifies' it
     :param eps: privacy parameter
-    :param bulk:
-    :param for_sparse:
+    :param bulk: in case that we can reduce run-time by evaluating the quality of the whole domain in bulk,
+    the procedure will be given a 'bulk' quality function. meaning that instead of one domain element the
+    quality function get the whole domain as input
+    :param for_sparse: in cases that the domain is a very spared one, namely a big percent of the domain has quality 0,
+    there is a special procedure called sparse_domain. That procedure needs, beside that result from the given
+    mechanism, the total weight of the domain whose quality is more than 0. If that is the case Exponential-Mechanism
+    will return also the P DF before the normalization.
     :return: an element of domain with approximately maximum value of quality function
     """
 
@@ -265,23 +275,27 @@ def exponential_mechanism_big(data, domain, quality_function, eps, bulk=False, f
     return result
 
 
-# TODO check all those not-in-use parameters
-def choosing_mechanism_big(data, solution_set, quality_function, growth_bound, alpha, beta, eps, delta):
+def choosing_mechanism_big(data, solution_set, quality_function, alpha, eps,
+                       delta=0, beta=0, growth_bound=1, check_bound=True):
     """
     Choosing Mechanism for solving bounded-growth choice problems
-    that can deal with very large qualities
-    :param data:
-    :param solution_set:
+    that can deal with very large or very small qualities
+    :param data: list or array of values
+    :param solution_set: list of possible results
     :param quality_function: k-bounded-growth quality function
-    :param growth_bound: bounding parameter on the growth of the quality function
     :param alpha: approximation parameter
-    :param beta:
-    :param eps, delta: privacy parameters
-    :return:
+    :param eps: privacy parameters
+    :param check_bound: test if the parameters satisfy the lower bound for privacy guarantee
+    :param delta: privacy parameters. only needed if check_bound=True
+    :param beta: chances that the procedure will fail to return an answer. only needed if check_bound=True
+    :param growth_bound: bounding parameter on the growth of the quality function. only needed if check_bound=True
+    :return: an element of domain with approximately maximum value of quality function
+
     """
     data_size = len(data)
-    #    if data_size < 16 * np.log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps:
-    #        raise ValueError("privacy problem - data size too small")
+    if check_bound:
+        if data_size < 16 * np.log(16 * growth_bound / alpha / beta / eps / delta) / alpha / eps:
+            raise ValueError("privacy problem - data size too small")
     if not len(solution_set):
         raise ValueError('domain is empty')
     best_quality = max(quality_function(data, f) for f in solution_set) + np.random.laplace(0, 4 / eps, 1)
@@ -292,12 +306,24 @@ def choosing_mechanism_big(data, solution_set, quality_function, growth_bound, a
     return exponential_mechanism_big(data, smaller_solution_set, quality_function, eps)
 
 
-def noisy_avg(vs, g, sensitivity, dim, eps, delta):
-    st = set(vs)
-    gvs = sum(1 for v in st if g(v))
-    m = gvs + np.random.laplace(0, 2/eps, 1) - 2*np.log(2/delta)/eps
+def noisy_avg(vector_multi_set, predicate, dim, eps, delta):
+    """
+    Based on "Appendix A - Noisy average of vectors in R^d" from "Locating a Small Cluster Privately" by
+     Kobbi Nissim, Uri Stemmer, and Salil Vadhan. PODS 2016.
+    Given Given a multiset of vectors in R^d, obtain privately their approximate average
+     with respect to soe given predicate
+    :param vector_multi_set: list of tuples
+    :param predicate: binary function from vectors in R^dim to {0,1}
+    :param dim: the dimension of the space which the vectors are taken from
+    :param eps: privacy parameter
+    :param delta: privacy parameter
+    :return: private approximate average of the vectors with respect to soe given predicate
+    """
+    delta_g = max(np.linalg.norm(v) for v in vector_multi_set if predicate(v))
+    size_of_vectrs_set = sum(1 for v in set(vector_multi_set) if predicate(v))
+    m = size_of_vectrs_set + np.random.laplace(0, 2/eps, 1) - 2*np.log(2/delta)/eps
     if m <= 0:
         return 'bottom'
-    sigma = 8 * sensitivity * np.sqrt(2*np.log(8/delta)) / eps / m
+    sigma = 8 * delta_g * np.sqrt(2*np.log(8/delta)) / eps / m
     r = np.random.normal(0, sigma, dim)
-    return np.sum([list(v) for v in vs if g(v)], axis=0)/float(gvs) + r
+    return np.sum([list(v) for v in vector_multi_set if predicate(v)], axis=0) / float(size_of_vectrs_set) + r

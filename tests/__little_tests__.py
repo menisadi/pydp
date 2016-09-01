@@ -8,6 +8,8 @@ import numpy as np
 from src.good_radius_concave import __max_average_ball__, __distances__
 import matplotlib.pyplot as plt
 import src.cluster as cl
+# private module for little testing
+# a complete mess
 
 
 def test_point_count_intervals_bounding(j=2, both_versions=True):
@@ -83,15 +85,16 @@ def compare_interval_creation():
 
 
 def vec_avg(vs, q):
-    st = set(map(tuple, vs))
+    st = set(vs)
     sm = sum(1 for v in st if q(v))
-    return sum(v for v in vs if q(v))/float(sm)
+    avs = map(np.array, vs)
+    return sum(v for v in avs if q(tuple(v)))/float(sm)
 
 
 def noisy_avg(dim, n, eps, delta, gs):
-    s = np.random.randint(0, gs, (n, dim))
+    s = map(tuple, np.random.randint(0, gs, (n, dim)))
     p = lambda v: np.linalg.norm(v) <= gs
-    res = bdp.noisy_avg(s, p, gs, dim, eps, delta)
+    res = bdp.noisy_avg(s, p, dim, eps, delta)
     tr = vec_avg(s, p)
     dist = np.linalg.norm(res - tr)
     return dist / np.linalg.norm(tr)
@@ -136,7 +139,7 @@ def run_all_tests():
 
 
 def run_selected_test():
-    print cluster()
+    print noisy_avg(4, 1000, 0.5, 2**-10, 10)
     return
 
 
