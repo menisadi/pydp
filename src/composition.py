@@ -17,7 +17,8 @@ def advanced(eps, delta, delta_tag, k):
     """
     compute the combined privacy parameters of k mechanisms by "advanced composition"
     Dwork, Rothblum, Vadhan - 2010
-    :param eps, delta: privacy parameters of each mechanism
+    :param eps: privacy parameter of each mechanism
+    :param delta: privacy parameter of each mechanism
     :param delta_tag: additive lose in the delta parameter
     :param k: number of mechanisms
     :return: privacy parameters for the combined mechanism
@@ -30,7 +31,8 @@ def optimal_homogeneous(eps, delta, k):
     """
     compute the optimal combined privacy parameters of k mechanisms
     Kairouz, Oh, Viswanath - 2015
-    :param eps, delta: privacy parameters of each mechanism
+    :param eps: privacy parameter of each mechanism
+    :param delta: privacy parameter of each mechanism
     :param k: number of mechanisms
     :return: privacy parameters for the composition of mechanism
     """
@@ -42,15 +44,15 @@ def optimal_homogeneous(eps, delta, k):
 
 # eps is homogeneous
 # delta_0 > 0, for i>0 : delta_i = 0
-# no formal proof
-# my calculations
+# my calculations, no formal proof included
 # TODO fill the blanks
 def __optimal_homogeneous_eps__(eps, delta, k):
     """
-
-    :param eps:
-    :param delta:
-    :param k:
+    compute the optimal combined privacy parameters of k mechanisms
+    in the case that the epsilon parameter is homogeneous and all but the first mechanism have pure privacy
+    :param eps: privacy parameter of each mechanism
+    :param delta: privacy parameter of each mechanism
+    :param k:  number of mechanisms
     :return: lazy list of possible privacy parameters for k mechanisms each with (eps,delta)-privacy
     """
     for i in xrange(k/2 + 1):

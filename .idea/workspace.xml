@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="906c0e72-48a7-488e-bb18-debb718b5848" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/cluster.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/few clusters.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/private_clustering.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/probability test.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/real_data_test.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/real_data_test2.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/test flat_concave.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/notebooks/threshold.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/composition.py" afterPath="$PROJECT_DIR$/src/composition.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/flat_concave.py" afterPath="$PROJECT_DIR$/src/flat_concave.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/good_radius_concave.py" afterPath="$PROJECT_DIR$/src/good_radius_concave.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jl.py" afterPath="$PROJECT_DIR$/src/jl.py" />
     </list>
     <ignored path="Cluster.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,6 +32,7 @@
     <SUITE FILE_PATH="coverage/pydp$good_radius_zero_ball.coverage" NAME="good_radius_zero_ball Coverage Results" MODIFIED="1470744769229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/pydp$good_center.coverage" NAME="good_center Coverage Results" MODIFIED="1459491871953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/pydp$__good_radius_simpler_test__.coverage" NAME="__good_radius_simpler_test__ Coverage Results" MODIFIED="1468901650637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/pydp$jl.coverage" NAME="jl Coverage Results" MODIFIED="1474876194169" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/pydp$good_center_test.coverage" NAME="good_center_test Coverage Results" MODIFIED="1467737551170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/pydp$high_dimension_cluster.coverage" NAME="high_dimension_cluster Coverage Results" MODIFIED="1470909916837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/pydp$basicdp.coverage" NAME="basicdp Coverage Results" MODIFIED="1472714219340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
@@ -63,18 +59,42 @@
       <file leaf-file-name="good_center.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/good_center.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
+            <state relative-caret-position="3621">
               <caret line="221" column="24" selection-start-line="221" selection-start-column="24" selection-end-line="221" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__little_tests__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/__little_tests__.py">
+      <file leaf-file-name="good_radius_concave.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/good_radius_concave.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+            <state relative-caret-position="238">
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+              <folding>
+                <element signature="e#223#254#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="jl.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/jl.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1190">
+              <caret line="70" column="11" selection-start-line="70" selection-start-column="11" selection-end-line="70" selection-end-column="11" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="good_radius.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/good_radius.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="20" column="59" selection-start-line="8" selection-start-column="0" selection-end-line="20" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -83,8 +103,8 @@
       <file leaf-file-name="basicdp.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/basicdp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+            <state relative-caret-position="255">
+              <caret line="15" column="86" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="86" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -95,14 +115,37 @@
       <file leaf-file-name="composition.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/composition.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
+            <state relative-caret-position="-1337">
+              <caret line="49" column="7" selection-start-line="49" selection-start-column="7" selection-end-line="49" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+      <file leaf-file-name="examples.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/examples.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="25" column="46" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="flat_concave.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/flat_concave.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
+              <folding>
+                <marker date="1474873305879" expanded="true" signature="324:4457" ph="..." />
+                <marker date="1474873305879" expanded="true" signature="329:1369" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -112,21 +155,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bounds.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/bounds.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1955">
-              <caret line="115" column="8" selection-start-line="115" selection-start-column="8" selection-end-line="115" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="cluster.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cluster.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="15" column="57" selection-start-line="15" selection-start-column="57" selection-end-line="15" selection-end-column="57" />
+            <state relative-caret-position="204">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="20" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -158,11 +191,9 @@
         <option value="$PROJECT_DIR$/src/TestReconcave.py" />
         <option value="$PROJECT_DIR$/src/step3revisited.py" />
         <option value="$PROJECT_DIR$/src/good_center" />
-        <option value="$PROJECT_DIR$/src/jl.py" />
         <option value="$PROJECT_DIR$/src/TestBasicdp.py" />
         <option value="$PROJECT_DIR$/src/TestFlatConcave.py" />
         <option value="$PROJECT_DIR$/src/TestRecConcave.py" />
-        <option value="$PROJECT_DIR$/src/composition.py" />
         <option value="$PROJECT_DIR$/src/probability_flat_concave_test.py" />
         <option value="$PROJECT_DIR$/src/script_test_flat.py" />
         <option value="$PROJECT_DIR$/src/san_points.py" />
@@ -180,9 +211,7 @@
         <option value="$PROJECT_DIR$/tests/good_center_test.py" />
         <option value="$PROJECT_DIR$/tests/__good_radius_simpler_test__.py" />
         <option value="$PROJECT_DIR$/src/good_radius_simpler.py" />
-        <option value="$PROJECT_DIR$/src/flat_concave.py" />
         <option value="$PROJECT_DIR$/tests/__good_radius_compare__.py" />
-        <option value="$PROJECT_DIR$/src/good_radius_concave.py" />
         <option value="$PROJECT_DIR$/tests/good_radius_concave_test.py" />
         <option value="$PROJECT_DIR$/tests/few_cluster_radius_test.py" />
         <option value="$PROJECT_DIR$/tests/cluster_test,py.py" />
@@ -201,6 +230,11 @@
         <option value="$PROJECT_DIR$/src/basicdp.py" />
         <option value="$PROJECT_DIR$/tests/__little_tests__.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$USER_HOME$/Downloads/mr.py" />
+        <option value="$PROJECT_DIR$/src/composition.py" />
+        <option value="$PROJECT_DIR$/src/flat_concave.py" />
+        <option value="$PROJECT_DIR$/src/good_radius_concave.py" />
+        <option value="$PROJECT_DIR$/src/jl.py" />
       </list>
     </option>
   </component>
@@ -260,7 +294,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches">
+        <subPane />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -279,11 +315,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pydp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pydp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches">
-        <subPane />
-      </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -320,25 +368,7 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.__little_tests__">
-    <configuration default="false" name="few_clusters_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pydp" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/few_clusters_test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.jl">
     <configuration default="false" name="cluster_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -353,24 +383,6 @@
       <module name="pydp" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/cluster_test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="good_radius_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pydp" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/good_radius_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -407,6 +419,42 @@
       <module name="pydp" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/__little_tests__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="mr" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Downloads" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Cluster" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Downloads/mr.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="jl" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pydp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/jl.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -620,19 +668,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.few_clusters_test" />
-      <item index="1" class="java.lang.String" itemvalue="Python.cluster_test" />
-      <item index="2" class="java.lang.String" itemvalue="Python.good_radius_test" />
-      <item index="3" class="java.lang.String" itemvalue="Python.basicdp" />
-      <item index="4" class="java.lang.String" itemvalue="Python.__little_tests__" />
+      <item index="0" class="java.lang.String" itemvalue="Python.cluster_test" />
+      <item index="1" class="java.lang.String" itemvalue="Python.basicdp" />
+      <item index="2" class="java.lang.String" itemvalue="Python.__little_tests__" />
+      <item index="3" class="java.lang.String" itemvalue="Python.mr" />
+      <item index="4" class="java.lang.String" itemvalue="Python.jl" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.__little_tests__" />
-        <item index="1" class="java.lang.String" itemvalue="Python.basicdp" />
-        <item index="2" class="java.lang.String" itemvalue="Python.cluster_test" />
-        <item index="3" class="java.lang.String" itemvalue="Python.good_radius_test" />
-        <item index="4" class="java.lang.String" itemvalue="Python.few_clusters_test" />
+        <item index="0" class="java.lang.String" itemvalue="Python.jl" />
+        <item index="1" class="java.lang.String" itemvalue="Python.mr" />
+        <item index="2" class="java.lang.String" itemvalue="Python.__little_tests__" />
+        <item index="3" class="java.lang.String" itemvalue="Python.basicdp" />
+        <item index="4" class="java.lang.String" itemvalue="Python.cluster_test" />
       </list>
     </recent_temporary>
   </component>
@@ -649,13 +697,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1442480449443</updated>
-    </task>
-    <task id="LOCAL-00086" summary="documentation">
-      <created>1452723646657</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1452723646659</updated>
     </task>
     <task id="LOCAL-00087" summary="trying things (for a clean version choose a previous one)">
       <created>1455204423780</created>
@@ -993,7 +1034,14 @@
       <option name="project" value="LOCAL" />
       <updated>1472715839899</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="notebooks added to git">
+      <created>1472715986503</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1472715986503</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1009,16 +1057,17 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15733737" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16111952" sideWeight="0.4942717" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32798165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33123028" sideWeight="0.50292826" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32852292" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32467532" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31587562" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32405892" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47954175" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33060557" sideWeight="0.49707174" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3265074" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32569557" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15885022" sideWeight="0.5057283" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4025974" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -1028,7 +1077,6 @@
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="252" y="265" width="906" height="199" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31587562" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1054,6 +1102,24 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
       <collection />
@@ -1067,7 +1133,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="back to good-center" />
     <MESSAGE value="good-center - fixes and little progress" />
     <MESSAGE value="good-center - only step 10 remains" />
     <MESSAGE value="good-center - oadded heavy-filter (to replace choosing mechanism)" />
@@ -1092,14 +1157,15 @@
     <MESSAGE value="documentation of good-radius" />
     <MESSAGE value="documentation of good-center and basicdp (partly). fixed privacy problem with choosing mechanism, need to check the effect on its use (may be less efficient on small data sets or small privacy parameters)" />
     <MESSAGE value="documentation of basicdp" />
-    <option name="LAST_COMMIT_MESSAGE" value="documentation of basicdp" />
+    <MESSAGE value="notebooks added to git" />
+    <option name="LAST_COMMIT_MESSAGE" value="notebooks added to git" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/src/good_radius_concave.py</url>
-          <line>75</line>
+          <line>69</line>
           <option name="timeStamp" value="233" />
         </line-breakpoint>
       </breakpoints>
@@ -1110,18 +1176,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="244" />
+      <option name="time" value="245" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tests/TestBasicdp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rec_concave.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1222,24 +1281,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/examples.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="25" column="46" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/san_thresholds_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="864">
           <caret line="54" column="13" selection-start-line="54" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/jl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="846">
-          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1268,27 +1313,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/flat_concave.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="29" column="33" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/good_center_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/good_radius_concave.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="69" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#31#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1364,13 +1392,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/good_radius.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="70" column="24" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/few_clusters_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -1386,22 +1407,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/good_center.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="221" column="24" selection-start-line="221" selection-start-column="24" selection-end-line="221" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cluster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="15" column="57" selection-start-line="15" selection-start-column="57" selection-end-line="15" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/__little_tests__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1410,20 +1415,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/basicdp.py">
+    <entry file="file://$USER_HOME$/Downloads/mr.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/composition.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
+        <state relative-caret-position="241">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1433,6 +1428,87 @@
         <state relative-caret-position="0">
           <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/composition.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1337">
+          <caret line="49" column="7" selection-start-line="49" selection-start-column="7" selection-end-line="49" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/examples.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="25" column="46" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cluster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="20" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/basicdp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="86" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="86" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/flat_concave.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
+          <folding>
+            <marker date="1474873305879" expanded="true" signature="324:4457" ph="..." />
+            <marker date="1474873305879" expanded="true" signature="329:1369" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/good_center.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3621">
+          <caret line="221" column="24" selection-start-line="221" selection-start-column="24" selection-end-line="221" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/good_radius.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="20" column="59" selection-start-line="8" selection-start-column="0" selection-end-line="20" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/good_radius_concave.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding>
+            <element signature="e#223#254#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1190">
+          <caret line="70" column="11" selection-start-line="70" selection-start-column="11" selection-end-line="70" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

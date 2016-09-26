@@ -1,3 +1,6 @@
+# the original good-radius algorithm uses rec_concave mechanism
+# because of utility problem we replaced it with exponential-mechanics
+# for completeness of the implantation we include also a version which uses rec_concave
 from __future__ import division
 from numpy import zeros, sum, sqrt, log, log2, arange, ceil
 import numpy as np
@@ -9,27 +12,18 @@ from sklearn.metrics.pairwise import euclidean_distances as distances
 from flat_concave import evaluate
 
 
-# TODO no need for this method (sklearn has a better one)
-def __distances__(points):
-    n = len(points)
-    neighbourhood = zeros((n, n))
-    for i in xrange(n):
-        for j in xrange(i):
-            neighbourhood[i, j] = neighbourhood[j, i] = euclidean(points[i], points[j])
-    return neighbourhood
-
-
 def __max_average_ball__(radius, hood, t):
-    # TODO docstring
     """
-
-    :param radius:
-    :param hood:
-    :param t:
-    :return:
+    Quality function
+    Used in the procedure 'find' as the basis of the concave-quality-function
+    :param radius: possible radius to qualify
+    :param hood: distance matrix of all the points in the data. two-dimensional matrix.
+    :param t: number of desired points in the cluster (that 'find' is looking for)
+    :return: the maximum average number of points in t different balls of radius r,
+    when for balls with more than t points we take the value t (min(amount,t))
     """
     close_points = (hood <= radius).astype(int)
-    a = sum(close_points, axis=1).argsort()[t:]
+    a = sum(close_points, axis=1).argsort()[-t:]
     return sum(min(sum(i), t) for i in close_points[a]) / t
 
 

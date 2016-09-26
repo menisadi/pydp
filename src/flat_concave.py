@@ -9,17 +9,19 @@ def evaluate(data, range_max_value, quality_function, quality_promise, approxima
              intervals_bounding, max_in_interval, use_exponential=True):
     """
     RecConcave algorithm for the specific case of N=2
-    :param data:
+    :param data: the main data-set
     :param range_max_value: maximum possible output (the minimum output is 0)
-    :param quality_function:
-    :param quality_promise:
-    :param approximation: approximation parameter (from 0 to 1)
-    :param eps, delta: privacy parameters
+    :param quality_function: function that gets a domain-elements and returns its quality (in float)
+    :param quality_promise: float, quality value that we can assure that there exist a domain element with at least that quality
+    :param approximation: 0 < float < 1. the approximation level of the result
+    :param eps: float > 0. privacy parameter
+    :param delta: 1 > float > 0. privacy parameter
     :param intervals_bounding: function L(data,domain_element)
     :param max_in_interval: function u(data,interval) that returns the maximum of quality_function(data,j)
     for j in the interval
-    :param use_exponential:
-    :return:
+    :param use_exponential: the original version uses A_dist mechanism. for utility reasons the exponential-mechanism
+    is the default. turn to False to use A_dist instead
+    :return: an element of domain with approximately maximum value of quality function
     """
 
     # step 2
